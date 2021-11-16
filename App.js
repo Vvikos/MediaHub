@@ -9,9 +9,10 @@ import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 
 const TabsBarConfig = {
-	activeTintColor: "#880921s",
+	activeTintColor: "#ff9e00",
 	style: {
-        backgroundColor: 'white',
+        backgroundColor: '#303030',
+		borderTopColor: '#ff9e00', borderTopWidth: 2,
       }
   };
 
@@ -25,8 +26,8 @@ Movies: {
 		return (
 		<Ionicons
 			name="film-outline"
-			size={24}
-			color={tabInfo.focused ? "#880921" : "#8e8e93"}
+			size={32}
+			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
 		/>
 		);
 	},
@@ -42,7 +43,7 @@ Series: {
 		<Ionicons
 			name="tv-outline"
 			size={32}
-			color={tabInfo.focused ? "#880921s" : "#8e8e93"}
+			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
 		/>
 		);
 	},
@@ -58,7 +59,7 @@ Search: {
 		<Ionicons
 			name="search-outline"
 			size={32}
-			color={tabInfo.focused ? "#880921s" : "#8e8e93"}
+			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
 		/>
 		);
 	},
@@ -74,7 +75,7 @@ Profile: {
 		<Ionicons
 			name="person-outline"
 			size={32}
-			color={tabInfo.focused ? "#880921s" : "#8e8e93"}
+			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
 		/>
 		);
 	},
@@ -86,8 +87,8 @@ const Navigator = createAppContainer(TabNavigator);
 
 export default function App() {
 return (
-	<Navigator >
-		<MoviesScreen/>
+	<Navigator>
+		<ProfileScreen/>
 	</Navigator>
 );
 }
