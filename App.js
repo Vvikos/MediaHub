@@ -3,19 +3,24 @@ import { Ionicons } from "@expo/vector-icons";
 import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
-import MoviesScreen from "./screens/MoviesScreen";
-import SeriesScreen from "./screens/SeriesScreen";
-import SearchScreen from "./screens/SearchScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import MoviesScreen from "./src/screens/MoviesScreen";
+import SeriesScreen from "./src/screens/SeriesScreen";
+import SearchScreen from "./src/screens/SearchScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
+
+const TabsBarConfig = {
+	activeTintColor: "#880921s",
+	style: {
+        backgroundColor: 'white',
+      }
+  };
 
 const TabNavigator = createBottomTabNavigator({
 Movies: {
 	screen: MoviesScreen,
 	navigationOptions: {
 	tabBarLabel: "Movies",
-	tabBarOptions: {
-		activeTintColor: "#880921",
-	},
+	tabBarOptions: TabsBarConfig,
 	tabBarIcon: (tabInfo) => {
 		return (
 		<Ionicons
@@ -31,9 +36,7 @@ Series: {
 	screen: SeriesScreen,
 	navigationOptions: {
 	tabBarLabel: "Series",
-	tabBarOptions: {
-		activeTintColor: "#880921s",
-	},
+	tabBarOptions: TabsBarConfig,
 	tabBarIcon: (tabInfo) => {
 		return (
 		<Ionicons
@@ -49,9 +52,7 @@ Search: {
 	screen: SearchScreen,
 	navigationOptions: {
 	tabBarLabel: "Search",
-	tabBarOptions: {
-		activeTintColor: "#880921s",
-	},
+	tabBarOptions: TabsBarConfig,
 	tabBarIcon: (tabInfo) => {
 		return (
 		<Ionicons
@@ -67,9 +68,7 @@ Profile: {
 	screen: ProfileScreen,
 	navigationOptions: {
 	tabBarLabel: "Profile",
-	tabBarOptions: {
-		activeTintColor: "#880921s",
-	},
+	tabBarOptions: TabsBarConfig,
 	tabBarIcon: (tabInfo) => {
 		return (
 		<Ionicons

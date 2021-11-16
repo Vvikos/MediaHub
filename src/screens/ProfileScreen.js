@@ -2,13 +2,13 @@ import React from "react";
 import { Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const Series = () => {
+const Profile = () => {
 return (
 	<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-	<Text style={{ color: "#880921", fontSize: 40 }}>Page réservée aux séries</Text>
-	<Ionicons name="tv-outline" size={80} color="#880921" />
+	<	Text style={{ color: "#880921", fontSize: 40 }}>Page réservée au profile</Text>
+		<Ionicons name="person-outline" size={80} color="#880921" />
 	</View>
 );
 };
 
-export default Series;
+export default Profile;
