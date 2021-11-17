@@ -8,11 +8,13 @@ import SeriesScreen from "./src/screens/SeriesScreen";
 import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 
+import {backgroundColor, activeTintColor, activeTintColorFocsued} from "./src/helpers/colors";
+
 const TabsBarConfig = {
-	activeTintColor: "#ff9e00",
+	activeTintColor: activeTintColor,
 	style: {
-        backgroundColor: '#303030',
-		borderTopColor: '#ff9e00', borderTopWidth: 2,
+        backgroundColor: backgroundColor,
+		borderTopColor: activeTintColor, borderTopWidth: 2,
       }
   };
 
@@ -27,7 +29,7 @@ Movies: {
 		<Ionicons
 			name="film-outline"
 			size={32}
-			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
+			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
 		/>
 		);
 	},
@@ -43,7 +45,7 @@ Series: {
 		<Ionicons
 			name="tv-outline"
 			size={32}
-			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
+			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
 		/>
 		);
 	},
@@ -59,7 +61,7 @@ Search: {
 		<Ionicons
 			name="search-outline"
 			size={32}
-			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
+			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
 		/>
 		);
 	},
@@ -75,7 +77,7 @@ Profile: {
 		<Ionicons
 			name="person-outline"
 			size={32}
-			color={tabInfo.focused ? "#ff9e00" : "#8e8e93"}
+			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
 		/>
 		);
 	},
