@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { FlatList, Text, View } from "react-native";
+import MovieCard from "./MovieCard";
 
 const MovieRow = (props) => {
 	return (
@@ -7,7 +8,7 @@ const MovieRow = (props) => {
 			keyExtractor={(item) => item.id.toString()}
 			keyboardShouldPersistTaps={"handled"}
 			data={props.results}
-			renderItem={({ item }) => <Text style={{color: "#ffffff"}}>{item.original_title}</Text>}
+			renderItem={({ item }) => <MovieCard {...item} />}
 			contentContainerStyle={{ marginVertical: 8 }}
 			/>
 	)
