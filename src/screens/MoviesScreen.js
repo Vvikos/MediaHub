@@ -3,6 +3,8 @@ import { Text, View } from "react-native";
 import { requestMovieScreen } from "../api/api";
 import MovieList from "../components/MovieList";
 
+import {backgroundColor} from "../helpers/colors";
+
 const Movies = () => {
 	const [movies, setMovies] = useState([]);
 	
@@ -18,7 +20,7 @@ const Movies = () => {
 	};
 		
 	return (
-		<View style={{ backgroundColor: '#303030', flex: 1, alignItems: "center", justifyContent: "center" }}>
+		<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", justifyContent: "center" }}>
 			{movies.length > 0 ? 
 				<MovieList {...movies}/>
 			: null }

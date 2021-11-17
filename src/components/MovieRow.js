@@ -7,7 +7,7 @@ const MovieRow = (props) => {
 			keyExtractor={(item) => item.id.toString()}
 			keyboardShouldPersistTaps={"handled"}
 			data={props.results}
-			renderItem={({ item }) => <Text>{item.original_title}</Text>}
+			renderItem={({ item }) => <Text style={{color: "#ffffff"}}>{item.original_title}</Text>}
 			contentContainerStyle={{ marginVertical: 8 }}
 			/>
 	)
