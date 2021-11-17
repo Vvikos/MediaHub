@@ -5,12 +5,15 @@ import MovieCard from "./MovieCard";
 const MovieRow = (props) => {
 	return (
 		<FlatList
-			keyExtractor={(item) => item.id.toString()}
-			keyboardShouldPersistTaps={"handled"}
-			data={props.results}
-			renderItem={({ item }) => <MovieCard {...item} />}
-			contentContainerStyle={{ marginVertical: 8 }}
-			/>
+		keyExtractor={(item) => item.id.toString()}
+		keyboardShouldPersistTaps={"handled"}
+		data={props.results}
+		renderItem={({ item }) => <MovieCard {...item} />}
+		horizontal
+		showsHorizontalScrollIndicator={false}
+		ItemSeparatorComponent={() => <View style={{ margin: 15 }} />}
+		style={{ width : '100%', marginTop: 35}}
+		/>	
 	)
 };
 

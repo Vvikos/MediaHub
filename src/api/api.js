@@ -7,12 +7,12 @@ import {
 
 export const request = async (url) => {
     console.log(url);
-return fetch(url)
-    .then(handleErrors)
-    .then((response) => response.json())
-    .catch((error) => {
-    console.error(error);
-    });
+    return fetch(url)
+        .then(handleErrors)
+        .then((response) => response.json())
+        .catch((error) => {
+        console.error(error);
+        });
 };
 
 const handleErrors = (response) => {

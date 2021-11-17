@@ -5,10 +5,7 @@ const API_KEY = "07349efd542005c2fc1e3079fb201f2b";
 const defaultQuery = {
     api_key: API_KEY,
     language: "fr-FR",
-    // include_adult: true,
-    // region: "ID",
   };
-  
 
 const queryString = (obj) => {
     return Object.entries(obj)
@@ -16,7 +13,6 @@ const queryString = (obj) => {
       .join("&");
   };
   
-
 /*
 --- APPELS API ---
 
@@ -31,7 +27,7 @@ Pour l'image de fond -> backdrop_path
     https://image.tmdb.org/t/p/w500/cinER0ESG0eJ49kXlExM0MEWGxW.jpg
 */
 
-export const getPopularMoviesUrl = (page) =>    `${ROOT_URL}/movie/popular?api_key=${API_KEY}&language=fr-FR`;
+export const getPopularMoviesUrl = (page) =>    `${ROOT_URL}/movie/popular?${queryString({ ...defaultQuery, ...page })}`;
 export const getTopRatedMoviesUrl = (page) =>   `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...page })}`;
 export const getMustWatchMoviesUrl = (page) =>  `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
 export const getUpcomingMoviesUrl = (page) =>   `${ROOT_URL}/movie/upcoming?${queryString({ ...defaultQuery, ...page })}`;
