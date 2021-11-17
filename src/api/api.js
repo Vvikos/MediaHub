@@ -1,5 +1,8 @@
 import {
-    getPopularMoviesUrl
+    getPopularMoviesUrl,
+    getMustWatchMoviesUrl,
+    getUpcomingMoviesUrl,
+    getTopRatedMoviesUrl,
   } from "./url";
 
 export const request = async (url) => {
@@ -20,6 +23,9 @@ const handleErrors = (response) => {
 export const requestMovieScreen = (callback, err) => {
 return Promise.all([
     request(getPopularMoviesUrl()),
+    request(getTopRatedMoviesUrl()),
+    request(getMustWatchMoviesUrl()),
+    request(getUpcomingMoviesUrl()),
     ])
     .then((values) => callback(values))
     .catch(err);

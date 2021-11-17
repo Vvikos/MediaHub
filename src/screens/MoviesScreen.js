@@ -1,28 +1,29 @@
 import React, { useState, useEffect} from "react";
 import { Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { requestMovieApi } from "../api/api";
+import { requestMovieScreen } from "../api/api";
+import MovieList from "../components/MovieList";
 
 const Movies = () => {
-
-const [movies, setMovies] = useState([]);
-useEffect( () => {
-	requestMovieScreen();
-   }, []);
-
-const requestMovieScreen = async () => {
-	await requestMovieApi((data) => {
-		setMovies(data);
-		console.log(data);
-	});
-};
+	const [movies, setMovies] = useState([]);
 	
-return (
-	<View style={{ backgroundColor: '#303030', flex: 1, alignItems: "center", justifyContent: "center" }}>
-		<Text style={{ color: "#880921", fontSize: 40 }}>Page réservée aux films</Text>
-		<Ionicons name="film-outline" size={80} color="#880921" />
-	</View>
-	);
-};
+	useEffect( () => {
+		requestMovies();
+	}, []);
+
+	const requestMovies = () => {
+		requestMovieScreen((data) => {
+			setMovies(data);
+			console.log(data);
+		});
+	};
+		
+	return (
+		<View style={{ backgroundColor: '#303030', flex: 1, alignItems: "center", justifyContent: "center" }}>
+			{movies.length > 0 ? 
+				<MovieList {...movies}/>
+			: null }
+		</View>
+		);
+	};
 
 export default Movies;
