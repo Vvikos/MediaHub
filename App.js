@@ -9,6 +9,8 @@ import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 
 import {backgroundColor, activeTintColor, activeTintColorFocsued} from "./src/helpers/colors";
+import { Header } from "react-native-elements/dist/header/Header";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const TabsBarConfig = {
 	activeTintColor: activeTintColor,
@@ -89,11 +91,19 @@ const Navigator = createAppContainer(TabNavigator);
 
 export default function App() {
 return (
-	<Navigator>
-		<MoviesScreen/>
-	</Navigator>
-
-	// <MoviesScreen/>
+	<SafeAreaProvider>
+		<Header
+			statusBarProps={{ barStyle: 'dark-content' }}
+			containerStyle={{
+				backgroundColor: backgroundColor,
+				borderBottomColor: activeTintColor
+			}}
+			centerComponent={{ text: "MEDIA HUB", style: { color: '#fff', fontSize: 30 } }}	
+		/>
+		<Navigator>
+			<MoviesScreen/>
+		</Navigator>
+	</SafeAreaProvider>
 
 );
 }

@@ -6,7 +6,6 @@ import {
   } from "./url";
 
 export const request = async (url) => {
-    console.log(url);
     return fetch(url)
         .then(handleErrors)
         .then((response) => response.json())

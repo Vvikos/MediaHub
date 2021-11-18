@@ -4,16 +4,19 @@ import MovieCard from "./MovieCard";
 
 const MovieRow = (props) => {
 	return (
-		<FlatList
-		keyExtractor={(item) => item.id.toString()}
-		keyboardShouldPersistTaps={"handled"}
-		data={props.results}
-		renderItem={({ item }) => <MovieCard {...item} />}
-		horizontal
-		showsHorizontalScrollIndicator={false}
-		ItemSeparatorComponent={() => <View style={{ margin: 15 }} />}
-		style={{ width : '100%', marginTop: 35}}
-		/>	
+		<>
+			<Text style={{marginLeft: 10, fontSize: 25, fontWeight: "bold", color: "#ffffff", marginTop: 30}}>{props.title}</Text>
+			<FlatList
+				keyExtractor={(item) => item.id.toString()}
+				keyboardShouldPersistTaps={"handled"}
+				data={props.movieList.results}
+				renderItem={({ item }) => <MovieCard {...item} />}
+				horizontal
+				showsHorizontalScrollIndicator={false}
+				ItemSeparatorComponent={() => <View style={{ margin: 15 }} />}
+				style={{ marginLeft: 10, marginTop: 20, marginBottom: 15}}
+			/>	
+		</>
 	)
 };
 
