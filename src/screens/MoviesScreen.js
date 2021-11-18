@@ -16,12 +16,11 @@ const Movies = () => {
 	const requestMovies = () => {
 		requestMovieScreen((data) => {
 			setMovies(data);
-			console.log(data);
 		});
 	};
 		
 	return (
-		<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, alignItems: "center", justifyContent: "center" }}>
+		<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
 			{movies.length > 0 ? 
 				<MovieList {...movies}/>
 			: null }

@@ -6,11 +6,11 @@ const styles = StyleSheet.create({
 	immBackground: {
 	  height: 255,
 	  width: 170,
+	  borderRadius: 8
 	},
 });
 
 const MovieCard = (props) => {
-	console.log(props);
 	return (
 		<View>
 			<Image style={styles.immBackground} source={{ uri: urlPosterImage+props.poster_path }}/>
