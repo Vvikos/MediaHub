@@ -1,9 +1,8 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, ScrollView, Image, VStack, Box, Divider } from "react-native";
 import { Avatar, Card, ListItem, Button, Icon } from 'react-native-elements';
 
 const Profile = () => {
-
 
 const Component = () => {
 	return (
@@ -16,10 +15,10 @@ const Component = () => {
 }
 
 return (
-	<View style={{ color: 'white', backgroundColor: '#303030', flex: 1, textAlign: 'center', alignItems: "center", justifyContent: "center" }}>
+	<ScrollView directionalLockEnabled={false} contentContainerStyle={{ color: 'white', backgroundColor: '#303030', textAlign: 'center', alignItems: "center", justifyContent: "center" }}>
 		<Component/>
-	</View>
-);
+	</ScrollView>
+	);
 };
 
 export default Profile;

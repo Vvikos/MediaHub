@@ -89,11 +89,11 @@ const Navigator = createAppContainer(TabNavigator);
 
 export default function App() {
 return (
-	// <Navigator>
-	// 	<MoviesScreen/>
-	// </Navigator>
+	<Navigator>
+		<MoviesScreen/>
+	</Navigator>
 
-	<MoviesScreen/>
+	// <MoviesScreen/>
 
 );
 }

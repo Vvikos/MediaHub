@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { requestMovieScreen } from "../api/api";
 import MovieList from "../components/MovieList";
 
@@ -20,11 +21,11 @@ const Movies = () => {
 	};
 		
 	return (
-		<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", justifyContent: "center" }}>
+		<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, alignItems: "center", justifyContent: "center" }}>
 			{movies.length > 0 ? 
 				<MovieList {...movies}/>
 			: null }
-		</View>
+		</ScrollView>
 		);
 	};
 
