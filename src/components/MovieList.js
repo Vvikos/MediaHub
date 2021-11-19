@@ -4,7 +4,7 @@ import MovieRow from "./MovieRow";
 
 const MovieList = (props) => {
 	const [movies, setMovies] = useState([]);
-	const titles = ["Popular", "Top Rated", "Must Watch", "Upcoming"];
+	const titles = ["Populaires", "Les mieux notés", "A regarder absolument", "Prochainement"];
 
 	useEffect(() => {
 		setMovies(props); 
