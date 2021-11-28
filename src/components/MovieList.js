@@ -7,12 +7,12 @@ const MovieList = (props) => {
 	const titles = ["Populaires", "Les mieux notés", "A regarder absolument", "Prochainement"];
 
 	useEffect(() => {
-		setMovies(props); 
+		setMovies(props.movies); 
 	}, [])
 	
 	return (
 		Object.entries(movies).map(([index, movieList]) => {
-			return <MovieRow key={index} movieList={movieList} title={titles[index]}/>
+			return <MovieRow key={index} navigation={props.navigation} movieList={movieList} title={titles[index]}/>
 		})
 	)
 };

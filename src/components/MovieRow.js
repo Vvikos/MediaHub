@@ -10,7 +10,7 @@ const MovieRow = (props) => {
 				keyExtractor={(item) => item.id.toString()}
 				keyboardShouldPersistTaps={"handled"}
 				data={props.movieList.results}
-				renderItem={({ item }) => <MovieCard {...item} />}
+				renderItem={({ item }) => <MovieCard navigation={props.navigation} movie={item} />}
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				ItemSeparatorComponent={() => <View style={{ margin: 15 }} />}
