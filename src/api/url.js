@@ -25,9 +25,16 @@ Pour le poster du film -> poster_path
 
 Pour l'image de fond -> backdrop_path
     https://image.tmdb.org/t/p/w500/cinER0ESG0eJ49kXlExM0MEWGxW.jpg
+
+Id du film Eternals -> 524434
+Accéder aux détails d'un film via son id
+    https://api.themoviedb.org/3/movie/524434?api_key=07349efd542005c2fc1e3079fb201f2b&language=fr-FR
+
 */
 
 export const getPopularMoviesUrl = (page) =>    `${ROOT_URL}/movie/popular?${queryString({ ...defaultQuery, ...page })}`;
 export const getTopRatedMoviesUrl = (page) =>   `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...page })}`;
 export const getMustWatchMoviesUrl = (page) =>  `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
 export const getUpcomingMoviesUrl = (page) =>   `${ROOT_URL}/movie/upcoming?${queryString({ ...defaultQuery, ...page })}`;
+
+export const getMovieDetailUrl = (id) => `${ROOT_URL}/movie/${id}?${queryString(defaultQuery)}`;

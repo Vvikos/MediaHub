@@ -3,6 +3,7 @@ import {
     getMustWatchMoviesUrl,
     getUpcomingMoviesUrl,
     getTopRatedMoviesUrl,
+    getMovieDetailUrl,
   } from "./url";
 
 export const request = async (url) => {
@@ -30,3 +31,10 @@ return Promise.all([
     .catch(err);
 };
   
+export const requestMovieDetailScreen = (id, callback) => {
+    return Promise.all([
+      request(getMovieDetailUrl(id)),
+    ])
+      .then((values) => callback(values))
+      .catch((error) => console.log(error));
+  };
