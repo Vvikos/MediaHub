@@ -14,7 +14,11 @@ import { width } from "dom-helpers";
 const styles = StyleSheet.create({
 });
 
-const Stack = createStackNavigator();
+const MoviesStack = createStackNavigator(); 
+const SeriesStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+const SearchStack = createStackNavigator();
+
 const Back = "Retour";
 
 const screenOptionStyle = {
@@ -37,34 +41,34 @@ const Logo = () => {
 
 const MoviesStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Movies" component={MoviesScreen} options={{title: <Logo />}}/>
-      <Stack.Screen name="Movie" component={MovieScreen} options={{title: <Logo />}}/>
-    </Stack.Navigator>
+    <MoviesStack.Navigator screenOptions={screenOptionStyle}>
+      <MoviesStack.Screen name="Movies" component={MoviesScreen} options={{title: <Logo />}}/>
+      <MoviesStack.Screen name="Movie" component={MovieScreen} options={{title: <Logo />}}/>
+    </MoviesStack.Navigator>
   );
 }
 
 const SeriesStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Series" component={SeriesScreen} options={{title: <Logo />}}/>
-    </Stack.Navigator>
+    <SeriesStack.Navigator screenOptions={screenOptionStyle}>
+      <SeriesStack.Screen name="Series" component={SeriesScreen} options={{title: <Logo />}}/>
+    </SeriesStack.Navigator>
   );
 }
 
 const SearchStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Search" component={SearchScreen} options={{title: <Logo />}}/>
-    </Stack.Navigator>
+    <SearchStack.Navigator screenOptions={screenOptionStyle}>
+      <SearchStack.Screen name="Search" component={SearchScreen} options={{title: <Logo />}}/>
+    </SearchStack.Navigator>
   );
 }
 
 const ProfileStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Profile" component={ProfileScreen} options={{title: <Logo />}}/>
-    </Stack.Navigator>
+    <ProfileStack.Navigator screenOptions={screenOptionStyle}>
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{title: <Logo />}}/>
+    </ProfileStack.Navigator>
   );
 }
 
