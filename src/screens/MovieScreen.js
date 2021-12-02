@@ -14,27 +14,25 @@ const styles = StyleSheet.create({
       // textAlign: "center",
     },
     imgBackground: {
-      height: 400,
+      height: 233,
       width: '100%',
+      resizeMode: 'contain',
       opacity: 0.5,
+    
     },
     imgPoster: {
-      height: 255,
-      width: 170,
+      height: 200,
+      width: 115,
       borderRadius: 8,
       marginLeft: '10%',
-      position: 'absolute',
-      top: 70,
-      bottom: 0,
-      left: 0,
-      right: 0,
+      marginTop: -30,
     },
   });
 
 const MovieScreen = ({ route, navigation }) => {
   const { movie } = route.params;
   const [movieDetail, setMovie] = useState([]);
-
+  console.log(movie.id);
   useEffect( () => {
 		requestMovieDetail();
 	}, []);
@@ -47,21 +45,27 @@ const MovieScreen = ({ route, navigation }) => {
 	};
   return (
 
-    <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
+    <ScrollView directionalLockEnabled={false} contentContainerStyle={{ height: '100%', backgroundColor: backgroundColor, justifyContent: "center" }}>
       <View style={styles.center}>
-        <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }}/>
-        <Image style={styles.imgPoster} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
-        <Text style={{marginLeft: 10, fontSize: 25, fontWeight: "bold", color: "#ffffff", marginTop: 30}}>{movieDetail.title}</Text>
-        
-        {/* ça passe pas 
-          { movieDetail.genres == "undefined" ? 
-            movieDetail.genres.map((genre) => (
-              <Text>{genre}</Text>
-            ))
-        : null } */}
-
-
+        <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} />        
+        <View style={{flex:2,flexDirection:"row",justifyContent:'space-between'}}>
+          <View style={{ flex:1 }}>
+            <Image style={styles.imgPoster} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
+          </View>
+          <View style={{ flex:1, marginLeft: -100 }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: "#ffffff", marginTop: 30}}>{movieDetail.title}</Text>
+            <Text style={{ fontSize: 13, color: "#ffffff", marginTop: 30}}>Action, Aventure, Science-fiction</Text>
+            {/* ça passe pas car le tableau movieDetail.genres est undefined et seulement après il se remplit
+              { movieDetail.genres == "undefined" ? 
+                movieDetail.genres.map((genre) => (
+                  <Text>{genre}</Text>
+                ))
+            : null } */}
+          </View>
+        </View>
       </View>
+
+     
     </ScrollView>
     );
 	};
