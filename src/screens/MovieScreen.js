@@ -50,12 +50,13 @@ const MovieScreen = ({ route, navigation }) => {
 	};
   return (
     
-    <ScrollView directionalLockEnabled={false} contentContainerStyle={{ height: '100%', backgroundColor: backgroundColor, justifyContent: "center" }}>
+    <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
       
       { !loading ?
       
       <View style={styles.center}>
         <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} />        
+        
         <View style={{flex:2,flexDirection:"row",justifyContent:'space-between'}}>
           <View style={{ flex:1 }}>
             <Image style={styles.imgPoster} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
@@ -72,6 +73,8 @@ const MovieScreen = ({ route, navigation }) => {
              <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 30}}>{movieDetail.vote_average} / 10 (votants : {movieDetail.vote_count})</Text>
           </View>
         </View>
+
+        <Text style={{fontSize: 18, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Description : </Text><Text style={{fontSize: 15, color: "#ffffff", textAlign: 'justify', margin: 25, marginTop: -15}}>{movieDetail.overview}</Text>
       </View>
       
       : <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }} > 
