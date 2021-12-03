@@ -36,18 +36,19 @@ const MovieScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const { movie } = route.params;
   const [movieDetail, setMovie] = useState([]);
-  
+
   useEffect( () => {
 		requestMovieDetail();
 	}, []);
 
   const requestMovieDetail= () => {
 		requestMovieDetailScreen( movie.id, (data) => {
+      console.log(data[0]);
 			setMovie(data[0]);
       setLoading(false);
 		});
+  };
 
-	};
   return (
     
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
@@ -75,6 +76,16 @@ const MovieScreen = ({ route, navigation }) => {
         </View>
 
         <Text style={{fontSize: 18, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Description : </Text><Text style={{fontSize: 15, color: "#ffffff", textAlign: 'justify', margin: 25, marginTop: -15}}>{movieDetail.overview}</Text>
+      
+        <Text style={{fontSize: 11, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Casting : 
+        {
+          movieDetail.credits.cast.map((actor) => (
+            actor.name + "  >> "
+          ))
+        }
+
+        </Text>
+
       </View>
       
       : <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }} > 

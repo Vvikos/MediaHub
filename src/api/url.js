@@ -30,6 +30,15 @@ Id du film Eternals -> 524434
 Accéder aux détails d'un film via son id
     https://api.themoviedb.org/3/movie/524434?api_key=07349efd542005c2fc1e3079fb201f2b&language=fr-FR
 
+Accéder au casting d'un film 
+    http://api.themoviedb.org/3/movie/580489/casts?api_key=07349efd542005c2fc1e3079fb201f2b&language=fr-FR
+   
+    Image de l'acteur/actrice
+    https://image.tmdb.org/t/p/w500/stTKj4iNauhqlVmZ6XAsFsvcMCY.jpg
+
+BA du film 
+   https://api.themoviedb.org/3/movie/580489/videos?api_key=07349efd542005c2fc1e3079fb201f2b&language=fr-FR
+    -> https://www.youtube.com/watch?v=results[1].key 
 */
 
 export const getPopularMoviesUrl = (page) =>    `${ROOT_URL}/movie/popular?${queryString({ ...defaultQuery, ...page })}`;
@@ -37,4 +46,4 @@ export const getTopRatedMoviesUrl = (page) =>   `${ROOT_URL}/discover/movie?${qu
 export const getMustWatchMoviesUrl = (page) =>  `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
 export const getUpcomingMoviesUrl = (page) =>   `${ROOT_URL}/movie/upcoming?${queryString({ ...defaultQuery, ...page })}`;
 
-export const getMovieDetailUrl = (id) => `${ROOT_URL}/movie/${id}?${queryString(defaultQuery)}`;
+export const getMovieDetailUrl = (id) => `${ROOT_URL}/movie/${id}?append_to_response=credits&${queryString(defaultQuery)}`;
