@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
       width: '100%',
       resizeMode: 'contain',
       opacity: 0.5,
-    
     },
     imgPoster: {
       height: 200,
@@ -27,12 +26,17 @@ const styles = StyleSheet.create({
       marginLeft: '10%',
       marginTop: -30,
     },
+    imgLoading: {
+      height: 250,
+      width: 250,
+    },
   });
 
 const MovieScreen = ({ route, navigation }) => {
+  const [loading, setLoading] = useState(true);
   const { movie } = route.params;
   const [movieDetail, setMovie] = useState([]);
-  console.log(movie.id);
+  
   useEffect( () => {
 		requestMovieDetail();
 	}, []);
@@ -40,12 +44,16 @@ const MovieScreen = ({ route, navigation }) => {
   const requestMovieDetail= () => {
 		requestMovieDetailScreen( movie.id, (data) => {
 			setMovie(data[0]);
+      setLoading(false);
 		});
 
 	};
   return (
-
+    
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ height: '100%', backgroundColor: backgroundColor, justifyContent: "center" }}>
+      
+      { !loading ?
+      
       <View style={styles.center}>
         <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} />        
         <View style={{flex:2,flexDirection:"row",justifyContent:'space-between'}}>
@@ -54,17 +62,22 @@ const MovieScreen = ({ route, navigation }) => {
           </View>
           <View style={{ flex:1, marginLeft: -100 }}>
             <Text style={{ fontSize: 18, fontWeight: "bold", color: "#ffffff", marginTop: 30}}>{movieDetail.title}</Text>
-            <Text style={{ fontSize: 13, color: "#ffffff", marginTop: 30}}>Action, Aventure, Science-fiction</Text>
-            {/* ça passe pas car le tableau movieDetail.genres est undefined et seulement après il se remplit
-              { movieDetail.genres == "undefined" ? 
+            <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 30}}>
+             {
                 movieDetail.genres.map((genre) => (
-                  <Text>{genre}</Text>
+                  genre.name + " "
                 ))
-            : null } */}
+             }
+             </Text>
+             <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 30}}>{movieDetail.vote_average} / 10 (votants : {movieDetail.vote_count})</Text>
           </View>
         </View>
       </View>
-
+      
+      : <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }} > 
+          <Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
+        </View>
+        }
      
     </ScrollView>
     );
