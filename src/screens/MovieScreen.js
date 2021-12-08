@@ -1,10 +1,11 @@
 import React, { useState, useEffect} from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { FlatList, View, StyleSheet, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { requestMovieDetailScreen } from "../api/api";
 import { urlBackgroundImage, urlPosterImage } from "../helpers/url";
 import { backgroundColor } from "../helpers/colors";
 import { Image } from 'react-native';
+
 
 const styles = StyleSheet.create({
     center: {
@@ -43,21 +44,21 @@ const MovieScreen = ({ route, navigation }) => {
 
   const requestMovieDetail= () => {
 		requestMovieDetailScreen( movie.id, (data) => {
-      console.log(data[0]);
 			setMovie(data[0]);
+      console.log(movie.id);
       setLoading(false);
 		});
   };
 
   return (
-    
+
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
-      
+
       { !loading ?
-      
+
       <View style={styles.center}>
-        <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} />        
-        
+        <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} />
+
         <View style={{flex:2,flexDirection:"row",justifyContent:'space-between'}}>
           <View style={{ flex:1 }}>
             <Image style={styles.imgPoster} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
@@ -76,23 +77,36 @@ const MovieScreen = ({ route, navigation }) => {
         </View>
 
         <Text style={{fontSize: 18, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Description : </Text><Text style={{fontSize: 15, color: "#ffffff", textAlign: 'justify', margin: 25, marginTop: -15}}>{movieDetail.overview}</Text>
-      
-        <Text style={{fontSize: 11, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Casting : 
+
+        <Text style={{fontSize: 11, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Casting : </Text>
+
         {
-          movieDetail.credits.cast.map((actor) => (
-            actor.name + "  >> "
-          ))
+          movieDetail.credits.cast.map((actor) => {
+            if(actor.profile_path != null)
+            {
+              return(
+                <View>
+                <Image key="{actor}"
+                  source={{
+                    uri: urlPosterImage+actor.profile_path
+                  }}
+                  style={{width: 100, height: 100, borderRadius: 100/ 2}}
+                />
+                <Text style={{ textAlign: "center", fontSize: 11, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>{actor.name}</Text>
+                </View>
+              )
+            }
+          })
         }
 
-        </Text>
 
       </View>
-      
-      : <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }} > 
+
+      : <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }} >
           <Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
         </View>
         }
-     
+
     </ScrollView>
     );
 	};
