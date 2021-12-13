@@ -4,6 +4,9 @@ import {
     getUpcomingMoviesUrl,
     getTopRatedMoviesUrl,
     getMovieDetailUrl,
+    getPopularSeriesUrl,
+    getMustWatchSeriesUrl,
+    getTopRatedSeriesUrl,
   } from "./url";
 
 export const request = async (url) => {
@@ -20,6 +23,7 @@ const handleErrors = (response) => {
     return response;
 };
 
+/* ***** MOVIES ***** */
 export const requestMovieScreen = (callback, err) => {
 return Promise.all([
     request(getPopularMoviesUrl()),
@@ -37,4 +41,15 @@ export const requestMovieDetailScreen = (id, callback) => {
     ])
       .then((values) => callback(values))
       .catch((error) => console.log(error));
+  };
+
+/* ***** SERIES ***** */
+export const requestSerieScreen = (callback, err) => {
+  return Promise.all([
+      request(getPopularSeriesUrl()),
+      request(getTopRatedSeriesUrl()),
+      request(getMustWatchSeriesUrl()),
+      ])
+      .then((values) => callback(values))
+      .catch(err);
   };
