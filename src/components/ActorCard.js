@@ -12,13 +12,17 @@ const styles = StyleSheet.create({
 	immBackground: {
       width: 100, 
       height: 100, 
-      borderRadius: 50
+      borderRadius: 50,
+      marginLeft: 25
+
     },
     view: {
         alignItems: "center",
-        width: 150
+        width: 150,
+        
     },
     text: {
+        width: 150,
         fontSize: 11, 
         color: "#ffffff", 
         margin: 25, 
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
       width: 150, 
       height: 150, 
       borderRadius: 30,
-      marginBottom: 10
+      marginBottom: 10,
     }
 });
 

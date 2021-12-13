@@ -71,22 +71,18 @@ const MovieScreen = ({ route, navigation }) => {
 		});
   };
 
+  const colorState = (moyenne) => {
+    if(moyenne < 50)
+      return "red";
+    else if (moyenne < 75)
+      return "orange";
+    else
+      return "green";
+  }
+
   return (
 
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
-
-      {/* EXAMPLE CIRCULAR LOADER - DEBUT*/ }
-      {/* Doc: https://github.com/bartgryszko/react-native-circular-progress*/}
-        <>
-          <AnimatedCircularProgress
-            size={120}
-            width={15}
-            fill={100}
-            tintColor="#00e0ff"
-            backgroundColor="#3d5875" />
-        </>
-      {/* EXAMPLE CIRCULAR LOADER - FIN*/ }
-
 
       { !loading ?
 
@@ -106,13 +102,34 @@ const MovieScreen = ({ route, navigation }) => {
                 ))
              }
              </Text>
-             <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 30}}>{movieDetail.vote_average} / 10 ({movieDetail.vote_count} votes)</Text>
+             <View style={{flex:2,flexDirection:"row",justifyContent:'space-between'}}>
+               <View style={{ flex:1, alignItems: "center" }}>
+                <AnimatedCircularProgress style={{ marginTop: 15}}
+                    size={70}
+                    width={4}
+                    fill={ movieDetail.vote_average * 10 }
+                    rotation={-360}
+                    tintColor={ colorState(movieDetail.vote_average * 10)}
+                    backgroundColor="#3d5875" >
+                    {
+                      (fill) => (
+                        <Text style={{ fontSize: 12, color: "#ffffff" }}>
+                          {movieDetail.vote_average} / 10
+                        </Text>
+                      )
+                    }
+                  </AnimatedCircularProgress>
+                </View> 
+                <View style={{ flex:1 }}>
+                  <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 40 , marginLeft: -12}}>({movieDetail.vote_count} votes)</Text>
+                </View>
+            </View>
           </View>
         </View>
 
         <Text style={styles.headerTitle}>Description : </Text><Text style={styles.text}>{movieDetail.overview}</Text>
 
-        <Text style={styles.headerTitle}>Casting : </Text>
+        <Text style={styles.headerTitle}>Acteurs : </Text>
 
         {
           movieDetail.credits.cast.length > 0 ?
