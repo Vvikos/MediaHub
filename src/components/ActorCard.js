@@ -23,13 +23,15 @@ const styles = StyleSheet.create({
 
 const ActorCard = (props) => {
 	return (
-		<View style={styles.view}>              
+		<View style={styles.view}>  
+        	<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Actor", { actor: props.actor })}>            
             { props.actor.profile_path ? 
                 <Image style={styles.immBackground} source={{ uri: urlPosterImage+props.actor.profile_path }}/>
             :
                 <Image style={styles.immBackground} source = {require('../assets/actor_avatar.jpg')}/>
            }
             <Text style={styles.text}>{props.actor.name}</Text>
+            </TouchableOpacity>
 		</View>
 	)
 };

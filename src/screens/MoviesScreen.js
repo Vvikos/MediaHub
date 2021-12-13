@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
   });
 
-const MoviesScreen = ({navigation}) => {
+const Movies = ({navigation}) => {
 	const [movies, setMovies] = useState([]);
 	const [loading, setLoading] = useState(true);
 	
@@ -42,4 +42,4 @@ const MoviesScreen = ({navigation}) => {
 		);
 	};
 
-export default MoviesScreen;
+export default Movies;

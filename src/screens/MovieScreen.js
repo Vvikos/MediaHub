@@ -6,6 +6,7 @@ import { urlBackgroundImage, urlPosterImage } from "../helpers/url";
 import { backgroundColor } from "../helpers/colors";
 import { Image } from 'react-native';
 import ActorCard from "../components/ActorCard";
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 
 const styles = StyleSheet.create({
@@ -73,6 +74,19 @@ const MovieScreen = ({ route, navigation }) => {
   return (
 
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
+
+      {/* EXAMPLE CIRCULAR LOADER - DEBUT*/ }
+      {/* Doc: https://github.com/bartgryszko/react-native-circular-progress*/}
+        <>
+          <AnimatedCircularProgress
+            size={120}
+            width={15}
+            fill={100}
+            tintColor="#00e0ff"
+            backgroundColor="#3d5875" />
+        </>
+      {/* EXAMPLE CIRCULAR LOADER - FIN*/ }
+
 
       { !loading ?
 
