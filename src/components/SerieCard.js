@@ -12,11 +12,12 @@ const styles = StyleSheet.create({
 });
 
 const SerieCard = (props) => {
+	console.log(props);
 	return (
 		<View>
 			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Serie", { serie: props.serie })}>
 				<Image style={styles.immBackground} source={{ uri: urlPosterImage+props.serie.poster_path }}/>
-				<Text style={{ textAlign: 'center', color: "#ffffff" , width: 170, marginTop: 20, fontWeight: 'bold'}}>{props.serie.title}</Text>
+				<Text style={{ textAlign: 'center', color: "#ffffff" , width: 170, marginTop: 20, fontWeight: 'bold'}}>{props.serie.name}</Text>
 			</TouchableOpacity>
 		</View>
 	)

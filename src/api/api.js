@@ -4,13 +4,10 @@ import {
     getUpcomingMoviesUrl,
     getTopRatedMoviesUrl,
     getMovieDetailUrl,
-<<<<<<< HEAD
     getPeopleDetailUrl,
-=======
     getPopularSeriesUrl,
     getMustWatchSeriesUrl,
     getTopRatedSeriesUrl,
->>>>>>> origin/develop
   } from "./url";
 
 export const request = async (url) => {
