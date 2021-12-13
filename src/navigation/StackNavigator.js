@@ -6,7 +6,6 @@ import ProfileScreen from "../screens/ProfileScreen";
 import SeriesScreen from "../screens/SeriesScreen";
 import SearchScreen from "../screens/SearchScreen";
 import MovieScreen from "../screens/MovieScreen";
-import ActorScreen from "../screens/ActorScreen";
 import { Image } from "react-native-elements/dist/image/Image";
 import { View, Text, StyleSheet } from "react-native";
 import {backgroundColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
@@ -46,7 +45,6 @@ const MoviesStackNavigator = () => {
     <MoviesStack.Navigator screenOptions={screenOptionStyle}>
       <MoviesStack.Screen name="Movies" component={MoviesScreen} options={{title: <Logo />}}/>
       <MoviesStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.movie.title })}/>
-      <MoviesStack.Screen name="Actor" component={ActorScreen} options={({ route }) => ({ title: route.params.actor.name })}/>
     </MoviesStack.Navigator>
   );
 }

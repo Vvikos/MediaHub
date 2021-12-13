@@ -46,4 +46,6 @@ export const getTopRatedMoviesUrl = (page) =>   `${ROOT_URL}/discover/movie?${qu
 export const getMustWatchMoviesUrl = (page) =>  `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
 export const getUpcomingMoviesUrl = (page) =>   `${ROOT_URL}/movie/upcoming?${queryString({ ...defaultQuery, ...page })}`;
 
+export const getPeopleDetailUrl = (id) =>   `${ROOT_URL}/person/${id}?append_to_response=combined_credits&${queryString(defaultQuery)}`;
+
 export const getMovieDetailUrl = (id) => `${ROOT_URL}/movie/${id}?append_to_response=credits&${queryString(defaultQuery)}`;

@@ -4,6 +4,7 @@ import {
     getUpcomingMoviesUrl,
     getTopRatedMoviesUrl,
     getMovieDetailUrl,
+    getPeopleDetailUrl,
   } from "./url";
 
 export const request = async (url) => {
@@ -34,6 +35,14 @@ return Promise.all([
 export const requestMovieDetailScreen = (id, callback) => {
     return Promise.all([
       request(getMovieDetailUrl(id)),
+    ])
+      .then((values) => callback(values))
+      .catch((error) => console.log(error));
+  };
+
+export const requestPeopleDetailScreen = (id, callback) => {
+    return Promise.all([
+      request(getPeopleDetailUrl(id)),
     ])
       .then((values) => callback(values))
       .catch((error) => console.log(error));

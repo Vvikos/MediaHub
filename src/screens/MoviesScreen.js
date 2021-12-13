@@ -26,6 +26,7 @@ const Movies = ({navigation}) => {
 		requestMovieScreen((data) => {
 			setMovies(data);
 			setLoading(false);
+			console.log(data);
 		});
 	};
 		
