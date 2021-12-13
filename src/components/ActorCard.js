@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
       width: 100, 
       height: 100, 
       borderRadius: 50,
-      marginLeft: 25
-
+      marginLeft: 50
     },
     view: {
         alignItems: "center",
@@ -26,7 +25,11 @@ const styles = StyleSheet.create({
         fontSize: 11, 
         color: "#ffffff", 
         margin: 25, 
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: "center",
+        marginTop: 15,
+        marginBottom: 25
+
     },
     modalView: {
       justifyContent: 'flex-end',

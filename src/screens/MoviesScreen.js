@@ -24,10 +24,8 @@ const Movies = ({navigation}) => {
 
 	const requestMovies = () => {
 		requestMovieScreen((data) => {
-			console.log(data);
 			setMovies(data);
 			setLoading(false);
-			console.log(data);
 		});
 	};
 		

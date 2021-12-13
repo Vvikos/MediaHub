@@ -24,7 +24,6 @@ const Series = ({navigation}) => {
 
 	const requestSeries = () => {
 		requestSerieScreen((data) => {
-			console.log(data);
 			setSeries(data);
 			setLoading(false);
 		});
