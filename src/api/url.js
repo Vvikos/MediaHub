@@ -54,3 +54,5 @@ export const getPopularSeriesUrl = (page) =>    `${ROOT_URL}/tv/popular?${queryS
 export const getTopRatedSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...page })}`;
 export const getMustWatchSeriesUrl = (page) =>  `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
 // export const getUpcomingSeriesUrl = (page) =>   `${ROOT_URL}/tv/upcoming?${queryString({ ...defaultQuery, ...page })}`;
+
+export const getFindMultiUrl = (page, query) =>   `${ROOT_URL}/search/multi?${queryString({...defaultQuery, ...page})}&query=${query}`;

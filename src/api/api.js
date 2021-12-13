@@ -8,6 +8,7 @@ import {
     getPopularSeriesUrl,
     getMustWatchSeriesUrl,
     getTopRatedSeriesUrl,
+    getFindMultiUrl,
   } from "./url";
 
 export const request = async (url) => {
@@ -61,3 +62,12 @@ export const requestSerieScreen = (callback, err) => {
       .then((values) => callback(values))
       .catch(err);
   };
+
+/* ***** GENERAL ***** */
+export const requestFindMulti = (page, query, callback) => {
+  return Promise.all([
+    request(getFindMultiUrl(page, query)),
+  ])
+    .then((values) => callback(values))
+    .catch((error) => console.log(error));
+};
