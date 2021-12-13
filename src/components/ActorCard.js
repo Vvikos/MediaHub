@@ -5,7 +5,7 @@ import { urlPosterImage } from "../helpers/url";
 import Modal from "react-native-modal";
 import { requestPeopleDetailScreen } from "../api/api";
 import { Linking } from "react-native";
-import { backgroundColor } from "../helpers/colors";
+import { activeTintColor, backgroundColor } from "../helpers/colors";
 import { ScrollView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     view: {
         alignItems: "center",
         width: 150,
-        
+        alignSelf: 'flex-end',
     },
     text: {
         width: 150,
@@ -43,6 +43,9 @@ const styles = StyleSheet.create({
     modalContent: {
       color: "#ffffff",
       padding: 22,
+      position: 'absolute',
+      width: "100%",
+      bottom:0,
       justifyContent: 'flex-end',
       alignItems: 'center',
       borderRadius: 4,
@@ -57,6 +60,11 @@ const styles = StyleSheet.create({
     website: {
       marginBottom: 10,
       fontSize: 11,
+      color: "#3366bb",
+    },
+    birthday: {
+      marginBottom: 10,
+      fontSize: 11,
       color: "#ffffff",
     },
     modalBackgroundImg: {
@@ -64,6 +72,13 @@ const styles = StyleSheet.create({
       height: 150, 
       borderRadius: 30,
       marginBottom: 10,
+    },
+    closeButton: {
+      color:"#fff",
+      backgroundColor: activeTintColor,
+      borderColor: "#fff",
+      borderRadius: 15,
+      padding: 10
     }
 });
 
@@ -77,11 +92,12 @@ const ActorCard = (props) => {
 
   const toggleModal = () => {
     setLoading(true);
-    requestPeopleDetailScreen(props.actor.id, (data) => {
-			setPeopleDetail(data[0]);
-      console.log(data[0])
-      setLoading(false);
-		});
+    if(!isModalVisible){
+      requestPeopleDetailScreen(props.actor.id, (data) => {
+        setPeopleDetail(data[0]);
+        setLoading(false);
+      });
+    }
     setModalVisible(!isModalVisible);
 
   };
@@ -89,11 +105,17 @@ const ActorCard = (props) => {
   const convertDate = (input_date) => {
     let date = new Date(input_date);
     let month = parseInt(date.getMonth()+1);
+    let day = parseInt(date.getDate());
+
+    if(day < 10){
+      day = "0"+day;
+    }
+
     if(month < 10){
       month = "0"+month;
     }
     
-    let converted_date= date.getDate() + "/" + month +"/"+ date.getFullYear();
+    let converted_date= day + "/" + month +"/"+ date.getFullYear();
 
     return converted_date;
   }
@@ -113,7 +135,7 @@ const ActorCard = (props) => {
         propagateSwipe={true}
           testID={'modal'}
           isVisible={isModalVisible}
-          swipeDirection={['up', 'left', 'right', 'down']}
+          swipeDirection={['left', 'right']}
           onSwipeComplete={toggleModal}
           style={styles.modalView}>
               <ScrollView contentContainerStyle={styles.modalContent}>
@@ -124,7 +146,13 @@ const ActorCard = (props) => {
                 }
                 <Text style={styles.name}>{peopleDetail.name}</Text>
                 { peopleDetail.birthday ?
-                  <Text style={styles.website}>{convertDate(peopleDetail.birthday)}</Text>
+                  <Text style={styles.birthday}>{convertDate(peopleDetail.birthday)}
+                  
+                  { peopleDetail.deathday ?
+                      <> - {convertDate(peopleDetail.deathday)}</>
+                    : null
+                  }
+                  </Text>
                 : null }
 
                 { peopleDetail.homepage ?
@@ -134,8 +162,9 @@ const ActorCard = (props) => {
                   <Text style={styles.biography}>{peopleDetail.biography}</Text>
                 : null }
                           
-
-                <Button title="Fermer" onPress={toggleModal} />
+                <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+                  <Text>FERMER</Text>
+                </TouchableOpacity>
               </ScrollView>
         </Modal>
 		</View>
