@@ -16,7 +16,7 @@ const MovieCard = (props) => {
 		<View>
 			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { movie: props.movie })}>
 				<Image style={styles.immBackground} source={{ uri: urlPosterImage+props.movie.poster_path }}/>
-				<Text style={{ textAlign: 'center', color: "#ffffff" , width: 170, marginTop: 20, fontWeight: 'bold'}}>{props.movie.original_title}</Text>
+				<Text style={{ textAlign: 'center', color: "#ffffff" , width: 170, marginTop: 20, fontWeight: 'bold'}}>{props.movie.title}</Text>
 			</TouchableOpacity>
 		</View>
 	)

@@ -9,16 +9,28 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-        screenOptions={{  headerShown: false }}
-        tabBarOptions={{
-            activeTintColor: activeTintColor,
-            inactiveTintColor: inactiveTintColor,
-            activeBackgroundColor: backgroundColor,
-            inactiveBackgroundColor: backgroundColor,
-    }}>
+        screenOptions={{  
+            headerShown: false,
+            tabBarActiveTintColor: "#ff9e00",
+            tabBarInactiveTintColor: "#ffffff",
+            tabBarActiveBackgroundColor: "#303030",
+            tabBarInactiveBackgroundColor: "#303030",
+            tabBarItemStyle: {
+                borderTopWidth: 0
+            },
+            tabBarStyle: [
+            {
+                display: "flex",
+                backgroundColor: backgroundColor
+            },
+            null
+            ],
+
+        }}
+    >
       <Tab.Screen 
         component={MoviesStackNavigator}
-        name="Movies"
+        name="MoviesTab"
         options={{
             tabBarLabel: "Movies",
             tabBarIcon: (tabInfo) => {
@@ -33,7 +45,7 @@ const BottomTabNavigator = () => {
         }}
         />
       <Tab.Screen 
-              name="Series"
+              name="SeriesTab"
               component={SeriesStackNavigator}
               options={{
                   tabBarLabel: "Series",
@@ -49,7 +61,7 @@ const BottomTabNavigator = () => {
               }}
       />
             <Tab.Screen 
-              name="Search"
+              name="SearchTab"
               component={SearchStackNavigator}
               options={{
                   tabBarLabel: "Search",
@@ -65,7 +77,7 @@ const BottomTabNavigator = () => {
               }}
       />
             <Tab.Screen 
-              name="Profile"
+              name="ProfileTab"
               component={ProfileStackNavigator}
               options={{
                   tabBarLabel: "Profile",

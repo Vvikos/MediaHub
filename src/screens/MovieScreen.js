@@ -5,6 +5,7 @@ import { requestMovieDetailScreen } from "../api/api";
 import { urlBackgroundImage, urlPosterImage } from "../helpers/url";
 import { backgroundColor } from "../helpers/colors";
 import { Image } from 'react-native';
+import ActorCard from "../components/ActorCard";
 
 
 const styles = StyleSheet.create({
@@ -31,6 +32,26 @@ const styles = StyleSheet.create({
       height: 250,
       width: 250,
     },
+    headerTitle: {
+      fontSize: 18, 
+      color: "#ffffff", 
+      textAlign: 'justify', 
+      margin: 25, 
+      fontWeight: 'bold'
+    },
+    text: {
+      fontSize: 15, 
+      color: "#ffffff", 
+      textAlign: 'justify', 
+      margin: 25, 
+      marginTop: -15
+    },
+    movieTitle: {
+      fontSize: 18, 
+      fontWeight: "bold", 
+      color: "#ffffff",
+      marginTop: 30
+    }
   });
 
 const MovieScreen = ({ route, navigation }) => {
@@ -45,7 +66,6 @@ const MovieScreen = ({ route, navigation }) => {
   const requestMovieDetail= () => {
 		requestMovieDetailScreen( movie.id, (data) => {
 			setMovie(data[0]);
-      console.log(movie.id);
       setLoading(false);
 		});
   };
@@ -64,7 +84,7 @@ const MovieScreen = ({ route, navigation }) => {
             <Image style={styles.imgPoster} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
           </View>
           <View style={{ flex:1, marginLeft: -100 }}>
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "#ffffff", marginTop: 30}}>{movieDetail.title}</Text>
+            <Text style={styles.movieTitle}>{movieDetail.title}</Text>
             <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 30}}>
              {
                 movieDetail.genres.map((genre) => (
@@ -72,34 +92,26 @@ const MovieScreen = ({ route, navigation }) => {
                 ))
              }
              </Text>
-             <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 30}}>{movieDetail.vote_average} / 10 (votants : {movieDetail.vote_count})</Text>
+             <Text style={{ fontSize: 15, color: "#ffffff", marginTop: 30}}>{movieDetail.vote_average} / 10 ({movieDetail.vote_count} votes)</Text>
           </View>
         </View>
 
-        <Text style={{fontSize: 18, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Description : </Text><Text style={{fontSize: 15, color: "#ffffff", textAlign: 'justify', margin: 25, marginTop: -15}}>{movieDetail.overview}</Text>
+        <Text style={styles.headerTitle}>Description : </Text><Text style={styles.text}>{movieDetail.overview}</Text>
 
-        <Text style={{fontSize: 11, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>Casting : </Text>
+        <Text style={styles.headerTitle}>Casting : </Text>
 
         {
-          movieDetail.credits.cast.map((actor) => {
-            if(actor.profile_path != null)
-            {
-              return(
-                <View>
-                <Image key="{actor}"
-                  source={{
-                    uri: urlPosterImage+actor.profile_path
-                  }}
-                  style={{width: 100, height: 100, borderRadius: 100/ 2}}
-                />
-                <Text style={{ textAlign: "center", fontSize: 11, color: "#ffffff", textAlign: 'justify', margin: 25, fontWeight: 'bold' }}>{actor.name}</Text>
-                </View>
-              )
-            }
-          })
-        }
-
-
+          movieDetail.credits.cast.length > 0 ?
+          <FlatList
+                  keyExtractor={(item) => item.id.toString()}
+                  keyboardShouldPersistTaps={"handled"}
+                  data={movieDetail.credits.cast}
+                  renderItem={({ item }) => <ActorCard navigation={navigation} actor={item} />}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  ItemSeparatorComponent={() => <View style={{ margin: 15}} />}
+                />	
+              : null }
       </View>
 
       : <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }} >

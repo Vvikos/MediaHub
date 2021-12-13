@@ -19,22 +19,23 @@ const SeriesStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const SearchStack = createStackNavigator();
 
-const Back = "Retour";
+const Back = " ";
 
 const screenOptionStyle = {
   headerStyle: {
     backgroundColor: backgroundColor,
     borderBottomColor: activeTintColor,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   headerTitleAlign: 'center',
   headerTintColor: activeTintColor,
+  headerBackTitle: Back,
 };
 
 const Logo = () => {
   return (
     <View style={styles.headerBar}>
-      <Image source = {require('../assets/mh_logo.png')}  style={{ margin: 10, height: 50, width: 150}} alt={"test"}/>
+      <Image source = {require('../assets/mh_logo.png')}  style={{ margin: 10, height: 30, width: 120}} alt={"test"}/>
     </View>
   );
 }
@@ -43,7 +44,7 @@ const MoviesStackNavigator = () => {
   return (
     <MoviesStack.Navigator screenOptions={screenOptionStyle}>
       <MoviesStack.Screen name="Movies" component={MoviesScreen} options={{title: <Logo />}}/>
-      <MoviesStack.Screen name="Movie" component={MovieScreen} options={{title: <Logo />}}/>
+      <MoviesStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.movie.title })}/>
     </MoviesStack.Navigator>
   );
 }
@@ -73,4 +74,4 @@ const ProfileStackNavigator = () => {
 }
 
 
-export { MoviesStackNavigator, SeriesStackNavigator, SearchStackNavigator, ProfileStackNavigator };
+export {MoviesStackNavigator, SeriesStackNavigator, SearchStackNavigator, ProfileStackNavigator};
