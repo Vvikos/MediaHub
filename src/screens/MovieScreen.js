@@ -55,21 +55,10 @@ const styles = StyleSheet.create({
     }
   });
 
-const MovieScreen = ({ route, navigation }) => {
-  const [loading, setLoading] = useState(true);
+const MovieScreen = (props)=> {
+  const { route, navigation } = props;
   const { movie } = route.params;
-  const [movieDetail, setMovie] = useState([]);
-
-  useEffect( () => {
-		requestMovieDetail();
-	}, []);
-
-  const requestMovieDetail= () => {
-		requestMovieDetailScreen( movie.id, (data) => {
-			setMovie(data[0]);
-      setLoading(false);
-		});
-  };
+  const movieDetail = movie.details;
 
   const colorState = (moyenne) => {
     if(moyenne < 50)
@@ -83,9 +72,6 @@ const MovieScreen = ({ route, navigation }) => {
   return (
 
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
-
-      { !loading ?
-
       <View style={styles.center}>
         <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} />
 
@@ -144,12 +130,6 @@ const MovieScreen = ({ route, navigation }) => {
                 />	
               : null }
       </View>
-
-      : <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }} >
-          <Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
-        </View>
-        }
-
     </ScrollView>
     );
 	};

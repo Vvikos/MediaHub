@@ -6,6 +6,8 @@ import { requestMovieScreen } from "../api/api";
 import MovieList from "../components/MovieList";
 import {backgroundColor} from "../helpers/colors";
 import { Image } from 'react-native';
+import {connect} from 'react-redux';
+import * as actions from '../store/actions';
 
 const styles = StyleSheet.create({
     imgLoading: {
@@ -14,26 +16,27 @@ const styles = StyleSheet.create({
     },
   });
 
-const Movies = ({navigation}) => {
-	const [movies, setMovies] = useState([]);
+const Movies = (props)=> {
+	const { navigation } = props;
+  
 	const [loading, setLoading] = useState(true);
 	
 	useEffect( () => {
-		requestMovies();
+		props.getFilms();
 	}, []);
 
-	const requestMovies = () => {
-		requestMovieScreen((data) => {
-			setMovies(data);
+	useEffect( () => {
+		if(props.movies.popular){
 			setLoading(false);
-		});
-	};
+		}
+	}, [props.movies]);
+
 		
 	return (
 		<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
 			{ !loading ?
-				movies.length > 0 ? 
-					<MovieList navigation={navigation} movies={movies}/>
+				props.movies.popular ? 
+					<MovieList navigation={navigation} movies={props.movies}/>
 				: null
 			: 
 					<Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
@@ -42,4 +45,20 @@ const Movies = ({navigation}) => {
 		);
 	};
 
-export default Movies;
+
+//This means that one or more of the redux states in the store are available as props
+const mapStateToProps = (state) => {
+    return {
+		movies: state.api.movies
+    }
+  }
+  
+  //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
+  const mapDispatchToProps = (dispatch) => {
+    return {
+		getFilms: () => dispatch(actions.fetchFilms()),
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Movies);
