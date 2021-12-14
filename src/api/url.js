@@ -52,7 +52,7 @@ export const getMovieDetailUrl = (id) => `${ROOT_URL}/movie/${id}?append_to_resp
 
 export const getPopularSeriesUrl = (page) =>    `${ROOT_URL}/tv/popular?${queryString({ ...defaultQuery, ...page })}`;
 export const getTopRatedSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...page })}`;
-export const getMustWatchSeriesUrl = (page) =>  `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
+export const getOnTheAirSeriesUrl = (page) =>  `${ROOT_URL}/tv/on_the_air?${queryString({ ...defaultQuery, ...page })}`;
 // export const getUpcomingSeriesUrl = (page) =>   `${ROOT_URL}/tv/upcoming?${queryString({ ...defaultQuery, ...page })}`;
 
 export const getSerieDetailUrl = (id) => `${ROOT_URL}/tv/${id}?append_to_response=credits&${queryString(defaultQuery)}`;

@@ -1,4 +1,3 @@
-import { Actionsheet } from 'native-base';
 import * as actionTypes from './actionTypes';
 
 // ########################################################
@@ -17,7 +16,7 @@ export const initialState = {
     series: {
         popular: null, 
         topRated: null,
-        mustWatch: null
+        onTheAir: null
     }, 
     multi: null, 
 }
@@ -92,7 +91,7 @@ const apiFetchedSeriesReducer = (state, action) => {
         series: {
             popular: action.series[0],
             topRated: action.series[1],
-            mustWatch: action.series[2], 
+            onTheAir: action.series[2], 
         }
     });
 }

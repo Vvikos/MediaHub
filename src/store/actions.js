@@ -7,7 +7,7 @@ import {
     getMovieDetailUrl,
     getPeopleDetailUrl,
     getPopularSeriesUrl,
-    getMustWatchSeriesUrl,
+    getOnTheAirSeriesUrl,
     getTopRatedSeriesUrl,
     getFindMultiUrl,
     getSerieDetailUrl,
@@ -119,7 +119,7 @@ export const fetchSeries = () => {
             Promise.all([
                 request(getPopularSeriesUrl()),
                 request(getTopRatedSeriesUrl()),
-                request(getMustWatchSeriesUrl()),
+                request(getOnTheAirSeriesUrl()),
 
             ]).then((series) => {
 
