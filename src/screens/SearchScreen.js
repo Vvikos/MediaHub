@@ -38,11 +38,11 @@ const Search = () => {
 			alignItems: 'center',
 			justifyContent: 'center'
     },
-		immBackground: {
-			height: 255,
-			width: 170,
-			borderRadius: 8
-		},
+	immBackground: {
+		height: 255,
+		width: 170,
+		borderRadius: 8
+	},
   });
 
   const colorState = (moyenne) => {
