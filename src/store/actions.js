@@ -10,6 +10,7 @@ import {
     getMustWatchSeriesUrl,
     getTopRatedSeriesUrl,
     getFindMultiUrl,
+    getSerieDetailUrl,
   } from "../api/url";
 
 export const request = async (url) => {
@@ -46,6 +47,12 @@ export const apiFetchFilmDetailsSuccess = () => {
     }
 }
 
+export const apiFetchSerieDetailsSuccess = () => {
+    return {
+        type: actionTypes.API_FETCH_SERIE_DETAILS_SUCCESS
+    }
+}
+
 export const apiFail = () => {
     return {
         type: actionTypes.API_FAIL
@@ -56,6 +63,13 @@ export const apiFetchedFilms = (movies) => {
     return {
         type: actionTypes.API_FETCHED_FILMS,
         movies: movies
+    }
+}
+
+export const apiFetchedSeries = (series) => {
+    return {
+        type: actionTypes.API_FETCHED_SERIES,
+        series: series
     }
 }
 
@@ -98,11 +112,38 @@ export const fetchFilms = () => {
 }
 
 
+export const fetchSeries = () => {
+    return dispatch => {
+            dispatch(apiStart);
+ 
+            Promise.all([
+                request(getPopularSeriesUrl()),
+                request(getTopRatedSeriesUrl()),
+                request(getMustWatchSeriesUrl()),
 
-export const requestPeopleDetailScreen = (id, callback) => {
-    return Promise.all([
-      request(getPeopleDetailUrl(id)),
-    ])
-      .then((values) => callback(values))
-      .catch((error) => console.log(error));
-  };
+            ]).then((series) => {
+
+                (series).forEach(function(serieList){
+                    (serieList.results).forEach(function(serie){
+                        Promise.all([
+                            request(getSerieDetailUrl(serie.id)),
+                        ])
+                            .then((details) =>{
+                                serie.details = details[0];
+                                dispatch(apiFetchSerieetailsSuccess);
+                            })
+                            .catch(() => {
+                                dispatch(apiFail);
+                            });
+                    });
+                });
+
+                dispatch(apiFetchedSeries(series))
+                dispatch(apiSuccess);
+
+            }).catch(() => {
+                dispatch(apiFail);
+            });
+    }
+}
+

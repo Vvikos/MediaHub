@@ -6,6 +6,8 @@ import {backgroundColor} from "../helpers/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import { Image } from 'react-native';
 import SerieList from "../components/SerieList";
+import {connect} from 'react-redux';
+import * as actions from '../store/actions';
 
 const styles = StyleSheet.create({
     imgLoading: {
@@ -14,26 +16,25 @@ const styles = StyleSheet.create({
     },
   });
 
-const Series = ({navigation}) => {
-	const [series, setSeries] = useState([]);
+  const Series = (props)=> {
+	const { navigation } = props;
 	const [loading, setLoading] = useState(true);
 
 	useEffect( () => {
-		requestSeries();
+		props.getSeries();
 	}, []);
 
-	const requestSeries = () => {
-		requestSerieScreen((data) => {
-			setSeries(data);
+	useEffect( () => {
+		if(props.series.popular){
 			setLoading(false);
-		});
-	};
+		}
+	}, [props.series]);
 
 return (
 	<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
 	{ !loading ?
-		series.length > 0 ? 
-			<SerieList navigation={navigation} series={series}/>
+		props.series.popular ? 
+			<SerieList navigation={navigation} series={props.series}/>
 		: null
 	: 
 			<Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
@@ -42,4 +43,19 @@ return (
 	);
 };
 
-export default Series;
+//This means that one or more of the redux states in the store are available as props
+const mapStateToProps = (state) => {
+    return {
+		series: state.api.series
+    }
+  }
+  
+  //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
+  const mapDispatchToProps = (dispatch) => {
+    return {
+		getSeries: () => dispatch(actions.fetchSeries()),
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Series);

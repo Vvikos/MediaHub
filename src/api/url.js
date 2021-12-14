@@ -55,4 +55,7 @@ export const getTopRatedSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${query
 export const getMustWatchSeriesUrl = (page) =>  `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
 // export const getUpcomingSeriesUrl = (page) =>   `${ROOT_URL}/tv/upcoming?${queryString({ ...defaultQuery, ...page })}`;
 
+export const getSerieDetailUrl = (id) => `${ROOT_URL}/tv/${id}?append_to_response=credits&${queryString(defaultQuery)}`;
+
+
 export const getFindMultiUrl = (page, query) =>   `${ROOT_URL}/search/multi?${queryString({...defaultQuery, ...page})}&query=${query}`;

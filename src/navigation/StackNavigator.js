@@ -10,6 +10,7 @@ import { Image } from "react-native-elements/dist/image/Image";
 import { View, Text, StyleSheet } from "react-native";
 import {backgroundColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
 import { width } from "dom-helpers";
+import SerieScreen from "../screens/SerieScreen";
 
 const styles = StyleSheet.create({
 });
@@ -53,6 +54,7 @@ const SeriesStackNavigator = () => {
   return (
     <SeriesStack.Navigator screenOptions={screenOptionStyle}>
       <SeriesStack.Screen name="Series" component={SeriesScreen} options={{title: <Logo />}}/>
+      <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.serie.title })}/>
     </SeriesStack.Navigator>
   );
 }

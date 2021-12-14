@@ -14,7 +14,11 @@ export const initialState = {
         mustWatch: null, 
         upcoming: null
     },
-    series: null, 
+    series: {
+        popular: null, 
+        topRated: null,
+        mustWatch: null
+    }, 
     multi: null, 
 }
 
@@ -60,6 +64,12 @@ const apiFetchFilmDetailsSuccessReducer = (state, action) => {
     });
 }
 
+const apiFetchSerieDetailsSuccessReducer = (state, action) => {
+    return updateObject(state, {
+        error: null,
+        loading: false,
+    });
+}
 
 
 const apiFetchedFilmsReducer = (state, action) => {
@@ -75,6 +85,17 @@ const apiFetchedFilmsReducer = (state, action) => {
     });
 }
 
+const apiFetchedSeriesReducer = (state, action) => {
+    return updateObject(state, {
+        error: null,
+        loading: false,
+        series: {
+            popular: action.series[0],
+            topRated: action.series[1],
+            mustWatch: action.series[2], 
+        }
+    });
+}
 // ########################################################
 // The Main Reducer 
 // ########################################################
@@ -85,7 +106,9 @@ const Reducer = (state=initialState, action) => {
         case actionTypes.API_FAIL: return apiSuccessReducer(state, action);
         case actionTypes.API_SUCCESS: return apiFailReducer(state, action);
         case actionTypes.API_FETCHED_FILMS: return apiFetchedFilmsReducer(state, action);
+        case actionTypes.API_FETCHED_SERIES: return apiFetchedSeriesReducer(state, action);
         case actionTypes.API_FETCH_FILM_DETAILS_SUCCESS: return apiFetchFilmDetailsSuccessReducer(state, action);
+        case actionTypes.API_FETCH_SERIE_DETAILS_SUCCESS: return apiFetchSerieDetailsSuccessReducer(state, action);
         default:
             return state;
     }
