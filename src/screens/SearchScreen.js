@@ -4,9 +4,10 @@ import { SearchBar } from "react-native-elements";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { requestFindMulti } from "../api/api";
 import MovieList from "../components/MovieList";
-import { backgroundColor } from "../helpers/colors";
+import { backgroundColor, activeTintColor } from "../helpers/colors";
 import { urlPosterImage } from "../helpers/url";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { Ionicons } from "@expo/vector-icons";
 
 const Search = () => {
 	const [loading, setLoading] = useState(true);
@@ -35,6 +36,9 @@ const Search = () => {
     imgLoading: {
       height: 250,
       width: 250,
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center'
     },
 		immBackground: {
 			height: 255,
@@ -101,7 +105,8 @@ return (
 			onChangeText={(text) => searchFunction(text)}
 			autoCorrect={false}
 		/>
-			{ !loading ?
+			{ 
+			!loading ?
 				data.length > 0 ? 
 				<FlatList
 					style={{ backgroundColor: backgroundColor, border: 'none', width: '80%'}}
@@ -109,9 +114,18 @@ return (
 					renderItem={renderItem}
 					keyExtractor={(item) => item.id}
 				/>
-				: null
+				: 
+				<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", justifyContent: "start" }}>
+					<Ionicons name="search-outline" size={80} color={activeTintColor} />
+					<Text style={{ color: activeTintColor, fontSize: 40 }}>Aucun résultat trouvé</Text>
+				</View>
+		
 			: 
+				searchValue=='' ?
+				<Ionicons name="search-outline" size={80} color={activeTintColor} />
+				:
 				<Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
+
 			}
   </View>
 );
