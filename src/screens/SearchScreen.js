@@ -24,8 +24,6 @@ const Search = () => {
 	useEffect(() => {
 		if(searchValue!=''){
 			requestFindMulti(1, searchValue, (data) => {
-				console.log('FIND DATA');
-				console.log(data);
 				setData(data[0].results);
 				setLoading(false);
 			});
@@ -56,20 +54,31 @@ const Search = () => {
       return "green";
   }
 
-  const Item = ({ title, poster_path, vote_average, name }) => {
+  const Item = ({ title, poster_path, vote_average, name, vote_count }) => {
 		return (
 			<View>
 				<TouchableOpacity activeOpacity={0.5}>
 				<View style={{flex:2,flexDirection:"row", justifyContent:'space-between', marginTop: 50 }}>
 					<View style={{ flex:1 }}>
+					{ poster_path ? 
 						<Image style={styles.immBackground} source={{ uri: urlPosterImage+poster_path }}/>
+						:
+						<Image style={styles.immBackground} source = {require('../assets/movie_avatar.jpeg')}/>
+					}
 					</View>
+					
 					<View style={{ marginLeft: 25, flex:1 }}>
 						{
 							title == undefined ?
-							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold'}}>{name}</Text>
+							<>
+							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold' }}>{name}</Text>
+							<Text style={{ fontSize: 14, textAlign: 'center', color: activeTintColor, width: 140, marginTop: 20, fontWeight: 'bold' }}>Série</Text>
+							</>
 							:
+							<>
 							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold'}}>{title}</Text>
+							<Text style={{ fontSize: 14, textAlign: 'center', color: activeTintColor, width: 140, marginTop: 20, fontWeight: 'bold' }}>Film</Text>
+							</>
 						}
 						<AnimatedCircularProgress style={{ marginTop: 15, marginLeft: 40, marginTop: 30}}
 							size={70}
@@ -81,11 +90,22 @@ const Search = () => {
 							{
 								(fill) => (
 									<Text style={{ fontSize: 12, color: "#ffffff" }}>
-										{vote_average} / 10
+									{
+										vote_average ?
+											vote_average + " / 10"
+										:
+											"?"
+									}
 									</Text>
 								)
 							}
                  		</AnimatedCircularProgress>
+						{
+							vote_count ?
+								<Text style={{ textAlign: 'center', color: "#ffffff" , width: 150, marginTop: 20, fontWeight: 'bold'}}>{vote_count} votes</Text>
+							:
+								<Text style={{ textAlign: 'center', color: "#ffffff" , width: 150, marginTop: 20, fontWeight: 'bold'}}>0 vote</Text>
+						}
 					</View>
 				</View>
 				</TouchableOpacity>
@@ -93,7 +113,7 @@ const Search = () => {
 		);
 	};
 
-	const renderItem = ({ item }) => <Item title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name}/>;
+	const renderItem = ({ item }) => <Item title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count}/>;
 
 return (
 	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", justifyContent: "start" }}>
