@@ -54,7 +54,13 @@ const Search = () => {
       return "green";
   }
 
-  const Item = ({ title, poster_path, vote_average, name, vote_count }) => {
+  const convertDate = (inputDate) => {
+	let date = new Date(inputDate);
+	return date.getFullYear();
+  }
+
+  const Item = ({ title, poster_path, vote_average, name, vote_count, first_air_date }) => {
+	  console.log(first_air_date);
 		return (
 			<View>
 				<TouchableOpacity activeOpacity={0.5}>
@@ -63,7 +69,7 @@ const Search = () => {
 					{ poster_path ? 
 						<Image style={styles.immBackground} source={{ uri: urlPosterImage+poster_path }}/>
 						:
-						<Image style={styles.immBackground} source = {require('../assets/movie_avatar.jpeg')}/>
+						<Image style={styles.immBackground} source = {require('../assets/movie_avatar.png')}/>
 					}
 					</View>
 					
@@ -71,12 +77,24 @@ const Search = () => {
 						{
 							title == undefined ?
 							<>
-							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold' }}>{name}</Text>
+							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold' }}>{name} 
+								{ first_air_date ?
+									' ('+convertDate(first_air_date)+')'
+									:
+									 null
+								}
+								</Text>
 							<Text style={{ fontSize: 14, textAlign: 'center', color: activeTintColor, width: 140, marginTop: 20, fontWeight: 'bold' }}>Série</Text>
 							</>
 							:
 							<>
-							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold'}}>{title}</Text>
+							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold'}}>{title} 
+								{ first_air_date ?
+									' ('+convertDate(first_air_date)+')'
+									:
+									null
+								}
+							</Text>
 							<Text style={{ fontSize: 14, textAlign: 'center', color: activeTintColor, width: 140, marginTop: 20, fontWeight: 'bold' }}>Film</Text>
 							</>
 						}
@@ -113,7 +131,7 @@ const Search = () => {
 		);
 	};
 
-	const renderItem = ({ item }) => <Item title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count}/>;
+	const renderItem = ({ item }) => <Item title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
 	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", justifyContent: "start" }}>
