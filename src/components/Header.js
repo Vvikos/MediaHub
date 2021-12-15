@@ -4,7 +4,7 @@ import {backgroundColor, activeTintColor} from "../helpers/colors";
 
 const styles = StyleSheet.create({
 	header: {
-    marginTop: 180,
+    marginTop: 140,
     backgroundColor: backgroundColor,
 		width: '100%',
 		display: 'flex',
@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
     logo: {
-      height: 100,
-      width: 250
+      height: 110,
+      width: 280
     }
 });
 

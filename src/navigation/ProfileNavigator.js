@@ -86,7 +86,7 @@ function ProfilesScreen({ navigation, route }) {
   return (
 	<>
 		<Header />
-		<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+		<View style={{ flexDirection: 'row', marginTop: -170, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 			{generateProfiles()}
 		</View>
 	</>
