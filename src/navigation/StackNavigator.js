@@ -33,18 +33,10 @@ const screenOptionStyle = {
   headerBackTitle: Back,
 };
 
-const Logo = () => {
-  return (
-    <View style={styles.headerBar}>
-      <Image source = {require('../assets/mh_logo.png')}  style={{ margin: 10, height: 30, width: 120}} alt={"test"}/>
-    </View>
-  );
-}
-
 const MoviesStackNavigator = () => {
   return (
     <MoviesStack.Navigator screenOptions={screenOptionStyle}>
-      <MoviesStack.Screen name="Movies" component={MoviesScreen} options={{title: <Logo />}}/>
+      <MoviesStack.Screen name="Movies" component={MoviesScreen} />
       <MoviesStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.movie.title })}/>
     </MoviesStack.Navigator>
   );
@@ -53,7 +45,7 @@ const MoviesStackNavigator = () => {
 const SeriesStackNavigator = () => {
   return (
     <SeriesStack.Navigator screenOptions={screenOptionStyle}>
-      <SeriesStack.Screen name="Series" component={SeriesScreen} options={{title: <Logo />}}/>
+      <SeriesStack.Screen name="Series" component={SeriesScreen} />
       <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.serie.title })}/>
     </SeriesStack.Navigator>
   );
@@ -62,7 +54,7 @@ const SeriesStackNavigator = () => {
 const SearchStackNavigator = () => {
   return (
     <SearchStack.Navigator screenOptions={screenOptionStyle}>
-      <SearchStack.Screen name="Search" component={SearchScreen} options={{title: <Logo />}}/>
+      <SearchStack.Screen name="Search" component={SearchScreen} />
     </SearchStack.Navigator>
   );
 }
@@ -70,7 +62,7 @@ const SearchStackNavigator = () => {
 const ProfileStackNavigator = () => {
   return (
     <ProfileStack.Navigator screenOptions={screenOptionStyle}>
-      <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{title: <Logo />}}/>
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
     </ProfileStack.Navigator>
   );
 }

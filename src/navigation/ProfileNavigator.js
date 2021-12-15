@@ -7,7 +7,6 @@ const Stack = createStackNavigator();
 
 import BottomTabNavigator from "./TabNavigator";
 import {backgroundColor, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
-import Loading from "../components/Loading";
 
 //import * as SQLite from 'expo-sqlite'
 //const db = SQLite.openDatabase('db.profiles') // returns Database object
@@ -54,10 +53,7 @@ function ProfileCard({ name, img, navigation }) {
 function AddProfileCard({ navigation }) {
 	return (
 		  <TouchableOpacity activeOpacity={0.5} onPress={function() { navigation.navigate('AddProfile')}}>    
-				<Image
-					style={styles.addProfileCard}
-					source={require('../assets/addprofile.svg')}
-				/>
+			<Ionicons name="add-outline" style={styles.addProfileCard} />
 		  </TouchableOpacity>
 	);
   }
@@ -127,20 +123,23 @@ const ProfileNavigator = () => {
 
 const styles = StyleSheet.create({
 	profileCard: {
-		height: '10vw',
-		width: '10vw'
+		height: 75,
+		width: 75
 	},
 	addProfileCard: {
-		height: '4vw',
-		width: '4vw',
-		marginLeft: '3vw'
+		fontSize: 50,
+		color: activeTintColor,
+		marginLeft: 20,
+		borderColor: activeTintColor,
+		borderWidth: 1,
+		borderRadius: 2
 	},
 	input: {
 		color: backgroundColor,
 		borderColor: activeTintColor,
 		backgroundColor: '#ffffff',
-		marginBottom: '2vh',
-		padding: '1vh'
+		marginBottom: 3,
+		padding: 3
 	},
 	text : { 
 		color: activeTintColor, 
@@ -149,13 +148,5 @@ const styles = StyleSheet.create({
 		fontSize: 20
 	}
 });
-
-/*
-<Stack.Navigator initialRouteName="Profiles" screenOptions={{headerShown: false}}>
-				<Stack.Screen name="Profiles" component={ProfilesScreen} initialParams={{profiles: profiles}} />
-				<Stack.Screen name="AddProfile" component={AddProfile} />
-				<Stack.Screen name="App" component={BottomTabNavigator} />
-			</Stack.Navigator>
-*/
 
 export default ProfileNavigator;

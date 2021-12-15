@@ -29,10 +29,6 @@ const styles = StyleSheet.create({
       marginLeft: '10%',
       marginTop: -30,
     },
-    imgLoading: {
-      height: 250,
-      width: 250,
-    },
     headerTitle: {
       fontSize: 18, 
       color: "#ffffff", 

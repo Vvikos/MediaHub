@@ -8,6 +8,7 @@ import { backgroundColor, activeTintColor } from "../helpers/colors";
 import { urlPosterImage } from "../helpers/url";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Ionicons } from "@expo/vector-icons";
+import Loading from '../components/Loading';
 
 const Search = () => {
 	const [loading, setLoading] = useState(true);
@@ -31,13 +32,6 @@ const Search = () => {
 	}, [searchValue]);
 
 	const styles = StyleSheet.create({
-    imgLoading: {
-      height: 250,
-      width: 250,
-			display: 'flex',
-			alignItems: 'center',
-			justifyContent: 'center'
-    },
 	immBackground: {
 		height: 255,
 		width: 170,
@@ -161,7 +155,7 @@ return (
 				searchValue=='' ?
 				<Ionicons name="search-outline" size={80} color={activeTintColor} />
 				:
-				<Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
+				<Loading />
 
 			}
   </View>
