@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Search = () => {
 	const [loading, setLoading] = useState(true);
-	const [searchValue, setSearchValue] = useState([]);
+	const [searchValue, setSearchValue] = useState("");
 	const [data, setData] = useState([]);
 
 	const searchFunction = (text) => {
@@ -60,7 +60,6 @@ const Search = () => {
   }
 
   const Item = ({ title, poster_path, vote_average, name, vote_count, first_air_date }) => {
-	  console.log(first_air_date);
 		return (
 			<View>
 				<TouchableOpacity activeOpacity={0.5}>
@@ -134,7 +133,7 @@ const Search = () => {
 	const renderItem = ({ item }) => <Item title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
-	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", justifyContent: "start" }}>
+	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center"}}>
 		<SearchBar
 			containerStyle={{ backgroundColor: backgroundColor, border: 'none', width: '80%'}}
 			placeholder="Rechercher..."
@@ -143,7 +142,7 @@ return (
 			onChangeText={(text) => searchFunction(text)}
 			autoCorrect={false}
 		/>
-			{ 
+		{ 
 			!loading ?
 				data.length > 0 ? 
 				<FlatList
@@ -153,7 +152,7 @@ return (
 					keyExtractor={(item) => item.id}
 				/>
 				: 
-				<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", justifyContent: "start" }}>
+				<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center" }}>
 					<Ionicons name="search-outline" size={80} color={activeTintColor} />
 					<Text style={{ color: activeTintColor, fontSize: 40 }}>Aucun résultat trouvé</Text>
 				</View>
