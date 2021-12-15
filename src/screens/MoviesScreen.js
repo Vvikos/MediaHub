@@ -8,13 +8,7 @@ import {backgroundColor} from "../helpers/colors";
 import { Image } from 'react-native';
 import {connect} from 'react-redux';
 import * as actions from '../store/actions';
-
-const styles = StyleSheet.create({
-    imgLoading: {
-      height: 250,
-      width: 250,
-    },
-  });
+import Loading from '../components/Loading';
 
 const Movies = (props)=> {
 	const { navigation } = props;
@@ -39,7 +33,7 @@ const Movies = (props)=> {
 					<MovieList navigation={navigation} movies={props.movies}/>
 				: null
 			: 
-					<Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
+				<Loading />
 			}
 		</ScrollView>
 		);

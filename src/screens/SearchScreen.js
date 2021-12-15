@@ -38,13 +38,6 @@ const Search = (props)=> {
 	}, [searchValue]);
 
 	const styles = StyleSheet.create({
-    imgLoading: {
-      height: 250,
-      width: 250,
-			display: 'flex',
-			alignItems: 'center',
-			justifyContent: 'center'
-    },
 	immBackground: {
 		height: 255,
 		width: 170,
@@ -189,7 +182,7 @@ return (
 				searchValue=='' ?
 				<Ionicons name="search-outline" size={80} color={activeTintColor} />
 				:
-				<Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
+				<Loading />
 
 			}
   </View>

@@ -8,13 +8,7 @@ import { Image } from 'react-native';
 import SerieList from "../components/SerieList";
 import {connect} from 'react-redux';
 import * as actions from '../store/actions';
-
-const styles = StyleSheet.create({
-    imgLoading: {
-      height: 250,
-      width: 250,
-    },
-  });
+import Loading from '../components/Loading';
 
   const Series = (props)=> {
 	const { navigation } = props;
@@ -37,7 +31,7 @@ return (
 			<SerieList navigation={navigation} series={props.series}/>
 		: null
 	: 
-			<Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
+		<Loading />
 	}
 	</ScrollView>
 	);

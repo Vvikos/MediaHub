@@ -1,6 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { View } from "react-native";
 import { MoviesStackNavigator, SeriesStackNavigator, SearchStackNavigator, ProfileStackNavigator } from "./StackNavigator";
 import {backgroundColor, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
 
@@ -22,7 +23,10 @@ const BottomTabNavigator = () => {
             tabBarStyle: [
             {
                 display: "flex",
-                backgroundColor: backgroundColor
+                backgroundColor: backgroundColor,
+                paddingBottom: 8,
+                marginTop: 8,
+                height: 60
             },
             null
             ],
