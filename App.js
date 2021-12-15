@@ -10,8 +10,6 @@ import { View, Text } from "react-native";
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { offline } from '@redux-offline/redux-offline';
-import offlineConfig from '@redux-offline/redux-offline/lib/defaults';
 import apiReducer from './src/store/reducer';
 
 import {backgroundColor, activeTintColor, activeTintColorFocsued} from "./src/helpers/colors";
@@ -24,8 +22,7 @@ const composeEnhanced = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose /
 const store = createStore(
 	reducer,
 	composeEnhanced(
-	  applyMiddleware(thunk),
-	  offline(offlineConfig)
+	  applyMiddleware(thunk)
 	)
   );
 
