@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
       padding: 22,
       position: 'absolute',
       width: "100%",
-      bottom:0,
+      //bottom:0,
       justifyContent: 'flex-end',
       alignItems: 'center',
       borderRadius: 4,
@@ -165,7 +165,7 @@ const ActorCard = (props) => {
                   <Text style={styles.biography}>{peopleDetail.biography}</Text>
                 : null }
                           
-                <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+                <TouchableOpacity activeOpacity={0.5} style={styles.closeButton} onPress={toggleModal}>
                   <Text>FERMER</Text>
                 </TouchableOpacity>
               </ScrollView>

@@ -2,14 +2,16 @@ import React, { useState, useEffect} from "react";
 import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { requestFindMulti } from "../api/api";
-import MovieList from "../components/MovieList";
+import { requestFindMulti, requestMovieDetailScreen, requestSerieDetailScreen } from "../api/api";
 import { backgroundColor, activeTintColor } from "../helpers/colors";
 import { urlPosterImage } from "../helpers/url";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Ionicons } from "@expo/vector-icons";
+import {connect} from 'react-redux';
+import * as actions from '../store/actions';
 
-const Search = () => {
+const Search = (props)=> {
+	const { navigation } = props;
 	const [loading, setLoading] = useState(true);
 	const [searchValue, setSearchValue] = useState("");
 	const [data, setData] = useState([]);
@@ -20,6 +22,11 @@ const Search = () => {
 			setLoading(true);
 		}
   };
+
+  	useEffect(() => {
+		//props.getFilms();
+		//props.getSeries();
+	}, []);
 
 	useEffect(() => {
 		if(searchValue!=''){
@@ -54,15 +61,36 @@ const Search = () => {
       return "green";
   }
 
+
+  const redirectToDetailPage = (id, isSerie) => {
+	if(isSerie){
+		requestSerieDetailScreen( id, (data) => {
+			let serie = {
+				details: data[0],
+				name: data[0].name
+			};
+			props.navigation.navigate("Serie", { serie: serie });
+		});
+	} else {
+		requestMovieDetailScreen( id, (data) => {
+			let movie = {
+				details: data[0],
+				title: data[0].title
+			};
+			props.navigation.navigate("Movie", { movie: movie });
+		});
+	}
+  }
+
   const convertDate = (inputDate) => {
 	let date = new Date(inputDate);
 	return date.getFullYear();
   }
 
-  const Item = ({ title, poster_path, vote_average, name, vote_count, first_air_date }) => {
+  const Item = ({ id, title, poster_path, vote_average, name, vote_count, first_air_date }) => {
 		return (
 			<View>
-				<TouchableOpacity activeOpacity={0.5}>
+			   <TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, !title)}>
 				<View style={{flex:2,flexDirection:"row", justifyContent:'space-between', marginTop: 50 }}>
 					<View style={{ flex:1 }}>
 					{ poster_path ? 
@@ -130,7 +158,7 @@ const Search = () => {
 		);
 	};
 
-	const renderItem = ({ item }) => <Item title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
+	const renderItem = ({ item }) => <Item id={item.id} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
 	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center"}}>
@@ -168,4 +196,22 @@ return (
 );
 };
 
-export default Search;
+
+//This means that one or more of the redux states in the store are available as props
+const mapStateToProps = (state) => {
+    return {
+		movies: state.api.movies,
+		series: state.api.series,
+    }
+  }
+  
+  //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
+  const mapDispatchToProps = (dispatch) => {
+    return {
+		getFilms: () => dispatch(actions.fetchFilms()),
+		getSeries: () => dispatch(actions.fetchSeries()),
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

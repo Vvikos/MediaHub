@@ -51,11 +51,15 @@ export const getPeopleDetailUrl = (id) =>   `${ROOT_URL}/person/${id}?append_to_
 export const getMovieDetailUrl = (id) => `${ROOT_URL}/movie/${id}?append_to_response=credits&${queryString(defaultQuery)}`;
 
 export const getPopularSeriesUrl = (page) =>    `${ROOT_URL}/tv/popular?${queryString({ ...defaultQuery, ...page })}`;
+//export const getPopularSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "popularity.desc" }, ...page })}`;
+
 export const getTopRatedSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...page })}`;
 export const getOnTheAirSeriesUrl = (page) =>  `${ROOT_URL}/tv/on_the_air?${queryString({ ...defaultQuery, ...page })}`;
+
 // export const getUpcomingSeriesUrl = (page) =>   `${ROOT_URL}/tv/upcoming?${queryString({ ...defaultQuery, ...page })}`;
 
 export const getSerieDetailUrl = (id) => `${ROOT_URL}/tv/${id}?append_to_response=credits&${queryString(defaultQuery)}`;
 
+export const getSerieSeasonDetailUrl = (id, season_number) => `${ROOT_URL}/tv/${id}/season/${season_number}?${queryString(defaultQuery)}`;
 
-export const getFindMultiUrl = (page, query) =>   `${ROOT_URL}/search/multi?${queryString({...defaultQuery, ...page})}&query=${query}`;
+export const getFindMultiUrl = (page, query) =>   `${ROOT_URL}/search/multi?${queryString({...defaultQuery, ...{ sort_by: "results.vote_count.desc" }, ...page})}&query=${query}`;

@@ -10,6 +10,7 @@ import {
     getOnTheAirSeriesUrl,
     getTopRatedSeriesUrl,
     getFindMultiUrl,
+    getSerieSeasonDetailUrl,
     getSerieDetailUrl,
   } from "../api/url";
 
@@ -130,14 +131,29 @@ export const fetchSeries = () => {
                         ])
                             .then((details) =>{
                                 serie.details = details[0];
-                                dispatch(apiFetchSerieetailsSuccess);
-                            })
-                            .catch(() => {
+                                dispatch(apiFetchSerieDetailsSuccess);
+
+                                if(serie.details.seasons.length > 0){
+                                    (serie.details.seasons).forEach(function(season, index){
+                                        Promise.all([
+                                            request(getSerieSeasonDetailUrl(serie.id, index+1)),
+                                        ]). 
+                                        then((season_detail) => {
+                                            serie.details.seasons[index].details = season_detail[0];
+                                        })
+                                        .catch(() => {
+                                            dispatch(apiFail);
+                                        });
+                                    });
+                                }
+                        
+                            }).catch(() => {
                                 dispatch(apiFail);
                             });
                     });
                 });
 
+                console.log(series);
                 dispatch(apiFetchedSeries(series))
                 dispatch(apiSuccess);
 

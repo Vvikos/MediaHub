@@ -4,12 +4,6 @@ import SerieRow from "./SerieRow";
 import types from "../helpers/types";
 
 const SerieList = (props) => {
-	useEffect(() => {
-		Object.entries(props.series).map(([index, movieList]) => {
-			console.log(index);
-		})
-	}, []);
-
 
 	return (
 		Object.entries(props.series).map(([index, serieList]) => {

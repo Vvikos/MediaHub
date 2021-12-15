@@ -69,6 +69,7 @@ const MovieScreen = (props)=> {
       return "green";
   }
 
+
   return (
 
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
