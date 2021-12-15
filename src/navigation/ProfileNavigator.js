@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Platform, StyleSheet, Text, Button, TextInput, View, Image, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import { CommonActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
@@ -42,8 +43,18 @@ function AddProfile({ navigation }) {
 }
 
 function ProfileCard({ name, img, navigation }) {
+	const resetNavigationStack = () => {
+		navigation.dispatch(
+			CommonActions.reset({
+			  index: 1,
+			  routes: [
+				{ name: 'App' },
+			  ],
+			})
+		  );
+	}
   return (
-		<TouchableOpacity activeOpacity={0.5} onPress={function() { navigation.navigate('App')}}>    
+		<TouchableOpacity activeOpacity={0.5} onPress={function() {resetNavigationStack()}}>    
 			<Image
 				style={styles.profileCard}
 				source={require('../assets/no_profil.png')}
@@ -87,31 +98,30 @@ const ProfileNavigator = () => {
 	const [profiles, setProfiles] = useState(['Dieu', 'Janos', 'Baptiste']);
 
 	const fetchData = () => {
-	
-		/*db.transaction(tx => {
-		// sending 4 arguments in executeSql
-		tx.executeSql('SELECT * FROM profiles', null, // passing sql query and parameters:null
-			// success callback which sends two things Transaction object and ResultSet Object
-			(txObj, { rows: { _array } }) => function() {console.log('SQLite ', _array); setProfiles(_array)},
-			// failure callback which sends two things Transaction object and Error
-			(txObj, error) => console.log('SQLite Error ', error)
-			) // end executeSQL
-		}) // end transaction*/
+		db.transaction(tx => {
+			// sending 4 arguments in executeSql
+			tx.executeSql('SELECT * FROM profiles', null, // passing sql query and parameters:null
+				// success callback which sends two things Transaction object and ResultSet Object
+				(txObj, { rows: { _array } }) => function() {console.log('SQLite ', _array); setProfiles(_array)},
+				// failure callback which sends two things Transaction object and Error
+				(txObj, error) => console.log('SQLite Error ', error)
+				) // end executeSQL
+		}); // end transaction
   	}
 
 	useEffect( () => {
 		// Check if the profiles table exists if not create it
-		/*db.transaction(tx => {
-		tx.executeSql(
-			'CREATE TABLE IF NOT EXISTS profiles(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, UNIQUE(id, text))'
-		)
+		db.transaction(tx => {
+			tx.executeSql(
+				'CREATE TABLE IF NOT EXISTS profiles (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'
+			)
 		});
-			db.transaction(tx => {
-		tx.executeSql(
-			'INSERT OR IGNORE INTO profiles(id, name) VALUES(0, Zeus)'
-		)
+		db.transaction(tx => {
+			tx.executeSql(
+				'INSERT OR IGNORE INTO profiles (id, name) VALUES(0, Zeus)'
+			)
 		});
-		fetchData(); // ignore it for now*/
+		fetchData();
 	}, []);
 
 	useEffect( () => {
