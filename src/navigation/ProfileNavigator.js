@@ -2,14 +2,17 @@ import React, { useState, useEffect} from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Platform, StyleSheet, Text, Button, TextInput, View, Image, FlatList } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 import BottomTabNavigator from "./TabNavigator";
 import {backgroundColor, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
 
-//import * as SQLite from 'expo-sqlite'
-//const db = SQLite.openDatabase('db.profiles') // returns Database object
+import Header from '../components/Header';
+
+import * as SQLite from 'expo-sqlite'
+const db = SQLite.openDatabase('db.profiles') // returns Database object
 
 
 function AddProfile({ navigation }) {
@@ -70,9 +73,12 @@ function ProfilesScreen({ navigation, route }) {
 	};
 
   return (
-    <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-		{generateProfiles()}
-    </View>
+	<>
+		<Header />
+		<View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+			{generateProfiles()}
+		</View>
+	</>
   );
 }
 

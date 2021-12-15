@@ -4,19 +4,16 @@ import {backgroundColor, activeTintColor} from "../helpers/colors";
 
 const styles = StyleSheet.create({
 	header: {
-    marginTop: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: activeTintColor,
+    marginTop: 180,
     backgroundColor: backgroundColor,
-		height: 80,
 		width: '100%',
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'flex-end'
 	},
     logo: {
-      height: 75,
-      width: 200
+      height: 100,
+      width: 250
     }
 });
 
