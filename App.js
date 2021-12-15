@@ -13,7 +13,8 @@ import thunk from 'redux-thunk';
 import apiReducer from './src/store/reducer';
 
 import {backgroundColor, activeTintColor, activeTintColorFocsued} from "./src/helpers/colors";
-import BottomTabNavigator from "./src/navigation/TabNavigator";
+import ProfileNavigator from "./src/navigation/ProfileNavigator";
+//import BottomTabNavigator from "./src/navigation/TabNavigator";
 
 
 const reducer = combineReducers({api: apiReducer}); // Using Combine Reducers here although only one reducer is present.
@@ -33,7 +34,7 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<NavigationContainer theme={navTheme}>
-				<BottomTabNavigator />
+				<ProfileNavigator />
 			</NavigationContainer>
 		</Provider>
 	);
