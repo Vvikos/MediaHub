@@ -9,6 +9,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Ionicons } from "@expo/vector-icons";
 import {connect} from 'react-redux';
 import * as actions from '../store/actions';
+import Loading from '../components/Loading';
 
 const Search = (props)=> {
 	const { navigation } = props;

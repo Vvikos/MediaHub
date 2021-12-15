@@ -46,7 +46,7 @@ const SeriesStackNavigator = () => {
   return (
     <SeriesStack.Navigator screenOptions={screenOptionStyle}>
       <SeriesStack.Screen name="Series" component={SeriesScreen} />
-      <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.serie.title })}/>
+      <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.serie.name })}/>
     </SeriesStack.Navigator>
   );
 }
@@ -54,7 +54,7 @@ const SeriesStackNavigator = () => {
 const SearchStackNavigator = () => {
   return (
     <SearchStack.Navigator screenOptions={screenOptionStyle}>
-      <SearchStack.Screen name="Search" component={SearchScreen} options={{title: <Logo />}}/>
+      <SearchStack.Screen name="Search" component={SearchScreen} />
       <SearchStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.movie.title })}/>
       <SearchStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.serie.name })}/>
     </SearchStack.Navigator>
