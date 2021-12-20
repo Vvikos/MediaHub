@@ -24,7 +24,6 @@ export const request = async (url) => {
 };
 
 const handleErrors = (response) => {
-    if (!response.ok) throw Error(response.statusText);
     return response;
 };
 
@@ -153,7 +152,6 @@ export const fetchSeries = () => {
                     });
                 });
 
-                console.log(series);
                 dispatch(apiFetchedSeries(series))
                 dispatch(apiSuccess);
 

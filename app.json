@@ -21,9 +21,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/mh_logo_tb.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.mediahub"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
