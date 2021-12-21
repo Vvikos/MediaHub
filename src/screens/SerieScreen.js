@@ -114,8 +114,8 @@ const SerieScreen = (props)=> {
         <Text style={styles.headerTitle}>Description : </Text><Text style={styles.text}>{serieDetail.overview}</Text>
         
         <Text style={styles.headerTitle}>Saisons et épisodes : </Text>
-        <List.Section style ={{ color: "red", backgroundColor: "#9E9E9E", width: "75%", alignSelf: "center"}}>
-          
+
+        <List.Section style ={{ color: "red",  width: "90%", alignSelf: "center"}}>
         {
           serieDetail.seasons.map((saison) => (
             <List.Accordion
@@ -123,16 +123,17 @@ const SerieScreen = (props)=> {
               style={{ borderRadius: 15, backgroundColor: activeTintColor, marginTop: 15 }}
               title={saison.name}
               left={props => <List.Icon {...props} icon="video-image" />}>
-              <List.Item title="First item" />
-              <List.Item title="Second item" />
+              {
+                saison.details.episodes.map((episode) => (
+                  <List.Item style={{ backgroundColor: "#9E9EA9", marginTop: 10, borderRadius: 15 }} title={<Text>Episode {episode.episode_number} - {episode.name}</Text>} />
+                ))
+              }
             </List.Accordion>
             ))
         }
-
         </List.Section>
         
         <Text style={styles.headerTitle}>Acteurs : </Text>
-
         {
           serieDetail.credits.cast.length > 0 ?
           <FlatList
