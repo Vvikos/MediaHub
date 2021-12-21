@@ -2,11 +2,11 @@ import React, { useState, useEffect} from "react";
 import { FlatList, View, StyleSheet, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { urlBackgroundImage, urlPosterImage } from "../helpers/url";
-import { backgroundColor } from "../helpers/colors";
+import { backgroundColor, activeTintColor } from "../helpers/colors";
 import { Image } from 'react-native';
 import ActorCard from "../components/ActorCard";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-
+import { List } from 'react-native-paper';
 
 const styles = StyleSheet.create({
     center: {
@@ -58,7 +58,7 @@ const SerieScreen = (props)=> {
   const { route, navigation } = props;
   const { serie } = route.params;
   const serieDetail = serie.details;
-
+  
   const colorState = (moyenne) => {
     if(moyenne < 50)
       return "red";
@@ -69,7 +69,6 @@ const SerieScreen = (props)=> {
   }
 
   return (
-
     <ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
       <View style={styles.center}>
         <Image style={styles.imgBackground} source={{ uri : urlBackgroundImage+serieDetail.backdrop_path }} />
@@ -113,7 +112,25 @@ const SerieScreen = (props)=> {
         </View>
 
         <Text style={styles.headerTitle}>Description : </Text><Text style={styles.text}>{serieDetail.overview}</Text>
+        
+        <Text style={styles.headerTitle}>Saisons et épisodes : </Text>
+        <List.Section style ={{ color: "red", backgroundColor: "#9E9E9E", width: "75%", alignSelf: "center"}}>
+          
+        {
+          serieDetail.seasons.map((saison) => (
+            <List.Accordion
+              theme={{ colors: { background: backgroundColor, primary: "#2c75ff" } }}
+              style={{ borderRadius: 15, backgroundColor: activeTintColor, marginTop: 15 }}
+              title={saison.name}
+              left={props => <List.Icon {...props} icon="video-image" />}>
+              <List.Item title="First item" />
+              <List.Item title="Second item" />
+            </List.Accordion>
+            ))
+        }
 
+        </List.Section>
+        
         <Text style={styles.headerTitle}>Acteurs : </Text>
 
         {
