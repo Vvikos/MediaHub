@@ -27,7 +27,7 @@ function AddProfile({ navigation, onInsert, onCancel }) {
 				placeholder="Nouveau profile..."
 				onChangeText={setValue}
 			/>
-			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+			<View style={{ width:'65%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4}}>
 				<Button title="Annuler" color={backgroundColor} onPress={onCancel}  />
 				<Button title="Ajouter" color={activeTintColor} onPress={onAddProfile} disabled={!(value!='')} />
 			</View>
@@ -104,7 +104,7 @@ const ProfilesScreen = ({ navigation })=> {
   return (
 	<>
 		<Header />
-		<View style={{ flexDirection: 'row', marginTop: -170, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+		<View style={{ flexDirection: 'row', marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 			{!loading ?
                 addScreen ?
                     <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen}/>
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
 		borderColor: activeTintColor,
 		backgroundColor: '#ffffff',
 		marginBottom: 3,
-		padding: 3
+		padding: 3,
+		width: '65%'
 	},
 	text : { 
 		color: activeTintColor, 

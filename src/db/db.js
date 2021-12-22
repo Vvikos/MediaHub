@@ -32,7 +32,7 @@ export const initProfiles = () => {
 export const requestProfiles = (callback) => {
     db.transaction(tx => {
         // sending 4 arguments in executeSql
-        tx.executeSql('SELECT * FROM profiles', null, // passing sql query and parameters:null
+        tx.executeSql('SELECT * FROM profiles LIMIT 3', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
             (txObj, { rows: { _array } }) => callback(_array.map(field => field.name)),
             // failure callback which sends two things Transaction object and Error
