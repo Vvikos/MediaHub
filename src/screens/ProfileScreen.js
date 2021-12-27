@@ -1,19 +1,9 @@
 import React, { useState, useEffect} from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, useColorScheme } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { CommonActions } from '@react-navigation/native';
-import {
-	Text,
-	ListItem,
-	Avatar,
-	Icon,
-	Badge,
-	ListItemProps,
-	Button,
-	Switch,
-	colors
-  } from 'react-native-elements';
+import { Text, ListItem, Switch } from 'react-native-elements';
 import {backgroundColor, inactiveTintColor, activeTintColor, alternativeTintColor, backgroundColorDarker} from "../helpers/colors";
 import * as dbservice from '../db/db';
 

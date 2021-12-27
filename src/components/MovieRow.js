@@ -1,11 +1,12 @@
 import React, { useState, useEffect} from "react";
 import { FlatList, Text, View } from "react-native";
+import { backgroundColorDarker } from "../helpers/colors";
 import MovieCard from "./MovieCard";
 
 const MovieRow = (props) => {
 	return (
-		<>
-			<Text style={{marginLeft: 10, fontSize: 25, fontWeight: "bold", color: "#ffffff", marginTop: 30}}>{props.title}</Text>
+		<View style={{backgroundColor: backgroundColorDarker, marginTop: 30, paddingLeft: 2, paddingRight: 2 }}>
+			<Text style={{marginLeft: 15, marginBottom: 25, marginTop: 5, fontSize: 25, fontStyle:'italic', color: "#ffffff"}}>{props.title}</Text>
 			<FlatList
 				keyExtractor={(item) => item.id.toString()}
 				keyboardShouldPersistTaps={"handled"}
@@ -13,10 +14,10 @@ const MovieRow = (props) => {
 				renderItem={({ item }) => <MovieCard navigation={props.navigation} movie={item} />}
 				horizontal
 				showsHorizontalScrollIndicator={false}
-				ItemSeparatorComponent={() => <View style={{ margin: 15 }} />}
-				style={{ marginLeft: 10, marginTop: 20, marginBottom: 15}}
+				ItemSeparatorComponent={() => <View style={{ margin: 4 }} />}
+				style={{ backgroundColor: backgroundColorDarker}}
 			/>	
-		</>
+		</View>
 	)
 };
 
