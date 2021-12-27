@@ -44,7 +44,11 @@ function AddProfileCard({ navigation, onAddProfile }) {
 }
 
 function ProfileCard({ name, img, navigation }) {
-	const resetNavigationStack = () => {
+	const onClickProfile = () => {
+		// select profile in bdd
+		dbservice.selectProfile(name);
+
+		// reset navigation stack
 		navigation.dispatch(
 			CommonActions.reset({
 			  index: 1,
@@ -52,17 +56,18 @@ function ProfileCard({ name, img, navigation }) {
 				{ name: 'App' },
 			  ],
 			})
-		  );
+		);
 	}
-  return (
-		<TouchableOpacity activeOpacity={0.5} onPress={function() {resetNavigationStack()}}>    
+
+	return (
+		<TouchableOpacity activeOpacity={0.5} onPress={onClickProfile} >    
 			<Image
 				style={styles.profileCard}
 				source={require('../assets/no_profil.png')}
 			/>
 			<Text style={styles.text}>{name}</Text>
 		</TouchableOpacity>
-  );
+	);
 }
 
 const ProfilesScreen = ({ navigation })=> {
@@ -75,6 +80,11 @@ const ProfilesScreen = ({ navigation })=> {
 		dbservice.initProfiles();
         dbservice.requestProfiles(setProfiles);
 	}, []);
+
+	useEffect( () => {
+		
+		console.log(profiles);
+	}, [profiles]);
 
     useEffect( () => {
         if(!addScreen){
@@ -97,7 +107,6 @@ const ProfilesScreen = ({ navigation })=> {
 			rows.push(<ProfileCard key={'Profile'+i} name={profiles[i]} img='' navigation={navigation}/>);
 		}
 		rows.push(<AddProfileCard key={'addProfile'} navigation={navigation} onAddProfile={activateAddScreen}/>);
-
 		return rows;
 	};
 

@@ -7,7 +7,6 @@ import BottomTabNavigator from "./TabNavigator";
 import {backgroundColor, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
 
 import ProfilesScreen from '../screens/ProfilesScreen';
-import * as dbservice from '../db/db';
 
 const ProfileNavigator = () => {
 

@@ -157,7 +157,7 @@ const Search = (props)=> {
 return (
 	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center"}}>
 		<SearchBar
-			containerStyle={{ backgroundColor: backgroundColor, border: 'none', width: '80%'}}
+			containerStyle={{ backgroundColor: backgroundColor, borderBottomWidth: 0, width: '98%'}}
 			placeholder="Rechercher..."
 			round
 			value={searchValue}
