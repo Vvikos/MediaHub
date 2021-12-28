@@ -3,13 +3,14 @@ import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { requestFindMulti, requestMovieDetailScreen, requestSerieDetailScreen } from "../api/api";
-import { backgroundColor, activeTintColor } from "../helpers/colors";
+import { backgroundColor, backgroundColorDarker, activeTintColor } from "../helpers/colors";
 import { urlPosterImage } from "../helpers/url";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Ionicons } from "@expo/vector-icons";
 import {connect} from 'react-redux';
 import * as actions from '../store/actions';
 import Loading from '../components/Loading';
+import * as dbservice from '../db/db';
 
 const Search = (props)=> {
 	const { navigation } = props;
@@ -22,12 +23,7 @@ const Search = (props)=> {
 		if(text!=''){
 			setLoading(true);
 		}
-  };
-
-  	useEffect(() => {
-		//props.getFilms();
-		//props.getSeries();
-	}, []);
+  	};
 
 	useEffect(() => {
 		if(searchValue!=''){
@@ -42,7 +38,7 @@ const Search = (props)=> {
 	immBackground: {
 		height: 255,
 		width: 170,
-		borderRadius: 8
+		borderRadius: 2
 	},
   });
 
@@ -82,81 +78,74 @@ const Search = (props)=> {
   }
 
   const Item = ({ id, title, poster_path, vote_average, name, vote_count, first_air_date }) => {
-		return (
-			<View>
-			   <TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, !title)}>
-				<View style={{flex:2,flexDirection:"row", justifyContent:'space-between', marginTop: 50 }}>
-					<View style={{ flex:1 }}>
+	const [favori, setFavori] = useState(false);
+
+	const onClickStar = () => {
+		setFavori(!favori);
+		if(!favori)
+			dbservice.addFavoriForCurrentProfile(id, (title == undefined) ? 1 : 0);
+		else
+			dbservice.removeFavoriForCurrentProfile(id, (title == undefined) ? 1 : 0);
+	}
+
+	return (
+		<View style={{backgroundColor: backgroundColorDarker, marginTop: 10, padding: 2}}>
+			<View style={{flex:1,flexDirection:"row", justifyContent:'space-around', alignItems: 'center', marginTop: 3, marginBottom: 10 }} >
+				<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
+					{ favori ? 
+						<Ionicons name="star" size={32} color={activeTintColor} />
+					:
+						<Ionicons name="star-outline" size={32} color={activeTintColor} />	
+					}				
+				</TouchableOpacity>
+			</View>
+			<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, !title)}>
+				<View style={{flex:2,flexDirection:"row", justifyContent:'flex-start' }}>
 					{ poster_path ? 
 						<Image style={styles.immBackground} source={{ uri: urlPosterImage+poster_path }}/>
 						:
 						<Image style={styles.immBackground} source = {require('../assets/movie_avatar.png')}/>
 					}
-					</View>
 					
-					<View style={{ marginLeft: 25, flex:1 }}>
-						{
-							title == undefined ?
-							<>
-							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold' }}>{name} 
-								{ first_air_date ?
-									' ('+convertDate(first_air_date)+')'
-									:
-									 null
-								}
-								</Text>
-							<Text style={{ fontSize: 14, textAlign: 'center', color: activeTintColor, width: 140, marginTop: 20, fontWeight: 'bold' }}>Série</Text>
-							</>
+					<View style={{ flexDirection:"column", justifyContent:'flex-start', alignItems: 'center', marginLeft: 5, width: '50%' }}>
+					<Text style={{ fontSize: 18, textAlign: 'left', color: "#ffffff" , width: '100%', fontWeight: 'bold'}}>{((title == undefined) ? name : title)} 
+						{ first_air_date ?
+							' ('+convertDate(first_air_date)+')'
 							:
-							<>
-							<Text style={{ textAlign: 'center', color: "#ffffff" , width: 140, marginTop: 20, fontWeight: 'bold'}}>{title} 
-								{ first_air_date ?
-									' ('+convertDate(first_air_date)+')'
-									:
-									null
-								}
-							</Text>
-							<Text style={{ fontSize: 14, textAlign: 'center', color: activeTintColor, width: 140, marginTop: 20, fontWeight: 'bold' }}>Film</Text>
-							</>
+							null
 						}
-						<AnimatedCircularProgress style={{ marginTop: 15, marginLeft: 40, marginTop: 30}}
-							size={70}
-							width={4}
-							fill={ vote_average * 10 }
-							rotation={-360}
-							tintColor={ colorState(vote_average * 10)}
-							backgroundColor="#3d5875" >
-							{
-								(fill) => (
-									<Text style={{ fontSize: 12, color: "#ffffff" }}>
-									{
-										vote_average ?
-											vote_average + " / 10"
-										:
-											"?"
-									}
-									</Text>
-								)
-							}
-                 		</AnimatedCircularProgress>
+					</Text>
+					<Text style={{ fontSize: 12, textAlign: 'left', color: activeTintColor, width: '100%', fontStyle:'italic', marginBottom: 60}}>{((title == undefined) ? 'Serie' : 'Film')}</Text>
+					<AnimatedCircularProgress
+						size={120}
+						width={2}
+						fill={ vote_average * 10 }
+						rotation={-360}
+						tintColor={ colorState(vote_average * 10)}
+						backgroundColor="#3d5875" >
 						{
-							vote_count ?
-								<Text style={{ textAlign: 'center', color: "#ffffff" , width: 150, marginTop: 20, fontWeight: 'bold'}}>{vote_count} votes</Text>
-							:
-								<Text style={{ textAlign: 'center', color: "#ffffff" , width: 150, marginTop: 20, fontWeight: 'bold'}}>0 vote</Text>
+							(fill) => (
+								<View style={{ flexDirection:"column", justifyContent:'center', alignItems: 'center' }}>
+									<Text style={{ fontSize: 16, textAlign: 'center', color: "#ffffff", fontWeight: 'bold'}}>{(vote_count ? vote_count+' votes' : '0 vote')}</Text>
+									<Text style={{ fontSize: 14, textAlign: 'center', color: "#ffffff" }}>{vote_average ? vote_average + " / 10":"?"}</Text>
+								</View>
+							)
 						}
-					</View>
+					</AnimatedCircularProgress>
 				</View>
-				</TouchableOpacity>
 			</View>
-		);
-	};
+			</TouchableOpacity>
+		</View>
+	);
+};
 
 	const renderItem = ({ item }) => <Item id={item.id} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
 	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center"}}>
 		<SearchBar
+			inputContainerStyle={{backgroundColor: backgroundColorDarker}}
+			inputStyle={{backgroundColor: backgroundColorDarker, textDecorationLine: 'none'}}
 			containerStyle={{ backgroundColor: backgroundColor, borderBottomWidth: 0, width: '98%'}}
 			placeholder="Rechercher..."
 			round
@@ -168,20 +157,20 @@ return (
 			!loading ?
 				data.length > 0 ? 
 				<FlatList
-					style={{ backgroundColor: backgroundColor, border: 'none', width: '80%'}}
+					style={{ backgroundColor: backgroundColor, border: 'none', width: '98%'}}
 					data={data}
 					renderItem={renderItem}
 					keyExtractor={(item) => item.id}
 				/>
 				: 
-				<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center" }}>
-					<Ionicons name="search-outline" size={80} color={activeTintColor} />
-					<Text style={{ color: activeTintColor, fontSize: 40 }}>Aucun résultat trouvé</Text>
+				<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", marginTop: 30 }}>
+					<Ionicons name="search-outline" size={50} color={activeTintColor} />
+					<Text style={{ color: activeTintColor, fontSize: 30 }}>Aucun résultat trouvé</Text>
 				</View>
 		
 			: 
 				searchValue=='' ?
-				<Ionicons name="search-outline" size={80} color={activeTintColor} />
+				<Ionicons name="search-outline" size={50} color={activeTintColor} />
 				:
 				<Loading />
 

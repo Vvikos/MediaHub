@@ -24,9 +24,8 @@ const Back = " ";
 
 const screenOptionStyle = {
   headerStyle: {
-    backgroundColor: backgroundColor,
-    borderBottomColor: activeTintColor,
-    borderBottomWidth: 2,
+    backgroundColor: activeTintColor,
+    height: 27
   },
   headerTitleAlign: 'center',
   headerTintColor: activeTintColor,

@@ -16,17 +16,14 @@ const BottomTabNavigator = () => {
             tabBarInactiveTintColor: "#ffffff",
             tabBarActiveBackgroundColor: "#303030",
             tabBarInactiveBackgroundColor: "#303030",
-            tabBarItemStyle: {
-                borderTopWidth: 2,
-                borderColor: activeTintColor,
-            },
             tabBarStyle: [
             {
-                display: "flex",
+                borderTopWidth: 2,
+                borderTopColor: activeTintColor,
                 backgroundColor: backgroundColor,
                 paddingBottom: 8,
-                marginTop: 8,
-                height: 60
+                paddingTop: 8,
+                height: 70
             },
             null
             ],
@@ -38,11 +35,12 @@ const BottomTabNavigator = () => {
         name="MoviesTab"
         options={{
             tabBarLabel: "Movies",
+            tabBarLabelStyle: {fontSize: 15},
             tabBarIcon: (tabInfo) => {
                 return (
                 <Ionicons
                     name="film-outline"
-                    size={32}
+                    size={35}
                     color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
                 />
                 );
@@ -54,11 +52,12 @@ const BottomTabNavigator = () => {
               component={SeriesStackNavigator}
               options={{
                   tabBarLabel: "Series",
+                  tabBarLabelStyle: {fontSize: 15},
                   tabBarIcon: (tabInfo) => {
                       return (
                       <Ionicons
                           name="tv-outline"
-                          size={32}
+                          size={35}
                           color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
                       />
                       );
@@ -70,11 +69,12 @@ const BottomTabNavigator = () => {
               component={SearchStackNavigator}
               options={{
                   tabBarLabel: "Search",
+                  tabBarLabelStyle: {fontSize: 15},
                   tabBarIcon: (tabInfo) => {
                       return (
                       <Ionicons
                           name="search-outline"
-                          size={32}
+                          size={35}
                           color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
                       />
                       );
@@ -86,11 +86,12 @@ const BottomTabNavigator = () => {
               component={ProfileStackNavigator}
               options={{
                   tabBarLabel: "Profile",
+                  tabBarLabelStyle: {fontSize: 15},
                   tabBarIcon: (tabInfo) => {
                       return (
                       <Ionicons
                           name="person-outline"
-                          size={32}
+                          size={35}
                           color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
                       />
                       );
