@@ -38,7 +38,8 @@ function AddProfile({ navigation, onInsert, onCancel }) {
 function AddProfileCard({ navigation, onAddProfile }) {
 	return (
 		  <TouchableOpacity activeOpacity={0.5} onPress={onAddProfile} >    
-			<Ionicons name="add-outline" style={styles.addProfileCard} />
+			<Ionicons name="add-circle-sharp" size={85} style={styles.addProfileCard} />
+			<Text style={styles.text}></Text>
 		  </TouchableOpacity>
 	);
 }
@@ -129,8 +130,8 @@ const ProfilesScreen = ({ navigation })=> {
 
 const styles = StyleSheet.create({
 	profileCard: {
-		height: 75,
-		width: 75
+		height: 100,
+		width: 100
 	},
     profileCardBig: {
 		height: 175,
@@ -138,13 +139,9 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	addProfileCard: {
-		fontSize: 50,
 		textAlign: 'center',
 		paddingLeft: 3,
-		color: activeTintColor,
-		borderColor: activeTintColor,
-		borderWidth: 1,
-		borderRadius: 2
+		color: activeTintColor
 	},
     input: {
 		color: backgroundColor,

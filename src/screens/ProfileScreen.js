@@ -9,44 +9,23 @@ import * as dbservice from '../db/db';
 
 function ProfileScreen({ navigation }) {
 	const [profile, setProfile] = useState('');
-	const [darkMode, setDarkMode] = useState(false);
 	const [favMoviesExpanded, setFavMoviesExpanded] = useState(true);
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
 
 	useEffect( () => {
-        dbservice.setDarkmodePref(profile, darkMode);
-	}, [darkMode]);
-
-	useEffect( () => {
         dbservice.requestProfile(setProfile);
-		dbservice.requestDarkmode(setDarkMode);
 	}, []);
 
   return (
-    <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-		<View style={{ width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
+		<View style={{ width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
-			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-				<Image
-					style={styles.toolMini}
-					source={require('../assets/moon-half.png')}
-				/>
-				<Switch
-					value={darkMode}
-					onValueChange={(value) => setDarkMode(value)}
-					color={activeTintColor}
-				/>
-			</View>
 		</View>
-		<View style={{ width: '98%', marginTop: 40}}>
-			<Text style={styles.text} >Favoris</Text>
+		<View style={{ height: '90%', width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}>
+			<Text style={styles.headerTitle} >Favoris</Text>
 			<ListItem.Accordion
 			content={
-				<Ionicons
-						name="film-outline"
-						size={32}
-						color={activeTintColor}
-				/>
+				<Ionicons name="film-outline" size={32} color={activeTintColor} />
 			}
 			containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}
 			isExpanded={favMoviesExpanded}
@@ -97,6 +76,13 @@ const styles = StyleSheet.create({
 		height: 75,
 		width: 75
 	},
+	headerTitle: {
+		fontSize: 18, 
+		color: "#ffffff", 
+		textAlign: 'left', 
+		fontWeight: 'bold',
+		marginLeft: 10
+	},
     profileCardBig: {
 		height: 175,
 		width: 175,
@@ -128,7 +114,8 @@ const styles = StyleSheet.create({
 		color: activeTintColor, 
 		textAlign: 'center',
 		fontWeight: '600',
-		fontSize: 20
+		fontSize: 24,
+		marginTop: 10
 	}
 });
 

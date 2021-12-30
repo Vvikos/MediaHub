@@ -2,13 +2,13 @@ import React, { useState, useEffect} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { requestSerieScreen } from "../api/api";
-import {backgroundColor} from "../helpers/colors";
+import {backgroundColor, activeTintColor} from "../helpers/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import { Image } from 'react-native';
-import SerieList from "../components/SerieList";
 import {connect} from 'react-redux';
 import * as actions from '../store/actions';
 import Loading from '../components/Loading';
+import MediaList from "../components/MediaList";
 
   const Series = (props)=> {
 	const { navigation } = props;
@@ -25,15 +25,17 @@ import Loading from '../components/Loading';
 	}, [props.series]);
 
 return (
-	<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
-	{ !loading ?
-		props.series.popular ? 
-			<SerieList navigation={navigation} series={props.series}/>
-		: null
-	: 
-		<Loading />
-	}
-	</ScrollView>
+	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
+		<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
+		{ !loading ?
+			props.series.popular ? 
+				<MediaList navigation={navigation} medias={props.series} type='Serie' />
+			: null
+		: 
+			<Loading />
+		}
+		</ScrollView>
+	</View>
 	);
 };
 

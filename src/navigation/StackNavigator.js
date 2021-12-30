@@ -20,12 +20,12 @@ const SeriesStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const SearchStack = createStackNavigator();
 
-const Back = " ";
+const Back = " dede";
 
 const screenOptionStyle = {
   headerStyle: {
-    backgroundColor: activeTintColor,
-    height: 27
+    backgroundColor: backgroundColor,
+    height: 75
   },
   headerTitleAlign: 'center',
   headerTintColor: activeTintColor,
@@ -35,8 +35,8 @@ const screenOptionStyle = {
 const MoviesStackNavigator = () => {
   return (
     <MoviesStack.Navigator screenOptions={screenOptionStyle}>
-      <MoviesStack.Screen name="Movies" component={MoviesScreen} />
-      <MoviesStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.movie.title })}/>
+      <MoviesStack.Screen name="Movies" component={MoviesScreen} options={{headerShown: false}} />
+      <MoviesStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.media.title })} />
     </MoviesStack.Navigator>
   );
 }
@@ -44,8 +44,8 @@ const MoviesStackNavigator = () => {
 const SeriesStackNavigator = () => {
   return (
     <SeriesStack.Navigator screenOptions={screenOptionStyle}>
-      <SeriesStack.Screen name="Series" component={SeriesScreen} />
-      <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.serie.name })}/>
+      <SeriesStack.Screen name="Series" component={SeriesScreen} options={{headerShown: false}} />
+      <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.media.name })}/>
     </SeriesStack.Navigator>
   );
 }
@@ -53,9 +53,9 @@ const SeriesStackNavigator = () => {
 const SearchStackNavigator = () => {
   return (
     <SearchStack.Navigator screenOptions={screenOptionStyle}>
-      <SearchStack.Screen name="Search" component={SearchScreen} />
-      <SearchStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.movie.title })}/>
-      <SearchStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.serie.name })}/>
+      <SearchStack.Screen name="Search" component={SearchScreen} options={{headerShown: false}} />
+      <SearchStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.media.title })}/>
+      <SearchStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.media.name })}/>
     </SearchStack.Navigator>
   );
 }
@@ -63,7 +63,7 @@ const SearchStackNavigator = () => {
 const ProfileStackNavigator = () => {
   return (
     <ProfileStack.Navigator screenOptions={screenOptionStyle}>
-      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}} />
     </ProfileStack.Navigator>
   );
 }

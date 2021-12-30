@@ -52,25 +52,26 @@ const Search = (props)=> {
   }
 
 
-  const redirectToDetailPage = (id, isSerie) => {
-	if(isSerie){
-		requestSerieDetailScreen( id, (data) => {
-			let serie = {
-				details: data[0],
-				name: data[0].name
-			};
-			props.navigation.navigate("Serie", { serie: serie });
-		});
-	} else {
-		requestMovieDetailScreen( id, (data) => {
-			let movie = {
-				details: data[0],
-				title: data[0].title
-			};
-			props.navigation.navigate("Movie", { movie: movie });
-		});
-	}
-  }
+	const redirectToDetailPage = (id, type) => {
+		if(type=='Serie') {
+			requestSerieDetailScreen( id, (data) => {
+				let media = {
+					details: data[0],
+					title: data[0].name ? data[0].name : data[0].title
+				};
+				props.navigation.navigate(type, { media: media });
+			});
+		}
+		else {
+			requestMovieDetailScreen( id, (data) => {
+				let media = {
+					details: data[0],
+					name: data[0].name ? data[0].name : data[0].title
+				};
+				props.navigation.navigate(type, { media: media });
+			});
+		}
+	}	
 
   const convertDate = (inputDate) => {
 	let date = new Date(inputDate);
@@ -89,8 +90,8 @@ const Search = (props)=> {
 	}
 
 	return (
-		<View style={{backgroundColor: backgroundColorDarker, marginTop: 10, padding: 2}}>
-			<View style={{flex:1,flexDirection:"row", justifyContent:'space-around', alignItems: 'center', marginTop: 3, marginBottom: 10 }} >
+		<View style={{backgroundColor: backgroundColorDarker, marginTop: 25, padding: 2}}>
+			<View style={{flexDirection:"row", justifyContent:'space-around', alignItems: 'center', marginTop: 3, marginBottom: 10 }} >
 				<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
 					{ favori ? 
 						<Ionicons name="star" size={32} color={activeTintColor} />
@@ -99,7 +100,7 @@ const Search = (props)=> {
 					}				
 				</TouchableOpacity>
 			</View>
-			<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, !title)}>
+			<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, (title ? 'Movie' : 'Serie'))}>
 				<View style={{flex:2,flexDirection:"row", justifyContent:'flex-start' }}>
 					{ poster_path ? 
 						<Image style={styles.immBackground} source={{ uri: urlPosterImage+poster_path }}/>
@@ -108,7 +109,7 @@ const Search = (props)=> {
 					}
 					
 					<View style={{ flexDirection:"column", justifyContent:'flex-start', alignItems: 'center', marginLeft: 5, width: '50%' }}>
-					<Text style={{ fontSize: 18, textAlign: 'left', color: "#ffffff" , width: '100%', fontWeight: 'bold'}}>{((title == undefined) ? name : title)} 
+					<Text style={{ fontSize: 18, textAlign: 'left', color: "#ffffff" , width: '100%', fontWeight: 'bold'}}>{(title ? title : name)} 
 						{ first_air_date ?
 							' ('+convertDate(first_air_date)+')'
 							:
@@ -142,11 +143,11 @@ const Search = (props)=> {
 	const renderItem = ({ item }) => <Item id={item.id} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
-	<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center"}}>
+	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
 		<SearchBar
 			inputContainerStyle={{backgroundColor: backgroundColorDarker}}
 			inputStyle={{backgroundColor: backgroundColorDarker, textDecorationLine: 'none'}}
-			containerStyle={{ backgroundColor: backgroundColor, borderBottomWidth: 0, width: '98%'}}
+			containerStyle={{ backgroundColor: backgroundColor, borderBottomWidth: 0, borderTopWidth: 0, width: '98%'}}
 			placeholder="Rechercher..."
 			round
 			value={searchValue}
@@ -157,7 +158,7 @@ return (
 			!loading ?
 				data.length > 0 ? 
 				<FlatList
-					style={{ backgroundColor: backgroundColor, border: 'none', width: '98%'}}
+					style={{ backgroundColor: backgroundColor, border: 'none', maxHeight: '90%'}}
 					data={data}
 					renderItem={renderItem}
 					keyExtractor={(item) => item.id}
