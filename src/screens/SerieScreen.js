@@ -92,11 +92,12 @@ const SerieScreen = (props)=> {
       </ImageBackground>
       
       <ScrollView directionalLockEnabled={false} >
-        <View style={{marginLeft: 4, marginRight: 4}}>
-        <Text style={styles.headerTitle}>Description : </Text><Text style={styles.text}>{serieDetail.overview}</Text>
+        <View style={{marginTop: 30, marginLeft: 4, marginRight: 4}}>
+        <Text style={styles.headerTitle}>Description</Text><Text style={styles.text}>{serieDetail.overview}</Text>
         </View>
-
-        <Text style={styles.headerTitle}>Saisons et épisodes : </Text>
+        
+        <View style={{flexDirection: 'column', justifyContent: 'flex-start', marginTop: 30}}>
+        <Text style={styles.headerTitle}>Saisons et épisodes</Text>
 
         <List.Section style ={{ color: "red",  width: "90%", alignSelf: "center"}}>
         {
@@ -110,7 +111,7 @@ const SerieScreen = (props)=> {
               {
                 saison.details ?
                 saison.details.episodes.map((episode) => (
-                  <List.Item style={{ backgroundColor: "#9E9EA9", marginTop: 1, borderRadius: 2 }} title={<Text>Episode {episode.episode_number} - {episode.name}</Text>} />
+                  <List.Item style={{ backgroundColor: "#9E9EA9", marginTop: 1, borderRadius: 2 }} title={<Text >Episode {episode.episode_number} - {episode.name}</Text>} />
                 ))
                 :
                 null
@@ -119,9 +120,10 @@ const SerieScreen = (props)=> {
             ))
           }
           </List.Section>
+        </View>
 
-        <View>
-        <Text style={styles.headerTitle}>Acteurs : </Text>
+        <View style={{flexDirection: 'column', justifyContent: 'flex-start', marginTop: 30}}>
+        <Text style={styles.headerTitle}>Acteurs</Text>
         {
           serieDetail.credits.cast.length > 0 ?
             <FlatList

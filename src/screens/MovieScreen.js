@@ -95,11 +95,11 @@ const MovieScreen = (props)=> {
       </ImageBackground>
       
       <View style={{maxHeight: '20%', marginTop: 30, marginLeft: 4, marginRight: 4}}>
-      <Text style={styles.headerTitle}>Description : </Text><ScrollView directionalLockEnabled={false} ><Text style={styles.text}>{movieDetail.overview}</Text></ScrollView>
+      <Text style={styles.headerTitle}>Description</Text><ScrollView directionalLockEnabled={false} ><Text style={styles.text}>{movieDetail.overview}</Text></ScrollView>
       </View>
 
       <View style={{height: '25%', marginTop: 30}}>
-      <Text style={styles.headerTitle}>Acteurs : </Text>
+      <Text style={styles.headerTitle}>Acteurs</Text>
       {
         movieDetail.credits.cast.length > 0 ?
           <FlatList

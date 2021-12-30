@@ -91,32 +91,30 @@ const Search = (props)=> {
 
 	return (
 		<View style={{backgroundColor: backgroundColorDarker, marginTop: 25, padding: 2}}>
-			<View style={{flexDirection:"row", justifyContent:'space-around', alignItems: 'center', marginTop: 3, marginBottom: 10 }} >
-				<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
-					{ favori ? 
-						<Ionicons name="star" size={32} color={activeTintColor} />
-					:
-						<Ionicons name="star-outline" size={32} color={activeTintColor} />	
-					}				
-				</TouchableOpacity>
-			</View>
-			<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, (title ? 'Movie' : 'Serie'))}>
 				<View style={{flex:2,flexDirection:"row", justifyContent:'flex-start' }}>
-					{ poster_path ? 
-						<Image style={styles.immBackground} source={{ uri: urlPosterImage+poster_path }}/>
-						:
-						<Image style={styles.immBackground} source = {require('../assets/movie_avatar.png')}/>
-					}
-					
+					<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, (title ? 'Movie' : 'Serie'))}>
+						<Image style={styles.immBackground} source={poster_path ? { uri: urlPosterImage+poster_path } : require('../assets/movie_avatar.png')}/>
+					</TouchableOpacity>
+						
 					<View style={{ flexDirection:"column", justifyContent:'flex-start', alignItems: 'center', marginLeft: 5, width: '50%' }}>
-					<Text style={{ fontSize: 18, textAlign: 'left', color: "#ffffff" , width: '100%', fontWeight: 'bold'}}>{(title ? title : name)} 
-						{ first_air_date ?
-							' ('+convertDate(first_air_date)+')'
-							:
-							null
-						}
-					</Text>
-					<Text style={{ fontSize: 12, textAlign: 'left', color: activeTintColor, width: '100%', fontStyle:'italic', marginBottom: 60}}>{((title == undefined) ? 'Serie' : 'Film')}</Text>
+						<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, (title ? 'Movie' : 'Serie'))}>
+							<View style={{ flexDirection:"column", justifyContent:'center', alignItems: 'center', width: '100%' }}>
+							<Text style={{ fontSize: 18, textAlign: 'left', color: "#ffffff", fontWeight: 'bold'}}>{(title ? title : name)} 
+								{ first_air_date ?
+									' ('+convertDate(first_air_date)+')'
+									:
+									null
+								}
+							</Text>
+							<Text style={{ fontSize: 12, textAlign: 'left', color: activeTintColor, width: '100%', fontStyle:'italic'}}>{((title == undefined) ? 'Serie' : 'Film')}</Text>
+							</View>
+						</TouchableOpacity>
+					
+					<View style={{flexDirection:"row", marginTop: 20, marginBottom: 15 }} >
+						<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
+							<Ionicons name={favori ? "star" : "star-outline"} size={32} color={activeTintColor} />			
+						</TouchableOpacity>
+					</View>
 					<AnimatedCircularProgress
 						size={120}
 						width={2}
@@ -135,7 +133,6 @@ const Search = (props)=> {
 					</AnimatedCircularProgress>
 				</View>
 			</View>
-			</TouchableOpacity>
 		</View>
 	);
 };
@@ -164,7 +161,7 @@ return (
 					keyExtractor={(item) => item.id}
 				/>
 				: 
-				<View style={{ backgroundColor: backgroundColor, flex: 1, alignItems: "center", marginTop: 30 }}>
+				<View style={{ backgroundColor: backgroundColor, alignItems: "center", marginTop: 30 }}>
 					<Ionicons name="search-outline" size={50} color={activeTintColor} />
 					<Text style={{ color: activeTintColor, fontSize: 30 }}>Aucun résultat trouvé</Text>
 				</View>
