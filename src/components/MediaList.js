@@ -8,14 +8,13 @@ import * as dbservice from '../db/db';
 import types from "../helpers/types";
 
 const MediaCard = (props) => {
-	const [favori, setFavori] = useState(false);
 
 	const onClickStar = () => {
-		setFavori(!favori);
-		if(!favori)
-			dbservice.addFavoriForCurrentProfile(props.media.details.id, 0);
+		if(!props.favori)
+			dbservice.addFavoriForCurrentProfile(props.media.details.id, (props.media.title) ? 'Movie':'Serie');
 		else
-			dbservice.removeFavoriForCurrentProfile(props.media.details.id, 0);
+			dbservice.removeFavoriForCurrentProfile(props.media.details.id, (props.media.title) ? 'Movie':'Serie');
+		props.onFavoriChange();
 	}
 
 	return (
@@ -29,11 +28,7 @@ const MediaCard = (props) => {
 				}
 			</TouchableOpacity>
 			<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
-				{ favori ? 
-					<Ionicons name="star" size={32} color={activeTintColor} style={{ marginTop: 5}} />
-				:
-					<Ionicons name="star-outline" size={32} color={activeTintColor} style={{ marginTop: 5}} />	
-				}				
+				<Ionicons name={props.favori ? "star" : "star-outline"} size={32} color={activeTintColor} />			
 			</TouchableOpacity>
 			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate(props.type, { media: props.media })}>			
 				<Text style={{ textAlign: 'center', color: "#ffffff", fontSize: 18, width: 170, marginTop: 5, fontWeight: 'bold'}}>{props.media.title ? props.media.title : props.media.name}</Text>
@@ -50,7 +45,7 @@ const MediaRow = (props) => {
 				keyExtractor={(item) => item.id.toString()}
 				keyboardShouldPersistTaps={"handled"}
 				data={props.mediaList.results}
-				renderItem={({ item }) => <MediaCard navigation={props.navigation} type={props.type} media={item} />}
+				renderItem={({ item }) => <MediaCard navigation={props.navigation} type={props.type} media={item} favori={props.favoris.some(e => e.id_media === item.id)} onFavoriChange={props.onFavoriChange} />}
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				ItemSeparatorComponent={() => <View style={{ margin: 4 }} />}
@@ -63,7 +58,7 @@ const MediaRow = (props) => {
 const MediaList = (props) => {
 	return (
 		Object.entries(props.medias).map(([index, mediaList]) => {
-			return <MediaRow key={index} navigation={props.navigation} mediaList={mediaList} title={types[index]} type={props.type} />
+			return <MediaRow key={index} navigation={props.navigation} favoris={props.favoris} onFavoriChange={props.onFavoriChange} mediaList={mediaList} title={types[index]} type={props.type} />
 		})
 	)
 };

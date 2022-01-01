@@ -137,7 +137,7 @@ const ActorCard = (props) => {
               </View>
             </View>
               { peopleDetail.biography ?
-                <View style={{minHeight: '5%', maxHeight: '40%'}}><ScrollView><Text style={styles.biography}>{peopleDetail.biography}</Text></ScrollView></View>
+                <View style={{minHeight: '5%', maxHeight: '40%', marginBottom: 10}}><ScrollView><Text style={styles.biography}>{peopleDetail.biography}</Text></ScrollView></View>
               : null }
                         
               <Button title="FERMER" color={activeTintColor} onPress={toggleModal} />

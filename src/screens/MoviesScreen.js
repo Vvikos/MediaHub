@@ -1,21 +1,31 @@
 import React, { useState, useEffect} from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-elements";
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {backgroundColor, activeTintColor} from "../helpers/colors";
-import { Image } from 'react-native';
 import {connect} from 'react-redux';
 import * as actions from '../store/actions';
 import Loading from '../components/Loading';
-import { requestMovieScreen } from "../api/api";
 import MediaList from "../components/MediaList";
+import * as dbservice from '../db/db';
 
 const Movies = (props)=> {
 	const { navigation } = props;
   
 	const [loading, setLoading] = useState(true);
+	const [favoris, setFavoris] = useState([]);
+
+	useEffect(() => {
+		const requestFavoris = navigation.addListener('focus', refreshFavoris);
+		return requestFavoris;
+	  }, [navigation]);
+	
+	const refreshFavoris = () => {
+		console.log('REFRESH FROM MOVIES')
+		dbservice.requestFavoriForCurrentProfile(setFavoris);
+	}
 	
 	useEffect( () => {
+		refreshFavoris();
 		props.getFilms();
 	}, []);
 
@@ -32,7 +42,7 @@ const Movies = (props)=> {
 				{ !loading ?
 					props.movies.popular ? 
 						//<MovieList navigation={navigation} movies={props.movies}/>
-						<MediaList navigation={navigation} medias={props.movies} type='Movie' />
+						<MediaList navigation={navigation} medias={props.movies} type='Movie' favoris={favoris} onFavoriChange={refreshFavoris} />
 					: null
 				: 
 					<Loading />

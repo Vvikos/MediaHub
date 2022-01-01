@@ -3,7 +3,7 @@ import { FlatList, View, StyleSheet, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { requestMovieDetailScreen } from "../api/api";
 import { urlBackgroundImage, urlPosterImage } from "../helpers/url";
-import { backgroundColor, backgroundColorDarker } from "../helpers/colors";
+import { activeTintColor, backgroundColor, backgroundColorDarker } from "../helpers/colors";
 import { ImageBackground, Image } from 'react-native';
 import ActorCard from "../components/ActorCard";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
       fontSize: 20, 
       fontWeight: "bold", 
       color: "#ffffff",
-      textAlign: 'left'
+      textAlign: 'left',
+      width: '100%'
     }
   });
 
@@ -61,10 +62,12 @@ const MovieScreen = (props)=> {
   return (
     <View style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
       <ImageBackground imageStyle={{width: '100%', height: '100%', opacity: 0.2}} style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} >
-        <Image style={{height: '100%', width: '40%', borderRadius: 1}} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
-        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '50%' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
+          <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
+        </View>
+        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '55%' }}>
           <Text style={styles.movieTitle}>{movieDetail.title}</Text>
-          <Text style={{ fontSize: 14, fontStyle: 'italic', textAlign: 'left', color: "#ffffff"}}>
+          <Text style={{ fontSize: 14, fontStyle: 'italic', textAlign: 'left', color: "#ffffff", width: '100%', opacity: 0.6}}>
             {
               movieDetail.genres.map((genre) => (
                 genre.name + " "

@@ -1,20 +1,29 @@
 import React, { useState, useEffect} from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { requestSerieScreen } from "../api/api";
+import { View } from "react-native";
 import {backgroundColor, activeTintColor} from "../helpers/colors";
 import { ScrollView } from "react-native-gesture-handler";
-import { Image } from 'react-native';
 import {connect} from 'react-redux';
 import * as actions from '../store/actions';
 import Loading from '../components/Loading';
 import MediaList from "../components/MediaList";
+import * as dbservice from '../db/db';
 
-  const Series = (props)=> {
+const Series = (props)=> {
 	const { navigation } = props;
 	const [loading, setLoading] = useState(true);
+	const [favoris, setFavoris] = useState([]);
+
+	useEffect(() => {
+		const requestFavoris = navigation.addListener('focus', refreshFavoris);
+		return requestFavoris;
+	  }, [navigation]);
+	
+	const refreshFavoris = () => {
+		dbservice.requestFavoriForCurrentProfile(setFavoris);
+	}
 
 	useEffect( () => {
+		refreshFavoris();
 		props.getSeries();
 	}, []);
 
@@ -29,7 +38,7 @@ return (
 		<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
 		{ !loading ?
 			props.series.popular ? 
-				<MediaList navigation={navigation} medias={props.series} type='Serie' />
+				<MediaList navigation={navigation} medias={props.series} type='Serie' favoris={favoris} onFavoriChange={refreshFavoris} />
 			: null
 		: 
 			<Loading />

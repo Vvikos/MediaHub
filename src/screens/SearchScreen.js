@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
-import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import { StyleSheet, Text, View, Image, FlatList, useIsFocused } from "react-native";
 import { SearchBar } from "react-native-elements";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { requestFindMulti, requestMovieDetailScreen, requestSerieDetailScreen } from "../api/api";
 import { backgroundColor, backgroundColorDarker, activeTintColor } from "../helpers/colors";
 import { urlPosterImage } from "../helpers/url";
@@ -17,6 +17,12 @@ const Search = (props)=> {
 	const [loading, setLoading] = useState(true);
 	const [searchValue, setSearchValue] = useState("");
 	const [data, setData] = useState([]);
+	const [favoris, setFavoris] = useState([]);
+
+	useEffect(() => {
+		const requestFavoris = navigation.addListener('focus', refreshFavoris);
+		return requestFavoris;
+	  }, [navigation]);
 
 	const searchFunction = (text) => {
 		setSearchValue(text);
@@ -24,6 +30,18 @@ const Search = (props)=> {
 			setLoading(true);
 		}
   	};
+
+	const refreshFavoris = () => {
+		dbservice.requestFavoriForCurrentProfile(setFavoris);
+	}
+
+	useEffect(() => {
+		refreshFavoris();
+	}, []);
+
+	useEffect(() => {
+		refreshFavoris();
+	}, [navigation]);
 
 	useEffect(() => {
 		if(searchValue!=''){
@@ -78,15 +96,16 @@ const Search = (props)=> {
 	return date.getFullYear();
   }
 
-  const Item = ({ id, title, poster_path, vote_average, name, vote_count, first_air_date }) => {
-	const [favori, setFavori] = useState(false);
+  const Item = ({ id, default_favori, title, poster_path, vote_average, name, vote_count, first_air_date, onFavoriChange }) => {
+	const [favori, setFavori] = useState(default_favori);
 
 	const onClickStar = () => {
 		setFavori(!favori);
 		if(!favori)
-			dbservice.addFavoriForCurrentProfile(id, (title == undefined) ? 1 : 0);
+			dbservice.addFavoriForCurrentProfile(id, (title) ? 'Movie' : 'Serie');
 		else
-			dbservice.removeFavoriForCurrentProfile(id, (title == undefined) ? 1 : 0);
+			dbservice.removeFavoriForCurrentProfile(id, (title) ? 'Movie' : 'Serie');
+		onFavoriChange();
 	}
 
 	return (
@@ -97,9 +116,8 @@ const Search = (props)=> {
 					</TouchableOpacity>
 						
 					<View style={{ flexDirection:"column", justifyContent:'flex-start', alignItems: 'center', marginLeft: 5, width: '50%' }}>
-						<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, (title ? 'Movie' : 'Serie'))}>
-							<View style={{ flexDirection:"column", justifyContent:'center', alignItems: 'center', width: '100%' }}>
-							<Text style={{ fontSize: 18, textAlign: 'left', color: "#ffffff", fontWeight: 'bold'}}>{(title ? title : name)} 
+						<TouchableOpacity containerStyle={{width: '100%'}} activeOpacity={0.5} onPress={() => redirectToDetailPage(id, (title ? 'Movie' : 'Serie'))}>
+							<Text style={{ fontSize: 18, textAlign: 'left', color: "#ffffff", fontWeight: 'bold', width: '100%' }}>{(title ? title : name)} 
 								{ first_air_date ?
 									' ('+convertDate(first_air_date)+')'
 									:
@@ -107,7 +125,6 @@ const Search = (props)=> {
 								}
 							</Text>
 							<Text style={{ fontSize: 12, textAlign: 'left', color: activeTintColor, width: '100%', fontStyle:'italic'}}>{((title == undefined) ? 'Serie' : 'Film')}</Text>
-							</View>
 						</TouchableOpacity>
 					
 					<View style={{flexDirection:"row", marginTop: 20, marginBottom: 15 }} >
@@ -137,7 +154,7 @@ const Search = (props)=> {
 	);
 };
 
-	const renderItem = ({ item }) => <Item id={item.id} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
+	const renderItem = ({ item }) => <Item id={item.id} default_favori={favoris.some(e => e.id_media === item.id)} onFavoriChange={refreshFavoris} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>

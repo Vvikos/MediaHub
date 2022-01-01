@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     fontWeight: "bold", 
     color: "#ffffff",
-    textAlign: 'left'
+    textAlign: 'left',
+    width: '100%'
   }
 });
 
@@ -58,10 +59,12 @@ const SerieScreen = (props)=> {
   return (
     <View style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
       <ImageBackground imageStyle={{width: '100%', height: '100%', opacity: 0.2}} style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} source={{ uri : urlBackgroundImage+serieDetail.backdrop_path }} >
-        <Image style={{height: '100%', width: '40%', borderRadius: 1}} source={{ uri : urlPosterImage+serieDetail.poster_path }}/>
-        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '50%' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
+          <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={{ uri : urlPosterImage+serieDetail.poster_path }}/>
+        </View>
+        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '55%' }}>
           <Text style={styles.serieTitle}>{serieDetail.name}</Text>
-          <Text style={{ fontSize: 14, fontStyle: 'italic', textAlign: 'left', color: "#ffffff"}}>
+          <Text style={{ fontSize: 14, fontStyle: 'italic', textAlign: 'left', color: "#ffffff", width: '100%', opacity: 0.6}}>
             {
               serieDetail.genres.map((genre) => (
                 genre.name + " "
@@ -103,6 +106,7 @@ const SerieScreen = (props)=> {
         {
           serieDetail.seasons.map((saison) => (
             <List.Accordion
+              key={saison.name}
               theme={{ colors: { background: backgroundColor, primary: "#2c75ff" } }}
               style={{ borderRadius: 1, backgroundColor: activeTintColor, marginTop: 2 }}
               contentContainerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
@@ -111,7 +115,7 @@ const SerieScreen = (props)=> {
               {
                 saison.details ?
                 saison.details.episodes.map((episode) => (
-                  <List.Item style={{ backgroundColor: "#9E9EA9", marginTop: 1, borderRadius: 2 }} title={<Text >Episode {episode.episode_number} - {episode.name}</Text>} />
+                  <List.Item key={episode.episode_number} style={{ backgroundColor: backgroundColorDarker, marginTop: 1, borderRadius: 2 }} title={<Text style={{color: activeTintColor}}>Episode {episode.episode_number} - {episode.name}</Text>} />
                 ))
                 :
                 null

@@ -27,7 +27,7 @@ export const initProfiles = () => {
             (txObj, error) => console.log('SQLite INIT Error ', error)
         ) // end executeSQL
         tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS favoris (id_profile INTEGER, id_media INTEGER, media_type INTEGER, FOREIGN KEY(id_profile) REFERENCES profiles(id), UNIQUE(id_profile, id_media))', null, // passing sql query and parameters:null
+            'CREATE TABLE IF NOT EXISTS favoris (id_profile INTEGER, id_media INTEGER, media_type TEXT, FOREIGN KEY(id_profile) REFERENCES profiles(id), UNIQUE(id_profile, id_media))', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
             (txObj, res) => console.log('SQLite INIT ', res),
             // failure callback which sends two things Transaction object and Error
@@ -100,6 +100,18 @@ export const addProfile = (name) => {
             (txObj, error) => console.log('SQLite INSERT Error ', error)
         )
     });
+};
+
+export const requestFavoriForCurrentProfile = (callback) => {
+    db.transaction(tx => {
+        // sending 4 arguments in executeSql
+        tx.executeSql('SELECT id_media, media_type FROM favoris WHERE id_profile==(SELECT id FROM profiles WHERE selected==1)', null, // passing sql query and parameters:null
+            // success callback which sends two things Transaction object and ResultSet Object
+            (txObj, { rows: { _array } }) => callback(_array),
+            // failure callback which sends two things Transaction object and Error
+            (txObj, error) => console.log('SQLite SELECT Error ', error)
+            ) // end executeSQL
+    }); // end transaction
 };
 
 export const removeFavoriForCurrentProfile = (id_media, media_type) => {

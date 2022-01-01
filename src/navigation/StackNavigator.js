@@ -20,7 +20,7 @@ const SeriesStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const SearchStack = createStackNavigator();
 
-const Back = " dede";
+const Back = "";
 
 const screenOptionStyle = {
   headerStyle: {
