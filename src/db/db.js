@@ -4,7 +4,7 @@ const db = SQLite.openDatabase('db.profiles') // returns Database object
 export const initProfiles = () => {
     // Check if the profiles table exists if not create it
     db.transaction(tx => {
-        tx.executeSql(
+        /*tx.executeSql(
             'DROP TABLE IF EXISTS favoris', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
             (txObj, res) => console.log('SQLite INIT ', res),
@@ -17,7 +17,7 @@ export const initProfiles = () => {
             (txObj, res) => console.log('SQLite INIT ', res),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite INIT Error ', error)
-        ) // end executeSQL
+        ) // end executeSQL*/
 
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS profiles (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, selected INTEGER DEFAULT 0)', null, // passing sql query and parameters:null
@@ -33,16 +33,7 @@ export const initProfiles = () => {
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite INIT Error ', error)
         ) // end executeSQL
-
-        tx.executeSql(
-            "INSERT OR IGNORE INTO profiles (id, name) VALUES(0, 'Zeus')", null, // passing sql query and parameters:null
-            // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => console.log('SQLite INIT ',res),
-            // failure callback which sends two things Transaction object and Error
-            (txObj, error) => console.log('SQLite INIT Error ', error)
-        )
     });
-    console.log('INIT DB PROFILES');
 };
 
 export const requestProfiles = (callback) => {
@@ -100,6 +91,18 @@ export const addProfile = (name) => {
             (txObj, error) => console.log('SQLite INSERT Error ', error)
         )
     });
+};
+
+export const removeCurrentProfile = () => {
+    db.transaction(tx => {
+        // sending 4 arguments in executeSql
+        tx.executeSql('DELETE FROM profiles WHERE selected==1', null, // passing sql query and parameters:null
+            // success callback which sends two things Transaction object and ResultSet Object
+            (txObj, { rows: { _array } }) => console.log('SQLite DELETE', _array),
+            // failure callback which sends two things Transaction object and Error
+            (txObj, error) => console.log('SQLite DELETE Error ', error)
+            ) // end executeSQL
+    }); // end transaction
 };
 
 export const requestFavoriForCurrentProfile = (callback) => {

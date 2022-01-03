@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { StyleSheet, View, Image, useColorScheme } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { CommonActions } from '@react-navigation/native';
@@ -18,10 +18,13 @@ function ProfileScreen({ navigation }) {
 
   return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
-		<View style={{ width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+		<View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
+			<TouchableOpacity activeOpacity={0.5} onPress={() => {dbservice.removeCurrentProfile(); navigation.navigate('Profiles')}}>
+				<Ionicons name="trash-outline" size={24} color='#ffffff' containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} style={{backgroundColor: '#eb4034', padding: 6, borderRadius: 2}} />
+			</TouchableOpacity>
 		</View>
-		<View style={{ height: '90%', width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}>
+		<View style={{ width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}>
 			<Text style={styles.headerTitle} >Favoris</Text>
 			<ListItem.Accordion
 			content={
@@ -67,7 +70,7 @@ function ProfileScreen({ navigation }) {
 			</ListItem>
 			</ListItem.Accordion>
 		</View>
-    </View>
+	 </View>
   );
 }
 
@@ -114,8 +117,7 @@ const styles = StyleSheet.create({
 		color: activeTintColor, 
 		textAlign: 'center',
 		fontWeight: '600',
-		fontSize: 24,
-		marginTop: 10
+		fontSize: 24
 	}
 });
 

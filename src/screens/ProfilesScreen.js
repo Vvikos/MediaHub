@@ -72,7 +72,7 @@ function ProfileCard({ name, img, navigation }) {
 }
 
 const ProfilesScreen = ({ navigation })=> {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [profiles, setProfiles] = useState([]);
     const [addScreen, setAddScreen] = useState(false);
 
@@ -83,8 +83,8 @@ const ProfilesScreen = ({ navigation })=> {
 	}, []);
 
 	useEffect( () => {
-		
-		console.log(profiles);
+		setLoading(false);
+		setAddScreen(profiles.length==0);
 	}, [profiles]);
 
     useEffect( () => {
@@ -115,13 +115,13 @@ const ProfilesScreen = ({ navigation })=> {
 	<>
 		<Header />
 		<View style={{ flexDirection: 'row', marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-			{!loading ?
+			{loading ?
+				<Loading />
+			:
                 addScreen ?
                     <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen}/>
                 :
                     generateProfiles()
-            :
-                <Loading />
             }
 		</View>
 	</>
