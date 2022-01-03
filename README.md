@@ -1,4 +1,4 @@
-<p style="margin: 0 auto" align="center">
+<p style="margin: 0 auto; width: 100%" align="center">
   <img src="src/assets/mh_trans_crop.png" width="400"><br>
 </p>
 
