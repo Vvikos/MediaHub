@@ -1,4 +1,4 @@
-<h1 align="center">
+<h1 width="100%" align="center">
   <img src="src/assets/mh_trans_crop.png" width="400"><br>
 </h1>
 
