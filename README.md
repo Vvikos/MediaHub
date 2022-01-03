@@ -1,6 +1,6 @@
-<h1 width="100%" align="center">
+<p style="margin: 0 auto" width="100%" align="center">
   <img src="src/assets/mh_trans_crop.png" width="400"><br>
-</h1>
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/react-17.01-green.svg" />
