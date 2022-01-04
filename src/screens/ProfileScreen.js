@@ -6,21 +6,42 @@ import { CommonActions } from '@react-navigation/native';
 import { Text, ListItem, Switch } from 'react-native-elements';
 import {backgroundColor, inactiveTintColor, activeTintColor, alternativeTintColor, backgroundColorDarker} from "../helpers/colors";
 import * as dbservice from '../db/db';
+import * as actions from '../store/actions';
+import {connect} from 'react-redux';
 
-function ProfileScreen({ navigation }) {
+
+function ProfileScreen(props) {
+	const { navigation } = props;
 	const [profile, setProfile] = useState('');
 	const [favMoviesExpanded, setFavMoviesExpanded] = useState(true);
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
+	const [favorites, setFavorites] =  useState(null);
 
 	useEffect( () => {
-        dbservice.requestProfile(setProfile);
+		dbservice.requestProfile(setProfile);
+		dbservice.requestFavoriForCurrentProfile(setFavorites);
+
+		// TODO : Ajouter chargement (ajout) des favoris pas encore dans le store (par exemple pour le cas d'un changement de profile)
+		//props.getFavorites(favorites);
+
 	}, []);
+
+	useEffect(() => {
+		//props.getFavorites(favorites);
+	}, [favorites]);
+
+	
+  const deleteProfile = () => {
+	  	props.initFavorite();
+		dbservice.removeCurrentProfile(); 
+		navigation.navigate('Profiles')
+  }
 
   return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
 		<View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
-			<TouchableOpacity activeOpacity={0.5} onPress={() => {dbservice.removeCurrentProfile(); navigation.navigate('Profiles')}}>
+			<TouchableOpacity activeOpacity={0.5} onPress={() => deleteProfile()}>
 				<Ionicons name="trash-outline" size={24} color='#ffffff' containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} style={{backgroundColor: '#eb4034', padding: 6, borderRadius: 2}} />
 			</TouchableOpacity>
 		</View>
@@ -37,13 +58,29 @@ function ProfileScreen({ navigation }) {
 				setFavMoviesExpanded(!favMoviesExpanded);
 			}}
 			>
-			<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
-				<ListItem.Content style={{color: activeTintColor}}>
-					<ListItem.Title style={{color: activeTintColor}}>Title</ListItem.Title>
-					<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
-				</ListItem.Content>
-				<ListItem.Chevron />
-			</ListItem>
+			{ props.favorites ?
+				props.favorites.movies.length > 0 ?
+					Object.entries(props.favorites.movies).map(([index, movie]) => {
+						return (
+						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+							<ListItem.Content style={{color: activeTintColor}}>
+								<ListItem.Title style={{color: activeTintColor}}>{movie.title }</ListItem.Title>
+								<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
+							</ListItem.Content>
+							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { media: movie })}>		
+								<ListItem.Chevron />
+							</TouchableOpacity>
+						</ListItem>
+						)
+				})
+			: 
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+					<ListItem.Content style={{color: activeTintColor}}>
+						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucun film favori sauvegardé.</ListItem.Subtitle>
+					</ListItem.Content>
+				</ListItem>
+			: null 
+			}
 			</ListItem.Accordion>
 
 			<ListItem.Accordion
@@ -61,13 +98,29 @@ function ProfileScreen({ navigation }) {
 				setFavSeriesExpanded(!favSeriesExpanded);
 			}}
 			>
-			<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
-				<ListItem.Content style={{color: activeTintColor}}>
-					<ListItem.Title style={{color: activeTintColor}}>Title</ListItem.Title>
-					<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
-				</ListItem.Content>
-				<ListItem.Chevron />
-			</ListItem>
+			{ props.favorites ?
+				props.favorites.series.length > 0 ?
+					Object.entries(props.favorites.series).map(([index, serie]) => {
+						return (
+						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+							<ListItem.Content style={{color: activeTintColor}}>
+								<ListItem.Title style={{color: activeTintColor}}>{serie.name }</ListItem.Title>
+								<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
+							</ListItem.Content>
+							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Serie", { media: serie })}>		
+								<ListItem.Chevron />
+							</TouchableOpacity>
+						</ListItem>
+						)
+				})
+			: 
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+					<ListItem.Content style={{color: activeTintColor}}>
+						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucune série favori sauvegardé.</ListItem.Subtitle>
+					</ListItem.Content>
+				</ListItem>
+			: null 
+			}
 			</ListItem.Accordion>
 		</View>
 	 </View>
@@ -122,4 +175,20 @@ const styles = StyleSheet.create({
 });
 
 
-export default ProfileScreen;
+//This means that one or more of the redux states in the store are available as props
+const mapStateToProps = (state) => {
+    return {
+		favorites: state.api.favorites
+    }
+  }
+  
+  //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
+  const mapDispatchToProps = (dispatch) => {
+    return {
+		getFavorites: (favorites) => dispatch(actions.fetchFavorites(favorites)),
+		initFavorite: () => dispatch(actions.initFavorite()),
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

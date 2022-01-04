@@ -73,6 +73,56 @@ export const apiFetchedSeries = (series) => {
     }
 }
 
+export const apiFetchedFavoritesMovie = (movie) => {
+    return {
+        type: actionTypes.API_FETCHED_FAVORITES_MOVIE, 
+        movie: movie
+    }
+}
+
+export const apiFetchedFavoritesSerie = (serie) => {
+    return {
+        type: actionTypes.API_FETCHED_FAVORITES_SERIE, 
+        serie: serie
+    }
+}
+
+export const apiFetchedFavoritesInit = () => {
+    return {
+        type: actionTypes.API_FETCHED_FAVORITES_INIT, 
+    }
+}
+
+
+export const apiAddMovieFavorite = (movie) => {
+    return {
+        type: actionTypes.API_ADD_MOVIE_FAVORITE, 
+        movie: movie
+    }
+}
+
+export const apiAddSerieFavorite = (serie) => {
+    return {
+        type: actionTypes.API_ADD_SERIE_FAVORITE, 
+        serie: serie
+    }
+}
+
+export const apiDeleteMovieFavorite = (id) => {
+    return {
+        type: actionTypes.API_DELETE_MOVIE_FAVORITE, 
+        id: id
+    }
+}
+
+export const apiDeleteSerieFavorite = (id) => {
+    return {
+        type: actionTypes.API_DELETE_SERIE_FAVORITE, 
+        id: id
+    }
+}
+
+
 
 export const fetchFilms = () => {
     return dispatch => {
@@ -161,3 +211,110 @@ export const fetchSeries = () => {
     }
 }
 
+
+export const fetchFavorites = (favorites) => {
+    // return async dispatch => {
+    //         dispatch(apiStart);
+    //         console.log("heressss");
+    //         if(favorites){
+                
+    //             favorites.forEach(function (media, index) {
+    //                 if(media["media_type"] == "Movie"){
+    //                     Promise.all([
+    //                         request(getMovieDetailUrl(media["id_media"])),
+    //                     ])
+    //                         .then((details) =>{
+    //                             //console.log(details[0]["backdrop_path"])
+    //                             dispatch(apiFetchedFavoritesMovie(details[0])); 
+    //                         });
+
+
+    //                 } else {
+    //                     Promise.all([
+    //                         request(getSerieDetailUrl(media["id_media"])),
+    //                     ])
+    //                         .then((details) =>{
+    //                             console.log(media);
+    //                             let serie = details[0];
+    //                             dispatch(apiFetchSerieDetailsSuccess);
+
+    //                             console.log(serie);
+    //                             if(serie["seasons"].length > 0){
+    //                                 (serie["seasons"]).forEach(function(season, index){
+    //                                     Promise.all([
+    //                                         request(getSerieSeasonDetailUrl(serie.id, index+1)),
+    //                                     ]). 
+    //                                     then((season_detail) => {
+    //                                         serie["seasons"][index]["details"] = season_detail[0];
+    //                                         dispatch(apiFetchedFavoritesSerie(serie)); 
+    //                                     });
+    //                                 });
+    //                             }
+                        
+    //                         });
+
+    //                 }
+    //             });
+    //             dispatch(apiSuccess);
+    //         }
+
+    //         dispatch(apiFail);
+    // }
+}
+
+
+export const initFavorite = () => {
+    return dispatch => {
+        dispatch(apiStart);
+        dispatch(apiFetchedFavoritesInit);
+        dispatch(apiSuccess);
+    }
+}
+
+export const addFavorite = (id, type) => {
+    return dispatch => {
+        dispatch(apiStart);
+
+        if(type == "Movie"){
+
+            Promise.all([
+                request(getMovieDetailUrl(id)),
+            ])
+                .then((movie) =>{
+                    dispatch(apiAddMovieFavorite(movie[0]));
+                });
+        } else {
+            Promise.all([
+                request(getSerieDetailUrl(id)),
+            ])
+                .then((details) =>{
+                    let serie = details[0];
+                    dispatch(apiFetchSerieDetailsSuccess);
+
+                    if(serie["seasons"].length > 0){
+                        (serie["seasons"]).forEach(function(season, index){
+                            Promise.all([
+                                request(getSerieSeasonDetailUrl(serie.id, index+1)),
+                            ]). 
+                            then((season_detail) => {
+                                serie["seasons"][index]["details"] = season_detail[0];
+                            });
+                        });
+                    }
+                    dispatch(apiAddSerieFavorite(serie));
+                });
+        }
+    }
+}
+
+export const deleteFavorite = (id, type) => {
+    return dispatch => {
+        dispatch(apiStart);
+
+        if(type == "Movie"){
+            dispatch(apiDeleteMovieFavorite(id));
+        } else {
+            dispatch(apiDeleteSerieFavorite(id));
+        }
+    }
+}

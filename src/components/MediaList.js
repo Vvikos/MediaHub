@@ -6,31 +6,7 @@ import { activeTintColor, backgroundColorDarker } from "../helpers/colors";
 import { urlPosterImage } from "../helpers/url";
 import * as dbservice from '../db/db';
 import types from "../helpers/types";
-
-const MediaCard = (props) => {
-
-	const onClickStar = () => {
-		if(!props.favori)
-			dbservice.addFavoriForCurrentProfile(props.media.details.id, (props.media.title) ? 'Movie':'Serie');
-		else
-			dbservice.removeFavoriForCurrentProfile(props.media.details.id, (props.media.title) ? 'Movie':'Serie');
-		props.onFavoriChange();
-	}
-
-	return (
-		<View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate(props.type, { media: props.media })}>
-				<Image style={styles.imBackground} source={props.media.poster_path ? { uri: urlPosterImage+props.media.poster_path } : require('../assets/movie_avatar.png')}/>
-			</TouchableOpacity>
-			<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
-				<Ionicons name={props.favori ? "star" : "star-outline"} size={32} color={activeTintColor} />			
-			</TouchableOpacity>
-			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate(props.type, { media: props.media })}>			
-				<Text style={{ textAlign: 'center', color: "#ffffff", fontSize: 18, width: 170, marginTop: 5, fontWeight: 'bold'}}>{props.media.title ? props.media.title : props.media.name}</Text>
-			</TouchableOpacity>
-		</View>
-	)
-};
+import MediaCard from "./MediaCard";
 
 const MediaRow = (props) => {
 	return (
@@ -57,18 +33,5 @@ const MediaList = (props) => {
 		})
 	)
 };
-
-const styles = StyleSheet.create({
-	imBackground: {
-	  height: 255,
-	  width: 170,
-	  borderRadius: 2
-	},
-	imFav: {
-		height: 70,
-		width: 70,
-		backgroundColor: activeTintColor
-	}
-});
 
 export default MediaList;
