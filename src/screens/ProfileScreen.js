@@ -64,7 +64,6 @@ function ProfileScreen(props) {
 						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 							<ListItem.Content style={{color: activeTintColor}}>
 								<ListItem.Title style={{color: activeTintColor}}>{movie.title }</ListItem.Title>
-								<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
 							</ListItem.Content>
 							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { media: movie, media_name: movie.title })}>		
 								<ListItem.Chevron />
@@ -104,7 +103,6 @@ function ProfileScreen(props) {
 						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 							<ListItem.Content style={{color: activeTintColor}}>
 								<ListItem.Title style={{color: activeTintColor}}>{serie.name }</ListItem.Title>
-								<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
 							</ListItem.Content>
 							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Serie", { media: serie, media_name: serie.name})}>		
 								<ListItem.Chevron />

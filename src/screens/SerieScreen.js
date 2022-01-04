@@ -67,7 +67,7 @@ const SerieScreen = (props)=> {
               source={serieDetail.backdrop_path ? { uri: urlBackgroundImage+serieDetail.backdrop_path } : require('../assets/movie_avatar.png')}
             >
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
-                <Image 
+                <Image
                   style={{height: '100%', width: '100%', borderRadius: 1}} 
                   source={serieDetail.poster_path ? { uri: urlPosterImage+serieDetail.poster_path } : require('../assets/movie_avatar.png')}
                 />

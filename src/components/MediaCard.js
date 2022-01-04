@@ -24,14 +24,16 @@ const styles = StyleSheet.create({
 const MediaCard = (props) => {
 
 	const onClickStar = () => {
-		if(!props.favori){
-            dbservice.addFavoriForCurrentProfile(props.media.id, (props.media.title) ? 'Movie':'Serie');
-			props.addFavorite(props.media.id, (props.media.title) ? 'Movie':'Serie');
-		} else {
-			dbservice.removeFavoriForCurrentProfile(props.media.id, (props.media.title) ? 'Movie':'Serie');
-			props.deleteFavorite(props.media.id, (props.media.title) ? 'Movie':'Serie');
-		}
-		props.onFavoriChange();
+        if (props.media.details) {   
+            if(!props.favori){
+                dbservice.addFavoriForCurrentProfile(props.media.id, (props.media.title) ? 'Movie':'Serie');
+                props.addFavorite(props.media.details, (props.media.title) ? 'Movie':'Serie');
+            } else {
+                dbservice.removeFavoriForCurrentProfile(props.media.id, (props.media.title) ? 'Movie':'Serie');
+                props.deleteFavorite(props.media.id, (props.media.title) ? 'Movie':'Serie');
+            }
+            props.onFavoriChange();
+        }
 	}
 
 	return (

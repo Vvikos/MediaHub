@@ -125,7 +125,7 @@ export const apiDeleteSerieFavorite = (id) => {
 
 
 export const fetchFilms = () => {
-    return dispatch => {
+    return async dispatch => {
             dispatch(apiStart);
  
             Promise.all([
@@ -163,7 +163,7 @@ export const fetchFilms = () => {
 
 
 export const fetchSeries = () => {
-    return dispatch => {
+    return async dispatch => {
             dispatch(apiStart);
  
             Promise.all([
@@ -271,38 +271,14 @@ export const initFavorite = () => {
     }
 }
 
-export const addFavorite = (id, type) => {
+export const addFavorite = (media, type) => {
     return dispatch => {
         dispatch(apiStart);
 
         if(type == "Movie"){
-
-            Promise.all([
-                request(getMovieDetailUrl(id)),
-            ])
-                .then((movie) =>{
-                    dispatch(apiAddMovieFavorite(movie[0]));
-                });
+            dispatch(apiAddMovieFavorite(media));
         } else {
-            Promise.all([
-                request(getSerieDetailUrl(id)),
-            ])
-                .then((details) =>{
-                    let serie = details[0];
-                    dispatch(apiFetchSerieDetailsSuccess);
-
-                    if(serie["seasons"].length > 0){
-                        (serie["seasons"]).forEach(function(season, index){
-                            Promise.all([
-                                request(getSerieSeasonDetailUrl(serie.id, index+1)),
-                            ]). 
-                            then((season_detail) => {
-                                serie["seasons"][index]["details"] = season_detail[0];
-                            });
-                        });
-                    }
-                    dispatch(apiAddSerieFavorite(serie));
-                });
+            dispatch(apiAddSerieFavorite(media));
         }
     }
 }

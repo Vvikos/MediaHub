@@ -140,27 +140,30 @@ const apiInitFavoritesReducer = (state, action) => {
 }
 
 const apiAddMovieFavoriteReducer = (state, action) => {
-    return updateObject(state, {
-        error: null, 
-        loading: false, 
-        favorites: {
-            series: state.favorites.series,
-            movies: [...state.favorites.movies, action.movie]
-        }
-
-    });
+    if (state.favorites.movies.filter(item => item.id === action.movie.id).length == 0) {
+        return updateObject(state, {
+            error: null, 
+            loading: false, 
+            favorites: {
+                series: [],
+                movies: [...state.favorites.movies, action.movie]
+            }
+        });
+    }
 }
 
 const apiAddSerieFavoriteReducer = (state, action) => {
-    return updateObject(state, {
-        error: null, 
-        loading: false, 
-        favorites: {
-            series: [...state.favorites.series, action.serie],
-            movies: state.favorites.movies
-        }
+    if (state.favorites.series.filter(item => item.id === action.serie.id).length == 0) {
+        return updateObject(state, {
+            error: null, 
+            loading: false, 
+            favorites: {
+                series: [...state.favorites.series, action.serie],
+                movies: state.favorites.movies
+            }
 
-    });
+        });
+    }
 }
 
 const apiDeleteMovieFavoriteReducer = (state, action) => {
