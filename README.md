@@ -35,7 +35,7 @@ Développée en tant que projet universitaire (Programmation Mobile 2021-2022), 
 
 ## Installation
 
-Assurez-vous que vous avez configuré l'environnement natif de react [ici].(https://reactnative.dev/docs/environment-setup)
+Assurez-vous que vous avez configuré l'environnement natif de react [ici](https://reactnative.dev/docs/environment-setup).
 
 Clonez ce projet
 
