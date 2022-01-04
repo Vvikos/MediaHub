@@ -75,7 +75,7 @@ const Search = (props)=> {
 			requestSerieDetailScreen( id, (data) => {
 				let media = {
 					details: data[0],
-					title: data[0].name ? data[0].name : data[0].title
+					name: data[0].name ? data[0].name : data[0].title
 				};
 				props.navigation.navigate(type, { media: media });
 			});
@@ -84,7 +84,7 @@ const Search = (props)=> {
 			requestMovieDetailScreen( id, (data) => {
 				let media = {
 					details: data[0],
-					name: data[0].name ? data[0].name : data[0].title
+					title: data[0].name ? data[0].name : data[0].title
 				};
 				props.navigation.navigate(type, { media: media });
 			});

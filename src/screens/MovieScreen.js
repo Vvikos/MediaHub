@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
       borderRadius: 2
     },
     headerTitle: {
-      fontSize: 18, 
+      fontSize: 20, 
       color: "#ffffff", 
       textAlign: 'left', 
       fontWeight: 'bold',
@@ -60,64 +60,75 @@ const MovieScreen = (props)=> {
 
 
   return (
-    <View style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
-      <ImageBackground imageStyle={{width: '100%', height: '100%', opacity: 0.2}} style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} >
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
-          <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
-        </View>
-        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '55%' }}>
-          <Text style={styles.movieTitle}>{movieDetail.title}</Text>
-          <Text style={{ fontSize: 14, fontStyle: 'italic', textAlign: 'left', color: "#ffffff", width: '100%', opacity: 0.6}}>
-            {
-              movieDetail.genres.map((genre) => (
-                genre.name + " "
-              ))
-            }
-          </Text>
-          <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center'}}>
-          <AnimatedCircularProgress style={{ marginTop: 15}}
-            size={100}
-            width={4}
-            fill={ movieDetail.vote_average * 10 }
-            rotation={-360}
-            tintColor={ colorState(movieDetail.vote_average * 10)}
-            backgroundColor="#3d5875" >
-            {
-              (fill) => (
-                <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{ fontSize: 15, color: "#ffffff", fontWeight: 'bold'}}>{movieDetail.vote_count} votes</Text>
-                <Text style={{ fontSize: 12, color: "#ffffff"}}>
-                  {movieDetail.vote_average} / 10
-                </Text>
-                </View>
-              )
-            }
-          </AnimatedCircularProgress>
+    <>
+    { movieDetail ?
+      <View style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
+        <ImageBackground imageStyle={{width: '100%', height: '100%', opacity: 0.2}} style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} >
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
+            <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
           </View>
-        </View> 
-      </ImageBackground>
-      
-      <View style={{maxHeight: '20%', marginTop: 30, marginLeft: 4, marginRight: 4}}>
-      <Text style={styles.headerTitle}>Description</Text><ScrollView directionalLockEnabled={false} ><Text style={styles.text}>{movieDetail.overview}</Text></ScrollView>
-      </View>
+          <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '55%' }}>
+            <Text style={styles.movieTitle}>{movieDetail.title}</Text>
+            <Text style={{ fontSize: 14, fontStyle: 'italic', textAlign: 'left', color: "#ffffff", width: '100%', opacity: 0.6}}>
+              { movieDetail.genres && movieDetail.genres.length > 0 ?
+                movieDetail.genres.map((genre) => (
+                  genre.name + " "
+                ))
+              :
+                'No genre found.'
+              }
+            </Text>
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center'}}>
+            <AnimatedCircularProgress style={{ marginTop: 15}}
+              size={100}
+              width={4}
+              fill={ movieDetail.vote_average * 10 }
+              rotation={-360}
+              tintColor={ colorState(movieDetail.vote_average * 10)}
+              backgroundColor="#3d5875" >
+              {
+                (fill) => (
+                  <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{ fontSize: 15, color: "#ffffff", fontWeight: 'bold'}}>{movieDetail.vote_count} votes</Text>
+                  <Text style={{ fontSize: 12, color: "#ffffff"}}>
+                    {movieDetail.vote_average} / 10
+                  </Text>
+                  </View>
+                )
+              }
+            </AnimatedCircularProgress>
+            </View>
+          </View> 
+        </ImageBackground>
+        
+        <View style={{maxHeight: '20%', marginTop: 30, marginLeft: 4, marginRight: 4, width: '100%'}}>
+        <Text style={styles.headerTitle}>Description</Text><ScrollView directionalLockEnabled={false} ><Text style={styles.text}>{movieDetail.overview ? movieDetail.overview : 'No overview found.'}</Text></ScrollView>
+        </View>
 
-      <View style={{height: '25%', marginTop: 30}}>
-      <Text style={styles.headerTitle}>Acteurs</Text>
-      {
-        movieDetail.credits.cast.length > 0 ?
-          <FlatList
-            contentContainerStyle={{backgroundColor: backgroundColorDarker, padding: 10, paddingBottom: 0}}
-            keyExtractor={(item) => item.id.toString()}
-            keyboardShouldPersistTaps={"handled"}
-            data={movieDetail.credits.cast}
-            renderItem={({ item }) => <ActorCard navigation={navigation} actor={item} />}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-          />	
-        : null }
+        <View style={{flexDirection: 'column', justifyContent: 'flex-start', marginTop: 30, marginBottom: 10, width: '100%'}}>
+          <Text style={styles.headerTitle}>Acteurs</Text>
+          { movieDetail.credits.cast.length > 0 ?
+            <View style={{backgroundColor: backgroundColorDarker}}>
+              <FlatList
+                contentContainerStyle={{backgroundColor: backgroundColorDarker, padding: 10}}
+                keyExtractor={(item) => item.id.toString()}
+                keyboardShouldPersistTaps={"handled"}
+                data={movieDetail.credits.cast}
+                renderItem={({ item }) => <ActorCard navigation={navigation} actor={item} />}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+              />
+            </View>
+            : 
+            <Text style={styles.text}>Aucun acteur trouvé.</Text> 
+          }
+        </View>
       </View>
-    </View>
+    :
+      <Loading />
+    }
+    </>
     );
 	};
 
