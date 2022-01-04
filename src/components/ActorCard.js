@@ -29,8 +29,9 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      margin: 5,
-      maxHeight: '50%'
+      margin: 2,
+      maxHeight: '55%',
+      top: '20%'
     },
     name: {
       fontSize: 18,
@@ -59,7 +60,6 @@ const styles = StyleSheet.create({
       width: 150, 
       height: 150, 
       borderRadius: 100,
-      marginBottom: 10,
     }
 });
 
@@ -116,10 +116,12 @@ const ActorCard = (props) => {
           isVisible={isModalVisible}
           style={styles.modalView}
         >
-          <View style={{padding: 8}}>
-            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-              <Image style={styles.modalBackgroundImg} source={props.actor.profile_path ? { uri: urlPosterImage+props.actor.profile_path } : require('../assets/actor_avatar.jpg')}/>
-              <View>
+          <View style={{padding: 3, flexDirection: 'column', justifyContent: 'flex-start', height: '100%', width: '100%'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: 20, marginTop: 20}}>
+              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 10, marginRight: 8}}>
+                <Image style={styles.modalBackgroundImg} source={props.actor.profile_path ? { uri: urlPosterImage+props.actor.profile_path } : require('../assets/actor_avatar.jpg')}/>
+              </View>
+              <View style={{borderLeftColor: activeTintColor, borderLeftWidth: 0.2, height: '95%', marginLeft: 4, paddingLeft: 4}}>
                 <Text style={styles.name}>{peopleDetail.name}</Text>
                 { peopleDetail.birthday ?
                   <Text style={styles.birthday}>{convertDate(peopleDetail.birthday)}
@@ -137,7 +139,7 @@ const ActorCard = (props) => {
               </View>
             </View>
               { peopleDetail.biography ?
-                <View style={{minHeight: '5%', maxHeight: '40%', marginBottom: 10}}><ScrollView><Text style={styles.biography}>{peopleDetail.biography}</Text></ScrollView></View>
+                <View style={{maxHeight: '40%', marginBottom: 10}}><ScrollView><Text style={styles.biography}>{peopleDetail.biography}</Text></ScrollView></View>
               : null }
                         
               <Button title="FERMER" color={activeTintColor} onPress={toggleModal} />

@@ -20,12 +20,7 @@ const MediaCard = (props) => {
 	return (
 		<View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
 			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate(props.type, { media: props.media })}>
-				{ props.media.poster_path ? 
-					<Image style={styles.imBackground} source={{ uri: urlPosterImage+props.media.poster_path }}/>
-				:
-					<Image style={styles.imBackground} source={require('../assets/movie_avatar.png')}/>	
-
-				}
+				<Image style={styles.imBackground} source={props.media.poster_path ? { uri: urlPosterImage+props.media.poster_path } : require('../assets/movie_avatar.png')}/>
 			</TouchableOpacity>
 			<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
 				<Ionicons name={props.favori ? "star" : "star-outline"} size={32} color={activeTintColor} />			

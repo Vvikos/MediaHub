@@ -58,9 +58,16 @@ const SerieScreen = (props)=> {
 
   return (
     <View style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
-      <ImageBackground imageStyle={{width: '100%', height: '100%', opacity: 0.2}} style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} source={{ uri : urlBackgroundImage+serieDetail.backdrop_path }} >
+      <ImageBackground 
+        imageStyle={{width: '100%', height: '100%', opacity: 0.2}} 
+        style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} 
+        source={serieDetail.backdrop_path ? { uri: urlBackgroundImage+serieDetail.backdrop_path } : require('../assets/movie_avatar.png')}
+      >
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
-          <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={{ uri : urlPosterImage+serieDetail.poster_path }}/>
+          <Image 
+            style={{height: '100%', width: '100%', borderRadius: 1}} 
+            source={serieDetail.poster_path ? { uri: urlPosterImage+serieDetail.poster_path } : require('../assets/movie_avatar.png')}
+          />
         </View>
         <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '55%' }}>
           <Text style={styles.serieTitle}>{serieDetail.name}</Text>
@@ -104,6 +111,7 @@ const SerieScreen = (props)=> {
 
         <List.Section style ={{ color: "red",  width: "90%", alignSelf: "center"}}>
         {
+          serieDetail.seasons ?
           serieDetail.seasons.map((saison) => (
             <List.Accordion
               key={saison.name}
@@ -113,7 +121,7 @@ const SerieScreen = (props)=> {
               title={saison.name}
               left={props => <List.Icon {...props} icon="video-image" />}>
               {
-                saison.details ?
+                saison.details && saison.details.episodes ?
                 saison.details.episodes.map((episode) => (
                   <List.Item key={episode.episode_number} style={{ backgroundColor: backgroundColorDarker, marginTop: 1, borderRadius: 2 }} title={<Text style={{color: activeTintColor}}>Episode {episode.episode_number} - {episode.name}</Text>} />
                 ))
@@ -122,6 +130,8 @@ const SerieScreen = (props)=> {
               }
             </List.Accordion>
             ))
+          :
+           <Text>Détails des saisons pas encore disponibles</Text>
           }
           </List.Section>
         </View>
