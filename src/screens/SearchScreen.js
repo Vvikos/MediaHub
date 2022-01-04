@@ -101,10 +101,13 @@ const Search = (props)=> {
 
 	const onClickStar = () => {
 		setFavori(!favori);
-		if(!favori)
+		if(!favori){
 			dbservice.addFavoriForCurrentProfile(id, (title) ? 'Movie' : 'Serie');
-		else
+			props.addFavorite(id, (title) ? 'Movie':'Serie');
+		} else {
 			dbservice.removeFavoriForCurrentProfile(id, (title) ? 'Movie' : 'Serie');
+			props.deleteFavorite(id, (title) ? 'Movie':'Serie');
+		}
 		onFavoriChange();
 	}
 
@@ -208,6 +211,8 @@ const mapStateToProps = (state) => {
     return {
 		getFilms: () => dispatch(actions.fetchFilms()),
 		getSeries: () => dispatch(actions.fetchSeries()),
+		addFavorite: (id, type) => dispatch(actions.addFavorite(id, type)),
+		deleteFavorite: (id, type) => dispatch(actions.deleteFavorite(id, type)),
     }
   }
 

@@ -49,9 +49,7 @@ const MediaCard = (props) => {
 	)
 };
 
-//This means that one or more of the redux states in the store are available as props
 
-  
   //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
   const mapDispatchToProps = (dispatch) => {
     return {
