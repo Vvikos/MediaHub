@@ -36,7 +36,7 @@ const MoviesStackNavigator = () => {
   return (
     <MoviesStack.Navigator screenOptions={screenOptionStyle}>
       <MoviesStack.Screen name="Movies" component={MoviesScreen} options={{headerShown: false}} />
-      <MoviesStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.media.title })} />
+      <MoviesStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.media_name })} />
     </MoviesStack.Navigator>
   );
 }
@@ -45,7 +45,7 @@ const SeriesStackNavigator = () => {
   return (
     <SeriesStack.Navigator screenOptions={screenOptionStyle}>
       <SeriesStack.Screen name="Series" component={SeriesScreen} options={{headerShown: false}} />
-      <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.media.name })}/>
+      <SeriesStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.media_name })}/>
     </SeriesStack.Navigator>
   );
 }
@@ -54,8 +54,8 @@ const SearchStackNavigator = () => {
   return (
     <SearchStack.Navigator screenOptions={screenOptionStyle}>
       <SearchStack.Screen name="Search" component={SearchScreen} options={{headerShown: false}} />
-      <SearchStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.media.title })}/>
-      <SearchStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.media.name })}/>
+      <SearchStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.media_name })}/>
+      <SearchStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.media_name })}/>
     </SearchStack.Navigator>
   );
 }
@@ -64,6 +64,8 @@ const ProfileStackNavigator = () => {
   return (
     <ProfileStack.Navigator screenOptions={screenOptionStyle}>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}} />
+      <ProfileStack.Screen name="Movie" component={MovieScreen} options={({ route }) => ({ title: route.params.media_name })}/>
+      <ProfileStack.Screen name="Serie" component={SerieScreen} options={({ route }) => ({ title: route.params.media_name })}/>
     </ProfileStack.Navigator>
   );
 }

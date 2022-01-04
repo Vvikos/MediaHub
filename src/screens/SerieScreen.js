@@ -6,6 +6,7 @@ import { backgroundColor, backgroundColorDarker, activeTintColor } from "../help
 import ActorCard from "../components/ActorCard";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { List } from 'react-native-paper';
+import Loading from "../components/Loading";
 
 const styles = StyleSheet.create({
   center: {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
 const SerieScreen = (props)=> {
   const { route, navigation } = props;
   const { media } = route.params;
-  const serieDetail = media.details;
+  const serieDetail = media;
   
   const colorState = (moyenne) => {
     if(moyenne < 50)

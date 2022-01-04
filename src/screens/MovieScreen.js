@@ -7,7 +7,7 @@ import { activeTintColor, backgroundColor, backgroundColorDarker } from "../help
 import { ImageBackground, Image } from 'react-native';
 import ActorCard from "../components/ActorCard";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-
+import Loading from "../components/Loading";
 
 const styles = StyleSheet.create({
     center: {
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
 
 const MovieScreen = (props)=> {
   const { route, navigation } = props;
-  const { media } = route.params;
-  const movieDetail = media.details;
+  const { media, media_name } = route.params;
+  const movieDetail = media;
 
   const colorState = (moyenne) => {
     if(moyenne < 50)

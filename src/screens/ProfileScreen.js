@@ -23,7 +23,6 @@ function ProfileScreen(props) {
 
 		// TODO : Ajouter chargement (ajout) des favoris pas encore dans le store (par exemple pour le cas d'un changement de profile)
 		//props.getFavorites(favorites);
-
 	}, []);
 
 	useEffect(() => {
@@ -34,7 +33,7 @@ function ProfileScreen(props) {
   const deleteProfile = () => {
 	  	props.initFavorite();
 		dbservice.removeCurrentProfile(); 
-		navigation.navigate('Profiles')
+		navigation.navigate('Profiles');
   }
 
   return (
@@ -67,7 +66,7 @@ function ProfileScreen(props) {
 								<ListItem.Title style={{color: activeTintColor}}>{movie.title }</ListItem.Title>
 								<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
 							</ListItem.Content>
-							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { media: movie })}>		
+							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { media: movie, media_name: movie.title })}>		
 								<ListItem.Chevron />
 							</TouchableOpacity>
 						</ListItem>
@@ -107,7 +106,7 @@ function ProfileScreen(props) {
 								<ListItem.Title style={{color: activeTintColor}}>{serie.name }</ListItem.Title>
 								<ListItem.Subtitle style={{color: alternativeTintColor }}>SubTitle</ListItem.Subtitle>
 							</ListItem.Content>
-							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Serie", { media: serie })}>		
+							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Serie", { media: serie, media_name: serie.name})}>		
 								<ListItem.Chevron />
 							</TouchableOpacity>
 						</ListItem>
