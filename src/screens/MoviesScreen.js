@@ -10,8 +10,6 @@ import * as dbservice from '../db/db';
 
 const Movies = (props)=> {
 	const { navigation } = props;
-  
-	const [loading, setLoading] = useState(true);
 	const [favoris, setFavoris] = useState([]);
 
 	useEffect(() => {
@@ -20,7 +18,6 @@ const Movies = (props)=> {
 	  }, [navigation]);
 	
 	const refreshFavoris = () => {
-		console.log('REFRESH FROM MOVIES')
 		dbservice.requestFavoriForCurrentProfile(setFavoris);
 	}
 	
@@ -28,20 +25,12 @@ const Movies = (props)=> {
 		refreshFavoris();
 		props.getFilms();
 	}, []);
-
-	useEffect( () => {
-		if(props.movies.popular){
-			setLoading(false);
-		}
-	}, [props.movies]);
-
 		
 	return (
 		<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
 			<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
-				{ !loading ?
-					props.movies.popular ? 
-						//<MovieList navigation={navigation} movies={props.movies}/>
+				{ props.movies ?
+					props.movies.popular ?
 						<MediaList navigation={navigation} medias={props.movies} type='Movie' favoris={favoris} onFavoriChange={refreshFavoris} />
 					: null
 				: 

@@ -63,9 +63,13 @@ const MovieScreen = (props)=> {
     <>
     { movieDetail ?
       <View style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
-        <ImageBackground imageStyle={{width: '100%', height: '100%', opacity: 0.2}} style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} source={{ uri : urlBackgroundImage+movieDetail.backdrop_path }} >
+        <ImageBackground 
+          imageStyle={{width: '100%', height: '100%', opacity: 0.2}} 
+          style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} 
+          source={movieDetail.backdrop_path ? { uri: urlBackgroundImage+movieDetail.backdrop_path } : require('../assets/movie_avatar.png')}
+        >
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
-            <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={{ uri : urlPosterImage+movieDetail.poster_path }}/>
+            <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={movieDetail.backdrop_path ? { uri: urlPosterImage+movieDetail.poster_path } : require('../assets/movie_avatar.png')} />
           </View>
           <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '55%' }}>
             <Text style={styles.movieTitle}>{movieDetail.title}</Text>
@@ -107,7 +111,7 @@ const MovieScreen = (props)=> {
 
         <View style={{flexDirection: 'column', justifyContent: 'flex-start', marginTop: 30, marginBottom: 10, width: '100%'}}>
           <Text style={styles.headerTitle}>Acteurs</Text>
-          { movieDetail.credits.cast.length > 0 ?
+          { movieDetail.credits && movieDetail.credits.cast && movieDetail.credits.cast.length > 0 ?
             <View style={{backgroundColor: backgroundColorDarker}}>
               <FlatList
                 contentContainerStyle={{backgroundColor: backgroundColorDarker, padding: 10}}

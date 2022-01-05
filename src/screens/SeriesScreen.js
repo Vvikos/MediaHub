@@ -10,7 +10,6 @@ import * as dbservice from '../db/db';
 
 const Series = (props)=> {
 	const { navigation } = props;
-	const [loading, setLoading] = useState(true);
 	const [favoris, setFavoris] = useState([]);
 
 	useEffect(() => {
@@ -27,16 +26,10 @@ const Series = (props)=> {
 		props.getSeries();
 	}, []);
 
-	useEffect( () => {
-		if(props.series.popular){
-			setLoading(false);
-		}
-	}, [props.series]);
-
 return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
 		<ScrollView directionalLockEnabled={false} contentContainerStyle={{ backgroundColor: backgroundColor, justifyContent: "center" }}>
-		{ !loading ?
+		{ props.series ?
 			props.series.popular ? 
 				<MediaList navigation={navigation} medias={props.series} type='Serie' favoris={favoris} onFavoriChange={refreshFavoris} />
 			: null

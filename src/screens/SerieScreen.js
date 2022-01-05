@@ -144,7 +144,7 @@ const SerieScreen = (props)=> {
               <View style={{flexDirection: 'column', justifyContent: 'flex-start', marginTop: 30, marginBottom: 10}}>
                 <Text style={styles.headerTitle}>Acteurs</Text>
                 {
-                  serieDetail.credits.cast.length > 0 ?
+                  serieDetail.credits && serieDetail.credits.cast && serieDetail.credits.cast.length > 0 ?
                   <View style={{backgroundColor: backgroundColor}}>
                     <FlatList
                       contentContainerStyle={{backgroundColor: backgroundColorDarker, padding: 10}}

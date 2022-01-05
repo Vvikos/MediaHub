@@ -8,7 +8,7 @@ import * as dbservice from '../db/db';
 import Loading from '../components/Loading';
 import Header from '../components/Header';
 
-function AddProfile({ navigation, onInsert, onCancel }) {
+function AddProfile({ navigation, onInsert, onCancel, disableCancel }) {
 	const [value, setValue] = useState('');
 
 	const onAddProfile = () => {
@@ -28,16 +28,16 @@ function AddProfile({ navigation, onInsert, onCancel }) {
 				onChangeText={setValue}
 			/>
 			<View style={{ width:'65%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4}}>
-				<Button title="Annuler" color={backgroundColor} onPress={onCancel}  />
+				<Button title="Annuler" color={backgroundColor} onPress={onCancel} disabled={disableCancel} />
 				<Button title="Ajouter" color={activeTintColor} onPress={onAddProfile} disabled={!(value!='')} />
 			</View>
     </View>
   );
 }
 
-function AddProfileCard({ navigation, onAddProfile }) {
+function AddProfileCard({ navigation, onAddProfile, disabled }) {
 	return (
-		  <TouchableOpacity activeOpacity={0.5} onPress={onAddProfile} >    
+		  <TouchableOpacity activeOpacity={0.5} onPress={onAddProfile} disabled={disabled} >    
 			<Ionicons name="add-circle-sharp" size={85} style={styles.addProfileCard} />
 			<Text style={styles.text}></Text>
 		  </TouchableOpacity>
@@ -78,7 +78,7 @@ const ProfilesScreen = ({ navigation })=> {
 
 	
 	useEffect( () => {
-		dbservice.initProfiles();
+		dbservice.initBase();
         dbservice.requestProfiles(setProfiles);
 	}, []);
 
@@ -107,7 +107,7 @@ const ProfilesScreen = ({ navigation })=> {
 		for(let i=0; i<max; i++){
 			rows.push(<ProfileCard key={'Profile'+i} name={profiles[i]} img='' navigation={navigation}/>);
 		}
-		rows.push(<AddProfileCard key={'addProfile'} navigation={navigation} onAddProfile={activateAddScreen}/>);
+		rows.push(<AddProfileCard key={'addProfile'} navigation={navigation} onAddProfile={activateAddScreen} disabled={profiles.length>2} />);
 		return rows;
 	};
 
@@ -119,7 +119,7 @@ const ProfilesScreen = ({ navigation })=> {
 				<Loading />
 			:
                 addScreen ?
-                    <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen}/>
+                    <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} />
                 :
                     generateProfiles()
             }

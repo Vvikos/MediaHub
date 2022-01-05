@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite'
 const db = SQLite.openDatabase('db.profiles') // returns Database object
 
-export const initProfiles = () => {
+export const initBase = () => {
     // Check if the profiles table exists if not create it
     db.transaction(tx => {
         /*tx.executeSql(
@@ -95,6 +95,12 @@ export const addProfile = (name) => {
 
 export const removeCurrentProfile = () => {
     db.transaction(tx => {
+        tx.executeSql('DELETE FROM favoris WHERE id_profile==(SELECT id FROM profiles WHERE selected==1)', null, // passing sql query and parameters:null
+            // success callback which sends two things Transaction object and ResultSet Object
+            (txObj, { rows: { _array } }) => console.log('SQLite DELETE', _array),
+            // failure callback which sends two things Transaction object and Error
+            (txObj, error) => console.log('SQLite DELETE Error ', error)
+            ) // end executeSQL
         // sending 4 arguments in executeSql
         tx.executeSql('DELETE FROM profiles WHERE selected==1', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object

@@ -15,34 +15,57 @@ function ProfileScreen(props) {
 	const [profile, setProfile] = useState('');
 	const [favMoviesExpanded, setFavMoviesExpanded] = useState(true);
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
-	const [favorites, setFavorites] =  useState(null);
+	const [favoris, setFavoris] =  useState(null);
 
 	useEffect( () => {
 		dbservice.requestProfile(setProfile);
-		dbservice.requestFavoriForCurrentProfile(setFavorites);
+		dbservice.requestFavoriForCurrentProfile(setFavoris);
 
 		// TODO : Ajouter chargement (ajout) des favoris pas encore dans le store (par exemple pour le cas d'un changement de profile)
-		//props.getFavorites(favorites);
+		//props.getfavoris(favoris);
 	}, []);
 
 	useEffect(() => {
-		//props.getFavorites(favorites);
-	}, [favorites]);
+		const requestFavoris = navigation.addListener('focus', refreshFavoris);
+		return requestFavoris;
+	}, [navigation]);
 
-	
-  const deleteProfile = () => {
-	  	props.initFavorite();
+	useEffect(() => {
+		//props.getfavoris(favoris);
+	}, [favoris]);
+
+	const refreshFavoris = () => {
+		dbservice.requestFavoriForCurrentProfile(setFavoris);
+	}
+
+	const deleteProfile = () => {
+		props.initFavorite();
 		dbservice.removeCurrentProfile(); 
 		navigation.navigate('Profiles');
-  }
+	}
 
   return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
 		<View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
-			<TouchableOpacity activeOpacity={0.5} onPress={() => deleteProfile()}>
-				<Ionicons name="trash-outline" size={24} color='#ffffff' containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} style={{backgroundColor: '#eb4034', padding: 6, borderRadius: 2}} />
-			</TouchableOpacity>
+			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+				<TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Profiles')}>
+					<Ionicons 
+						name="people-outline" 
+						size={24} color={activeTintColor} 
+						containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
+						style={{backgroundColor: backgroundColorDarker, padding: 6, borderRadius: 2, borderColor: activeTintColor, borderWidth: 0.5, margin: 1}} 
+					/>
+				</TouchableOpacity>
+				<TouchableOpacity activeOpacity={0.5} onPress={() => deleteProfile()}>
+					<Ionicons 
+						name="trash-outline" 
+						size={24} color='#ffffff' 
+						containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
+						style={{backgroundColor: '#eb4034', padding: 6, borderRadius: 2, borderColor: '#eb4034', borderWidth: 0.5,  margin: 1}} 
+					/>
+				</TouchableOpacity>
+			</View>
 		</View>
 		<View style={{ width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}>
 			<Text style={styles.headerTitle} >Favoris</Text>
@@ -57,9 +80,9 @@ function ProfileScreen(props) {
 				setFavMoviesExpanded(!favMoviesExpanded);
 			}}
 			>
-			{ props.favorites ?
-				props.favorites.movies.length > 0 ?
-					Object.entries(props.favorites.movies).map(([index, movie]) => {
+			{ props.favoris ?
+				props.favoris.movies.length > 0 ?
+					Object.entries(props.favoris.movies).map(([index, movie]) => {
 						return (
 						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 							<ListItem.Content style={{color: activeTintColor}}>
@@ -96,9 +119,9 @@ function ProfileScreen(props) {
 				setFavSeriesExpanded(!favSeriesExpanded);
 			}}
 			>
-			{ props.favorites ?
-				props.favorites.series.length > 0 ?
-					Object.entries(props.favorites.series).map(([index, serie]) => {
+			{ props.favoris ?
+				props.favoris.series.length > 0 ?
+					Object.entries(props.favoris.series).map(([index, serie]) => {
 						return (
 						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 							<ListItem.Content style={{color: activeTintColor}}>
@@ -175,14 +198,14 @@ const styles = StyleSheet.create({
 //This means that one or more of the redux states in the store are available as props
 const mapStateToProps = (state) => {
     return {
-		favorites: state.api.favorites
+		favoris: state.api.favoris
     }
   }
   
   //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
   const mapDispatchToProps = (dispatch) => {
     return {
-		getFavorites: (favorites) => dispatch(actions.fetchFavorites(favorites)),
+		getfavoris: (favoris) => dispatch(actions.fetchfavoris(favoris)),
 		initFavorite: () => dispatch(actions.initFavorite()),
     }
   }
