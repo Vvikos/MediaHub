@@ -39,7 +39,7 @@ function ProfileScreen(props) {
 
 	const deleteProfile = () => {
 		props.initFavorite();
-		dbservice.removeCurrentProfile(); 
+		dbservice.removeCurrentProfile();
 		navigation.navigate('Profiles');
 	}
 

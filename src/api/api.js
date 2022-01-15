@@ -1,5 +1,4 @@
 import { call } from "react-native-reanimated";
-import MovieScreen from "../screens/MovieScreen";
 import {
     getPopularMoviesUrl,
     getMustWatchMoviesUrl,

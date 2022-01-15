@@ -236,19 +236,21 @@ export const fetchFavorites = (favorites) => {
                             .then((details) =>{
                                 let serie = details[0];
                                 dispatch(apiFetchSerieDetailsSuccess());
-                                if(serie["seasons"].length > 0){
-                                    (serie["seasons"]).forEach(function(season, index){
-                                        Promise.all([
-                                            request(getSerieSeasonDetailUrl(serie.id, index+1)),
-                                        ]). 
-                                        then((season_detail) => {
-                                            serie["seasons"][index]["details"] = season_detail[0];
+                                if(serie["seasons"]){
+                                    if(serie["seasons"].length > 0){
+                                        (serie["seasons"]).forEach(function(season, index){
+                                            Promise.all([
+                                                request(getSerieSeasonDetailUrl(serie.id, index+1)),
+                                            ]). 
+                                            then((season_detail) => {
+                                                serie["seasons"][index]["details"] = season_detail[0];
+                                            });
                                         });
-                                    });
+                                    }
                                 }
-
                                 dispatch(apiFetchedFavoritesSerie(serie)); 
                             });
+                        
 
                     }
                 });

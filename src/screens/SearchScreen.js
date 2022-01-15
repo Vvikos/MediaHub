@@ -140,7 +140,7 @@ const Search = (props)=> {
 	);
 };
 
-	const renderItem = ({ item }) => <Item item={item} id={item.id} default_favori={favoris.length > 0 ? Object.values(favoris).some(e => e.id_media === item.id) : null} onFavoriChange={refreshFavoris} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
+	const renderItem = ({ item }) => <Item item={item} id={item.id} default_favori={favoris.some(e => e.id_media === item.id)} onFavoriChange={refreshFavoris} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>

@@ -9,6 +9,7 @@ import types from "../helpers/types";
 import MediaCard from "./MediaCard";
 
 const MediaRow = (props) => {
+	console.log(props.favoris);
 	return (
 		<View style={{backgroundColor: backgroundColorDarker, marginTop: 30, paddingLeft: 2, paddingRight: 2 }}>
 			<Text style={{marginLeft: 15, marginBottom: 25, marginTop: 5, fontSize: 25, fontStyle:'italic', color: "#ffffff"}}>{props.title}</Text>
@@ -16,7 +17,7 @@ const MediaRow = (props) => {
 				keyExtractor={(item) => item.id.toString()}
 				keyboardShouldPersistTaps={"handled"}
 				data={props.mediaList.results}
-				renderItem={({ item }) => <MediaCard navigation={props.navigation} type={props.type} media={item} favori={props.favoris.length > 0 ? Object.values(props.favoris).some(e => e.id_media === item.id) : null} onFavoriChange={props.onFavoriChange} />}
+				renderItem={({ item }) => <MediaCard navigation={props.navigation} type={props.type} media={item} favori={props.favoris.some(e => e.id_media === item.id)} onFavoriChange={props.onFavoriChange} />}
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				ItemSeparatorComponent={() => <View style={{ margin: 4 }} />}

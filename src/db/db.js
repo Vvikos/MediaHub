@@ -7,14 +7,14 @@ export const initBase = () => {
         /*tx.executeSql(
             'DROP TABLE IF EXISTS favoris', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => console.log('SQLite INIT ', res),
+            (txObj, res) => console.log('SQLite INIT DELETE ', res),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite INIT Error ', error)
         ) // end executeSQL
         tx.executeSql(
             'DROP TABLE IF EXISTS profiles', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => console.log('SQLite INIT ', res),
+            (txObj, res) => console.log('SQLite INIT DELETE', res),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite INIT Error ', error)
         ) // end executeSQL*/
@@ -22,17 +22,19 @@ export const initBase = () => {
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS profiles (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, selected INTEGER DEFAULT 0)', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => console.log('SQLite INIT ', res),
+            (txObj, res) => console.log('SQLite INIT CREATE ', res),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite INIT Error ', error)
         ) // end executeSQL
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS favoris (id_profile INTEGER, id_media INTEGER, media_type TEXT, FOREIGN KEY(id_profile) REFERENCES profiles(id), UNIQUE(id_profile, id_media))', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => console.log('SQLite INIT ', res),
+            (txObj, res) => console.log('SQLite INIT CREATE', res),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite INIT Error ', error)
         ) // end executeSQL
+
+
     });
 };
 
@@ -41,10 +43,11 @@ export const requestProfiles = (callback) => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT * FROM profiles LIMIT 3', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => 
+            (txObj, { rows: { _array } }) => 
             { 
-                if(res.rows.length > 0){
-                    callback(Object.keys(res.rows).map(key => res.rows[key].name)),
+                if(_array.length > 0){
+                    console.log("PROFILES: ",_array);
+                    callback(_array.map(field => field.name)),
                 
                     // failure callback which sends two things Transaction object and Error
                     (txObj, error) => console.log('SQLite SELECT Error ', error)    
@@ -59,7 +62,7 @@ export const requestProfile = (callback) => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT name FROM profiles WHERE selected==1', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => callback((res.rows ? res.rows[0].name : 'NaN')),
+            (txObj, { rows: { _array } }) => callback((_array ? _array[0].name : 'NaN')),
              // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite SELECT Error ', error)
             ) // end executeSQL
@@ -123,11 +126,9 @@ export const requestFavoriForCurrentProfile = (callback) => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT id_media, media_type FROM favoris WHERE id_profile==(SELECT id FROM profiles WHERE selected==1)', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, res) => { 
-                callback(res.rows) ,
+            (txObj,{ rows: { _array } }) => callback(_array),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite SELECT Error ', error)
-            }
             ) // end executeSQL
     }); // end transaction
 };

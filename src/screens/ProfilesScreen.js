@@ -9,7 +9,38 @@ import {connect} from 'react-redux';
 import Loading from '../components/Loading';
 import Header from '../components/Header';
 import * as actions from '../store/actions';
-import { propTypes } from "react-bootstrap/esm/Image";
+
+
+const styles = StyleSheet.create({
+	profileCard: {
+		height: 100,
+		width: 100
+	},
+    profileCardBig: {
+		height: 175,
+		width: 175,
+		padding: 10
+	},
+	addProfileCard: {
+		textAlign: 'center',
+		paddingLeft: 3,
+		color: activeTintColor
+	},
+    input: {
+		color: backgroundColor,
+		borderColor: activeTintColor,
+		backgroundColor: '#ffffff',
+		marginBottom: 3,
+		padding: 3,
+		width: '65%'
+	},
+	text : { 
+		color: activeTintColor, 
+		textAlign: 'center',
+		fontWeight: '600',
+		fontSize: 20
+	}
+});
 
 function AddProfile({ navigation, onInsert, onCancel, disableCancel }) {
 	const [value, setValue] = useState('');
@@ -68,9 +99,9 @@ const ProfilesScreen = (props)=> {
 	
 	useEffect( () => {
 		dbservice.initBase();
-        dbservice.requestProfiles(setProfiles);
 		props.getFilms();
 		props.getSeries();
+		dbservice.requestProfiles(setProfiles);
 	}, []);
 
 	useEffect( () => {
@@ -125,7 +156,8 @@ const ProfilesScreen = (props)=> {
 				<Loading />
 			:
                 addScreen ?
-                    <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} />
+				<>
+                    <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} /></>
                 :
                     generateProfiles()
             }
@@ -134,42 +166,12 @@ const ProfilesScreen = (props)=> {
   );
 }
 
-const styles = StyleSheet.create({
-	profileCard: {
-		height: 100,
-		width: 100
-	},
-    profileCardBig: {
-		height: 175,
-		width: 175,
-		padding: 10
-	},
-	addProfileCard: {
-		textAlign: 'center',
-		paddingLeft: 3,
-		color: activeTintColor
-	},
-    input: {
-		color: backgroundColor,
-		borderColor: activeTintColor,
-		backgroundColor: '#ffffff',
-		marginBottom: 3,
-		padding: 3,
-		width: '65%'
-	},
-	text : { 
-		color: activeTintColor, 
-		textAlign: 'center',
-		fontWeight: '600',
-		fontSize: 20
-	}
-});
-
 //This means that one or more of the redux states in the store are available as props
 const mapStateToProps = (state) => {
     return {
 		movies: state.api.movies,
-		series: state.api.series
+		series: state.api.series,
+		favorites: state.api.favorites
     }
   }
   
