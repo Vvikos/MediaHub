@@ -41,7 +41,7 @@ export const apiSuccess = () => {
     }
 }
 
-export const apiFetchFilmDetailsSuccess = () => {
+export const apiFetchFilmDetailsSuccess = (counter) => {
     return {
         type: actionTypes.API_FETCH_FILM_DETAILS_SUCCESS
     }
@@ -89,7 +89,7 @@ export const apiFetchedFavoritesSerie = (serie) => {
 
 export const apiFetchedFavoritesInit = () => {
     return {
-        type: actionTypes.API_FETCHED_FAVORITES_INIT, 
+        type: actionTypes.API_FETCHED_FAVORITES_INIT,
     }
 }
 
@@ -125,8 +125,9 @@ export const apiDeleteSerieFavorite = (id) => {
 
 
 export const fetchFilms = () => {
-    return async dispatch => {
-            dispatch(apiStart);
+    let counter = 0;
+    return dispatch => {
+            dispatch(apiStart());
  
             Promise.all([
                 request(getPopularMoviesUrl()),
@@ -144,7 +145,7 @@ export const fetchFilms = () => {
                         ])
                             .then((details) =>{
                                 movie.details = details[0];
-                                dispatch(apiFetchFilmDetailsSuccess);
+                                dispatch(apiFetchFilmDetailsSuccess(counter++));
                             })
                             .catch(() => {
                                 dispatch(apiFail);
@@ -153,18 +154,18 @@ export const fetchFilms = () => {
                 });
 
                 dispatch(apiFetchedFilms(movies))
-                dispatch(apiSuccess);
+                dispatch(apiSuccess());
 
             }).catch(() => {
-                dispatch(apiFail);
+                dispatch(apiFail());
             });
     }
 }
 
 
 export const fetchSeries = () => {
-    return async dispatch => {
-            dispatch(apiStart);
+    return dispatch => {
+            dispatch(apiStart());
  
             Promise.all([
                 request(getPopularSeriesUrl()),
@@ -180,7 +181,7 @@ export const fetchSeries = () => {
                         ])
                             .then((details) =>{
                                 serie.details = details[0];
-                                dispatch(apiFetchSerieDetailsSuccess);
+                                dispatch(apiFetchSerieDetailsSuccess());
 
                                 if(serie.details.seasons.length > 0){
                                     (serie.details.seasons).forEach(function(season, index){
@@ -191,83 +192,79 @@ export const fetchSeries = () => {
                                             serie.details.seasons[index].details = season_detail[0];
                                         })
                                         .catch(() => {
-                                            dispatch(apiFail);
+                                            dispatch(apiFail());
                                         });
                                     });
                                 }
                         
                             }).catch(() => {
-                                dispatch(apiFail);
+                                dispatch(apiFail());
                             });
                     });
                 });
 
                 dispatch(apiFetchedSeries(series))
-                dispatch(apiSuccess);
+                dispatch(apiSuccess());
 
             }).catch(() => {
-                dispatch(apiFail);
+                dispatch(apiFail());
             });
     }
 }
 
 
+//TODO: consider case when no data can be fetched, what will be shown ? 
 export const fetchFavorites = (favorites) => {
-    // return async dispatch => {
-    //         dispatch(apiStart);
-    //         console.log("heressss");
-    //         if(favorites){
-                
-    //             favorites.forEach(function (media, index) {
-    //                 if(media["media_type"] == "Movie"){
-    //                     Promise.all([
-    //                         request(getMovieDetailUrl(media["id_media"])),
-    //                     ])
-    //                         .then((details) =>{
-    //                             //console.log(details[0]["backdrop_path"])
-    //                             dispatch(apiFetchedFavoritesMovie(details[0])); 
-    //                         });
+    
+    return dispatch => {
+            dispatch(apiStart());
+            if(favorites){
+                Object.entries(favorites).map(([index, media]) => {
+                    if(media["media_type"] == "Movie"){
+                        Promise.all([
+                            request(getMovieDetailUrl(media["id_media"])),
+                        ])
+                            .then((details) =>{
+                                dispatch(apiFetchedFavoritesMovie(details[0])); 
+                            });
 
 
-    //                 } else {
-    //                     Promise.all([
-    //                         request(getSerieDetailUrl(media["id_media"])),
-    //                     ])
-    //                         .then((details) =>{
-    //                             console.log(media);
-    //                             let serie = details[0];
-    //                             dispatch(apiFetchSerieDetailsSuccess);
+                    } else {
+                        Promise.all([
+                            request(getSerieDetailUrl(media["id_media"])),
+                        ])
+                            .then((details) =>{
+                                let serie = details[0];
+                                dispatch(apiFetchSerieDetailsSuccess());
+                                if(serie["seasons"].length > 0){
+                                    (serie["seasons"]).forEach(function(season, index){
+                                        Promise.all([
+                                            request(getSerieSeasonDetailUrl(serie.id, index+1)),
+                                        ]). 
+                                        then((season_detail) => {
+                                            serie["seasons"][index]["details"] = season_detail[0];
+                                        });
+                                    });
+                                }
 
-    //                             console.log(serie);
-    //                             if(serie["seasons"].length > 0){
-    //                                 (serie["seasons"]).forEach(function(season, index){
-    //                                     Promise.all([
-    //                                         request(getSerieSeasonDetailUrl(serie.id, index+1)),
-    //                                     ]). 
-    //                                     then((season_detail) => {
-    //                                         serie["seasons"][index]["details"] = season_detail[0];
-    //                                         dispatch(apiFetchedFavoritesSerie(serie)); 
-    //                                     });
-    //                                 });
-    //                             }
-                        
-    //                         });
+                                dispatch(apiFetchedFavoritesSerie(serie)); 
+                            });
 
-    //                 }
-    //             });
-    //             dispatch(apiSuccess);
-    //         }
+                    }
+                });
+                dispatch(apiSuccess());
+            }
 
-    //         dispatch(apiFail);
-    // }
+            dispatch(apiFail());
+     }
 }
 
 
 export const initFavorite = () => {
     return dispatch => {
-        dispatch(apiStart);
-        dispatch(apiFetchedFavoritesInit);
-        dispatch(apiSuccess);
+        dispatch(apiStart());
+        dispatch(apiFetchedFavoritesInit());
+        dispatch(apiSuccess());
     }
 }
 

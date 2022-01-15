@@ -111,7 +111,7 @@ const apiFetchedFavoritesMovieReducer = (state, action) => {
         error: null,
         loading: false,
         favorites: {
-            movies: [action.movie], 
+            movies: [...state.favorites.movies, action.movie], 
             series: state.favorites.series
         }
     });
@@ -122,7 +122,7 @@ const apiFetchedFavoritesSerieReducer = (state, action) => {
         error: null,
         loading: false,
         favorites: {
-            series: [action.serie], 
+            series: [...state.favorites.series, action.serie], 
             movies: state.favorites.movies
         }
     });
@@ -140,30 +140,25 @@ const apiInitFavoritesReducer = (state, action) => {
 }
 
 const apiAddMovieFavoriteReducer = (state, action) => {
-    if (state.favorites.movies.filter(item => item.id === action.movie.id).length == 0) {
-        return updateObject(state, {
-            error: null, 
-            loading: false, 
-            favorites: {
-                series: [],
-                movies: [...state.favorites.movies, action.movie]
-            }
-        });
-    }
+    return updateObject(state, {
+        error: null, 
+        loading: false, 
+        favorites: {
+            series: state.favorites.series,
+            movies: [...state.favorites.movies, action.movie]
+        }
+    });
 }
 
 const apiAddSerieFavoriteReducer = (state, action) => {
-    if (state.favorites.series.filter(item => item.id === action.serie.id).length == 0) {
-        return updateObject(state, {
-            error: null, 
-            loading: false, 
-            favorites: {
-                series: [...state.favorites.series, action.serie],
-                movies: state.favorites.movies
-            }
-
-        });
-    }
+    return updateObject(state, {
+        error: null, 
+        loading: false, 
+        favorites: {
+            series: [...state.favorites.series, action.serie],
+            movies: state.favorites.movies
+        }
+    });
 }
 
 const apiDeleteMovieFavoriteReducer = (state, action) => {

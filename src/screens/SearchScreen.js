@@ -70,25 +70,8 @@ const Search = (props)=> {
   }
 
 
-	const redirectToDetailPage = (id, type) => {
-		if(type=='Serie') {
-			requestSerieDetailScreen( id, (data) => {
-				let media = {
-					details: data[0],
-					name: data[0].name ? data[0].name : data[0].title
-				};
-				props.navigation.navigate(type, { media: media });
-			});
-		}
-		else {
-			requestMovieDetailScreen( id, (data) => {
-				let media = {
-					details: data[0],
-					title: data[0].name ? data[0].name : data[0].title
-				};
-				props.navigation.navigate(type, { media: media });
-			});
-		}
+	const redirectToDetailPage = (item, type) => {
+		props.navigation.navigate(type, { media: item.details });
 	}	
 
   const convertDate = (inputDate) => {
@@ -96,14 +79,14 @@ const Search = (props)=> {
 	return date.getFullYear();
   }
 
-  const Item = ({ id, default_favori, title, poster_path, vote_average, name, vote_count, first_air_date, onFavoriChange }) => {
+  const Item = ({ item, id, default_favori, title, poster_path, vote_average, name, vote_count, first_air_date, onFavoriChange }) => {
 	const [favori, setFavori] = useState(default_favori);
 
 	const onClickStar = () => {
 		setFavori(!favori);
 		if(!favori){
 			dbservice.addFavoriForCurrentProfile(id, (title) ? 'Movie' : 'Serie');
-			props.addFavorite(id, (title) ? 'Movie':'Serie');
+			props.addFavorite(item.details, (title) ? 'Movie':'Serie');
 		} else {
 			dbservice.removeFavoriForCurrentProfile(id, (title) ? 'Movie' : 'Serie');
 			props.deleteFavorite(id, (title) ? 'Movie':'Serie');
@@ -114,7 +97,7 @@ const Search = (props)=> {
 	return (
 		<View style={{backgroundColor: backgroundColorDarker, marginTop: 25, padding: 2}}>
 				<View style={{flex:2,flexDirection:"row", justifyContent:'flex-start' }}>
-					<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(id, (title ? 'Movie' : 'Serie'))}>
+					<TouchableOpacity activeOpacity={0.5} onPress={() => redirectToDetailPage(item, (title ? 'Movie' : 'Serie'))}>
 						<Image style={styles.immBackground} source={poster_path ? { uri: urlPosterImage+poster_path } : require('../assets/movie_avatar.png')}/>
 					</TouchableOpacity>
 						
@@ -157,7 +140,7 @@ const Search = (props)=> {
 	);
 };
 
-	const renderItem = ({ item }) => <Item id={item.id} default_favori={favoris.some(e => e.id_media === item.id)} onFavoriChange={refreshFavoris} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
+	const renderItem = ({ item }) => <Item item={item} id={item.id} default_favori={favoris.length > 0 ? Object.values(favoris).some(e => e.id_media === item.id) : null} onFavoriChange={refreshFavoris} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>

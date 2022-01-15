@@ -9,7 +9,7 @@ import MediaList from "../components/MediaList";
 import * as dbservice from '../db/db';
 
 const Movies = (props)=> {
-	const { navigation } = props;
+	const { navigation, route } = props;
 	const [favoris, setFavoris] = useState([]);
 
 	useEffect(() => {
@@ -23,7 +23,6 @@ const Movies = (props)=> {
 	
 	useEffect( () => {
 		refreshFavoris();
-		props.getFilms();
 	}, []);
 		
 	return (
@@ -49,12 +48,6 @@ const mapStateToProps = (state) => {
     }
   }
   
-  //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
-  const mapDispatchToProps = (dispatch) => {
-    return {
-		getFilms: () => dispatch(actions.fetchFilms()),
-    }
-  }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Movies);
+export default connect(mapStateToProps, null)(Movies);

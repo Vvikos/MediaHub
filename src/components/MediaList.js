@@ -16,7 +16,7 @@ const MediaRow = (props) => {
 				keyExtractor={(item) => item.id.toString()}
 				keyboardShouldPersistTaps={"handled"}
 				data={props.mediaList.results}
-				renderItem={({ item }) => <MediaCard navigation={props.navigation} type={props.type} media={item} favori={props.favoris.some(e => e.id_media === item.id)} onFavoriChange={props.onFavoriChange} />}
+				renderItem={({ item }) => <MediaCard navigation={props.navigation} type={props.type} media={item} favori={props.favoris.length > 0 ? Object.values(props.favoris).some(e => e.id_media === item.id) : null} onFavoriChange={props.onFavoriChange} />}
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				ItemSeparatorComponent={() => <View style={{ margin: 4 }} />}

@@ -23,7 +23,6 @@ const Series = (props)=> {
 
 	useEffect( () => {
 		refreshFavoris();
-		props.getSeries();
 	}, []);
 
 return (
@@ -48,12 +47,6 @@ const mapStateToProps = (state) => {
     }
   }
   
-  //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
-  const mapDispatchToProps = (dispatch) => {
-    return {
-		getSeries: () => dispatch(actions.fetchSeries()),
-    }
-  }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Series);
+export default connect(mapStateToProps, null)(Series);

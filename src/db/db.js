@@ -41,10 +41,16 @@ export const requestProfiles = (callback) => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT * FROM profiles LIMIT 3', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, { rows: { _array } }) => callback(_array.map(field => field.name)),
-            // failure callback which sends two things Transaction object and Error
-            (txObj, error) => console.log('SQLite SELECT Error ', error)
-            ) // end executeSQL
+            (txObj, res) => 
+            { 
+                if(res.rows.length > 0){
+                    callback(Object.keys(res.rows).map(key => res.rows[key].name)),
+                
+                    // failure callback which sends two things Transaction object and Error
+                    (txObj, error) => console.log('SQLite SELECT Error ', error)    
+                }
+            }
+           ) // end executeSQL
     }); // end transaction
 };
 
@@ -53,8 +59,8 @@ export const requestProfile = (callback) => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT name FROM profiles WHERE selected==1', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, { rows: { _array } }) => callback((_array ? _array[0].name : 'NaN')),
-            // failure callback which sends two things Transaction object and Error
+            (txObj, res) => callback((res.rows ? res.rows[0].name : 'NaN')),
+             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite SELECT Error ', error)
             ) // end executeSQL
     }); // end transaction
@@ -94,17 +100,18 @@ export const addProfile = (name) => {
 };
 
 export const removeCurrentProfile = () => {
+
     db.transaction(tx => {
         tx.executeSql('DELETE FROM favoris WHERE id_profile==(SELECT id FROM profiles WHERE selected==1)', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, { rows: { _array } }) => console.log('SQLite DELETE', _array),
+            (txObj, res) => console.log('SQLite DELETE', res.rows),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite DELETE Error ', error)
             ) // end executeSQL
         // sending 4 arguments in executeSql
         tx.executeSql('DELETE FROM profiles WHERE selected==1', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, { rows: { _array } }) => console.log('SQLite DELETE', _array),
+            (txObj, res) => console.log('SQLite DELETE', res.rows),
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite DELETE Error ', error)
             ) // end executeSQL
@@ -116,9 +123,11 @@ export const requestFavoriForCurrentProfile = (callback) => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT id_media, media_type FROM favoris WHERE id_profile==(SELECT id FROM profiles WHERE selected==1)', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, { rows: { _array } }) => callback(_array),
+            (txObj, res) => { 
+                callback(res.rows) ,
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite SELECT Error ', error)
+            }
             ) // end executeSQL
     }); // end transaction
 };

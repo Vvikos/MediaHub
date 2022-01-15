@@ -5,8 +5,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { CommonActions } from '@react-navigation/native';
 import {backgroundColor, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
 import * as dbservice from '../db/db';
+import {connect} from 'react-redux';
 import Loading from '../components/Loading';
 import Header from '../components/Header';
+import * as actions from '../store/actions';
+import { propTypes } from "react-bootstrap/esm/Image";
 
 function AddProfile({ navigation, onInsert, onCancel, disableCancel }) {
 	const [value, setValue] = useState('');
@@ -44,22 +47,7 @@ function AddProfileCard({ navigation, onAddProfile, disabled }) {
 	);
 }
 
-function ProfileCard({ name, img, navigation }) {
-	const onClickProfile = () => {
-		// select profile in bdd
-		dbservice.selectProfile(name);
-
-		// reset navigation stack
-		navigation.dispatch(
-			CommonActions.reset({
-			  index: 1,
-			  routes: [
-				{ name: 'App' },
-			  ],
-			})
-		);
-	}
-
+function ProfileCard({ name, img, navigation, onClickProfile }) {
 	return (
 		<TouchableOpacity activeOpacity={0.5} onPress={onClickProfile} >    
 			<Image
@@ -71,7 +59,8 @@ function ProfileCard({ name, img, navigation }) {
 	);
 }
 
-const ProfilesScreen = ({ navigation })=> {
+const ProfilesScreen = (props)=> {	
+	const { navigation } = props;
 	const [loading, setLoading] = useState(true);
 	const [profiles, setProfiles] = useState([]);
     const [addScreen, setAddScreen] = useState(false);
@@ -80,6 +69,8 @@ const ProfilesScreen = ({ navigation })=> {
 	useEffect( () => {
 		dbservice.initBase();
         dbservice.requestProfiles(setProfiles);
+		props.getFilms();
+		props.getSeries();
 	}, []);
 
 	useEffect( () => {
@@ -101,11 +92,26 @@ const ProfilesScreen = ({ navigation })=> {
         setAddScreen(false);
     }
 
+	const getFavorites = (favoris) => {
+		props.initFavorites();
+		props.fetchFavorites(favoris);
+	}
+
+	const onClickProfile = (name) => {
+		// select profile in bdd
+		dbservice.selectProfile(name);
+
+		// reset navigation stac
+		dbservice.requestFavoriForCurrentProfile((favoris) => getFavorites(favoris));		
+		
+		navigation.navigate('App');
+	}
+
 	const generateProfiles = () => {
 		const rows = [];
         let max = ((profiles.length > 3) ? 3 : profiles.length);
 		for(let i=0; i<max; i++){
-			rows.push(<ProfileCard key={'Profile'+i} name={profiles[i]} img='' navigation={navigation}/>);
+			rows.push(<ProfileCard key={'Profile'+i} name={profiles[i]} onClickProfile={() => onClickProfile(profiles[i])}  img='' navigation={navigation}/>);
 		}
 		rows.push(<AddProfileCard key={'addProfile'} navigation={navigation} onAddProfile={activateAddScreen} disabled={profiles.length>2} />);
 		return rows;
@@ -159,5 +165,24 @@ const styles = StyleSheet.create({
 	}
 });
 
+//This means that one or more of the redux states in the store are available as props
+const mapStateToProps = (state) => {
+    return {
+		movies: state.api.movies,
+		series: state.api.series
+    }
+  }
+  
+  //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
+  //TODO: ajouter get favorites ()
+  const mapDispatchToProps = (dispatch) => {
+    return {
+		getFilms: () => dispatch(actions.fetchFilms()),
+		getSeries: () => dispatch(actions.fetchSeries()),
+		initFavorites: () => dispatch(actions.initFavorite()),
+		fetchFavorites: (favorites) => dispatch(actions.fetchFavorites(favorites))
+    }
+  }
 
-export default ProfilesScreen;
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilesScreen);

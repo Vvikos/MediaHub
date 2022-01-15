@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 
 
 function ProfileScreen(props) {
-	const { navigation } = props;
+	const { navigation, test } = props;
 	const [profile, setProfile] = useState('');
 	const [favMoviesExpanded, setFavMoviesExpanded] = useState(true);
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
@@ -21,8 +21,6 @@ function ProfileScreen(props) {
 		dbservice.requestProfile(setProfile);
 		dbservice.requestFavoriForCurrentProfile(setFavoris);
 
-		// TODO : Ajouter chargement (ajout) des favoris pas encore dans le store (par exemple pour le cas d'un changement de profile)
-		//props.getfavoris(favoris);
 	}, []);
 
 	useEffect(() => {
@@ -30,12 +28,13 @@ function ProfileScreen(props) {
 		return requestFavoris;
 	}, [navigation]);
 
-	useEffect(() => {
-		//props.getfavoris(favoris);
-	}, [favoris]);
-
 	const refreshFavoris = () => {
 		dbservice.requestFavoriForCurrentProfile(setFavoris);
+	}
+
+	const changeProfiles = () => {
+		props.initFavorite();
+		navigation.navigate('Profiles');
 	}
 
 	const deleteProfile = () => {
@@ -49,7 +48,7 @@ function ProfileScreen(props) {
 		<View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
 			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-				<TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Profiles')}>
+				<TouchableOpacity activeOpacity={0.5} onPress={() => changeProfiles()}>
 					<Ionicons 
 						name="people-outline" 
 						size={24} color={activeTintColor} 
@@ -80,9 +79,9 @@ function ProfileScreen(props) {
 				setFavMoviesExpanded(!favMoviesExpanded);
 			}}
 			>
-			{ props.favoris ?
-				props.favoris.movies.length > 0 ?
-					Object.entries(props.favoris.movies).map(([index, movie]) => {
+			{ props.favorites ?
+				props.favorites.movies.length > 0 ?
+					Object.entries(props.favorites.movies).map(([index, movie]) => {
 						return (
 						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 							<ListItem.Content style={{color: activeTintColor}}>
@@ -119,9 +118,9 @@ function ProfileScreen(props) {
 				setFavSeriesExpanded(!favSeriesExpanded);
 			}}
 			>
-			{ props.favoris ?
-				props.favoris.series.length > 0 ?
-					Object.entries(props.favoris.series).map(([index, serie]) => {
+			{ props.favorites ?
+				props.favorites.series.length > 0 ?
+					Object.entries(props.favorites.series).map(([index, serie]) => {
 						return (
 						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 							<ListItem.Content style={{color: activeTintColor}}>
@@ -198,14 +197,13 @@ const styles = StyleSheet.create({
 //This means that one or more of the redux states in the store are available as props
 const mapStateToProps = (state) => {
     return {
-		favoris: state.api.favoris
+		favorites: state.api.favorites
     }
   }
   
   //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
   const mapDispatchToProps = (dispatch) => {
     return {
-		getfavoris: (favoris) => dispatch(actions.fetchfavoris(favoris)),
 		initFavorite: () => dispatch(actions.initFavorite()),
     }
   }

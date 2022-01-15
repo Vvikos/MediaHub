@@ -1,3 +1,5 @@
+import { call } from "react-native-reanimated";
+import MovieScreen from "../screens/MovieScreen";
 import {
     getPopularMoviesUrl,
     getMustWatchMoviesUrl,
@@ -9,6 +11,7 @@ import {
     getPopularSeriesUrl,
     getMustWatchSeriesUrl,
     getTopRatedSeriesUrl,
+    getSerieSeasonDetailUrl,
     getFindMultiUrl,
   } from "./url";
 
@@ -41,6 +44,13 @@ export const requestSerieDetailScreen = (id, callback) => {
     .catch((error) => console.log(error));
 };
 
+export const requestSerieSeasonDetailScreen = (id, season_number, callback) => {
+  return Promise.all([
+    request(getSerieSeasonDetailUrl(id, season_number)),
+  ])
+    .then((values) => callback(values))
+    .catch((error) => console.log(error));
+};
 
 export const requestPeopleDetailScreen = (id, callback) => {
     return Promise.all([
@@ -56,6 +66,29 @@ export const requestFindMulti = (page, query, callback) => {
   return Promise.all([
     request(getFindMultiUrl(page, query)),
   ])
-    .then((values) => callback(values))
+    .then((values) => {
+      (values[0].results).forEach(function(media){
+        if(media.media_type == "movie"){
+          requestMovieDetailScreen(media.id, (data) => {
+            media.details = data[0];
+          });
+        } else {
+          requestSerieDetailScreen(media.id, (data) => {
+            media.details = data[0];
+
+            if(media.details["seasons"]){
+              if(media.details["seasons"].length > 0){
+                (media.details["seasons"]).forEach(function(season, index){
+                    requestSerieSeasonDetailScreen(media.id, index+1, (season_detail) => {
+                      media.details["seasons"][index].details = season_detail[0];
+                  });
+                });
+              }
+           }   
+          });
+        }
+      });
+      callback(values);
+    })
     .catch((error) => console.log(error));
 };
