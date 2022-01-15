@@ -9,7 +9,6 @@ import types from "../helpers/types";
 import MediaCard from "./MediaCard";
 
 const MediaRow = (props) => {
-	console.log(props.favoris);
 	return (
 		<View style={{backgroundColor: backgroundColorDarker, marginTop: 30, paddingLeft: 2, paddingRight: 2 }}>
 			<Text style={{marginLeft: 15, marginBottom: 25, marginTop: 5, fontSize: 25, fontStyle:'italic', color: "#ffffff"}}>{props.title}</Text>

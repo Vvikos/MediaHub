@@ -13,9 +13,8 @@ const Movies = (props)=> {
 	const [favoris, setFavoris] = useState([]);
 
 	useEffect(() => {
-		const requestFavoris = navigation.addListener('focus', refreshFavoris);
-		return requestFavoris;
-	  }, [navigation]);
+		navigation.addListener('focus', refreshFavoris);
+	  }, []);
 	
 	const refreshFavoris = () => {
 		dbservice.requestFavoriForCurrentProfile(setFavoris);
