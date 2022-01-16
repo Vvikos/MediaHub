@@ -95,12 +95,27 @@ const ProfilesScreen = (props)=> {
 	const [loading, setLoading] = useState(true);
 	const [profiles, setProfiles] = useState([]);
     const [addScreen, setAddScreen] = useState(false);
-
+	const [profile, setProfile] = useState([]);
+	const [firstCo, setFirstCo] = useState(false);
 	
 	useEffect( () => {
 		dbservice.initBase();
-		props.getFilms();
-		props.getSeries();
+
+		if(!props.movies.popular){
+			console.log("fecthing films");
+
+			// add if no internet --> add error message --> set firstCo --> false
+			props.getFilms(1);
+		}
+
+		if(!props.series.popular){
+			console.log("fecthing series");
+
+			// add if no internet --> add error message --> set firstCo --> false
+			props.getSeries(1);
+		}
+
+		//add if internet or not first connection
 		dbservice.requestProfiles(setProfiles);
 	}, []);
 
@@ -124,6 +139,7 @@ const ProfilesScreen = (props)=> {
     }
 
 	const getFavorites = (favoris) => {
+		//TODO : only if not last user 
 		props.initFavorites();
 		props.fetchFavorites(favoris);
 	}
@@ -156,8 +172,7 @@ const ProfilesScreen = (props)=> {
 				<Loading />
 			:
                 addScreen ?
-				<>
-                    <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} /></>
+                    <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} />
                 :
                     generateProfiles()
             }
@@ -179,8 +194,8 @@ const mapStateToProps = (state) => {
   //TODO: ajouter get favorites ()
   const mapDispatchToProps = (dispatch) => {
     return {
-		getFilms: () => dispatch(actions.fetchFilms()),
-		getSeries: () => dispatch(actions.fetchSeries()),
+		getFilms: (page) => dispatch(actions.fetchFilms(page)),
+		getSeries: (page) => dispatch(actions.fetchSeries(page)),
 		initFavorites: () => dispatch(actions.initFavorite()),
 		fetchFavorites: (favorites) => dispatch(actions.fetchFavorites(favorites))
     }

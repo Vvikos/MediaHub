@@ -41,20 +41,20 @@ BA du film
     -> https://www.youtube.com/watch?v=results[1].key 
 */
 
-export const getPopularMoviesUrl = (page) =>    `${ROOT_URL}/movie/popular?${queryString({ ...defaultQuery, ...page })}`;
-export const getTopRatedMoviesUrl = (page) =>   `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...page })}`;
-export const getMustWatchMoviesUrl = (page) =>  `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...page })}`;
-export const getUpcomingMoviesUrl = (page) =>   `${ROOT_URL}/movie/upcoming?${queryString({ ...defaultQuery, ...page })}`;
+export const getPopularMoviesUrl = (page) =>    `${ROOT_URL}/movie/popular?${queryString({ ...defaultQuery, ...{page : page} })}`;
+export const getTopRatedMoviesUrl = (page) =>   `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...{page : page} })}`;
+export const getMustWatchMoviesUrl = (page) =>  `${ROOT_URL}/discover/movie?${queryString({ ...defaultQuery, ...{ sort_by: "revenue.desc" }, ...{page : page} })}`;
+export const getUpcomingMoviesUrl = (page) =>   `${ROOT_URL}/movie/upcoming?${queryString({ ...defaultQuery, ...{page : page} })}`;
 
 export const getPeopleDetailUrl = (id) =>   `${ROOT_URL}/person/${id}?append_to_response=combined_credits&${queryString(defaultQuery)}`;
 
 export const getMovieDetailUrl = (id) => `${ROOT_URL}/movie/${id}?append_to_response=credits&${queryString(defaultQuery)}`;
 
-export const getPopularSeriesUrl = (page) =>    `${ROOT_URL}/tv/popular?${queryString({ ...defaultQuery, ...page })}`;
+export const getPopularSeriesUrl = (page) =>    `${ROOT_URL}/tv/popular?${queryString({ ...defaultQuery, ...{page : page} })}`;
 //export const getPopularSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "popularity.desc" }, ...page })}`;
 
-export const getTopRatedSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...page })}`;
-export const getOnTheAirSeriesUrl = (page) =>  `${ROOT_URL}/tv/on_the_air?${queryString({ ...defaultQuery, ...page })}`;
+export const getTopRatedSeriesUrl = (page) =>   `${ROOT_URL}/discover/tv?${queryString({ ...defaultQuery, ...{ sort_by: "vote_count.desc" }, ...{page : page} })}`;
+export const getOnTheAirSeriesUrl = (page) =>  `${ROOT_URL}/tv/on_the_air?${queryString({ ...defaultQuery, ...{page : page} })}`;
 
 // export const getUpcomingSeriesUrl = (page) =>   `${ROOT_URL}/tv/upcoming?${queryString({ ...defaultQuery, ...page })}`;
 

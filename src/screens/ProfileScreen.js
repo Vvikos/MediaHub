@@ -7,8 +7,10 @@ import { Text, ListItem, Switch } from 'react-native-elements';
 import {backgroundColor, inactiveTintColor, activeTintColor, alternativeTintColor, backgroundColorDarker} from "../helpers/colors";
 import * as dbservice from '../db/db';
 import * as actions from '../store/actions';
+import { ScrollView } from "react-native";
 import {connect} from 'react-redux';
-
+import { RefreshControl } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 function ProfileScreen(props) {
 	const { navigation, test } = props;
@@ -16,11 +18,16 @@ function ProfileScreen(props) {
 	const [favMoviesExpanded, setFavMoviesExpanded] = useState(true);
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
 	const [favoris, setFavoris] =  useState(null);
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+	  setRefreshing(true);
+	  //Promise.resolve(dbservice.requestFavoriForCurrentProfile((favoris) => props.getFavorites(favoris).then(() => setRefreshing(false))));
+	}, []);
 
 	useEffect( () => {
 		dbservice.requestProfile(setProfile);
 		dbservice.requestFavoriForCurrentProfile(setFavoris);
-
 	}, []);
 
 	useEffect(() => {
@@ -33,7 +40,6 @@ function ProfileScreen(props) {
 	}
 
 	const changeProfiles = () => {
-		props.initFavorite();
 		navigation.navigate('Profiles');
 	}
 
@@ -44,7 +50,15 @@ function ProfileScreen(props) {
 	}
 
   return (
-	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
+	<SafeAreaView style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
+		<ScrollView
+			refreshControl={
+				<RefreshControl
+				refreshing={refreshing}
+				onRefresh={onRefresh}
+				/>
+			}
+		>
 		<View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
 			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
@@ -66,7 +80,7 @@ function ProfileScreen(props) {
 				</TouchableOpacity>
 			</View>
 		</View>
-		<View style={{ width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}>
+		<View style={{ width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}	>
 			<Text style={styles.headerTitle} >Favoris</Text>
 			<ListItem.Accordion
 			content={
@@ -142,7 +156,8 @@ function ProfileScreen(props) {
 			}
 			</ListItem.Accordion>
 		</View>
-	 </View>
+		</ScrollView>
+	 </SafeAreaView>
   );
 }
 
@@ -205,6 +220,7 @@ const mapStateToProps = (state) => {
   const mapDispatchToProps = (dispatch) => {
     return {
 		initFavorite: () => dispatch(actions.initFavorite()),
+		getFavorites: (favorites) => dispatch(actions.fetchFavorites(favorites))
     }
   }
 

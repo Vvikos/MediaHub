@@ -192,8 +192,6 @@ const mapStateToProps = (state) => {
   //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
   const mapDispatchToProps = (dispatch) => {
     return {
-		getFilms: () => dispatch(actions.fetchFilms()),
-		getSeries: () => dispatch(actions.fetchSeries()),
 		addFavorite: (id, type) => dispatch(actions.addFavorite(id, type)),
 		deleteFavorite: (id, type) => dispatch(actions.deleteFavorite(id, type)),
     }

@@ -41,7 +41,7 @@ export const apiSuccess = () => {
     }
 }
 
-export const apiFetchFilmDetailsSuccess = (counter) => {
+export const apiFetchFilmDetailsSuccess = () => {
     return {
         type: actionTypes.API_FETCH_FILM_DETAILS_SUCCESS
     }
@@ -124,20 +124,17 @@ export const apiDeleteSerieFavorite = (id) => {
 
 
 
-export const fetchFilms = () => {
-    let counter = 0;
+export const fetchFilms = (page = 1) => {
     return dispatch => {
             dispatch(apiStart());
- 
+            console.log(page);
             Promise.all([
-                request(getPopularMoviesUrl()),
-                request(getTopRatedMoviesUrl()),
-                request(getMustWatchMoviesUrl()),
-                request(getUpcomingMoviesUrl()),
+                request(getPopularMoviesUrl(page)),
+                request(getTopRatedMoviesUrl(page)),
+                request(getMustWatchMoviesUrl(page)),
+                request(getUpcomingMoviesUrl(page)),
 
             ]).then((movies) => {
-
-
                 (movies).forEach(function(movieList){
                     (movieList.results).forEach(function(movie){
                         Promise.all([
@@ -145,7 +142,7 @@ export const fetchFilms = () => {
                         ])
                             .then((details) =>{
                                 movie.details = details[0];
-                                dispatch(apiFetchFilmDetailsSuccess(counter++));
+                                dispatch(apiFetchFilmDetailsSuccess());
                             })
                             .catch(() => {
                                 dispatch(apiFail);
@@ -163,17 +160,16 @@ export const fetchFilms = () => {
 }
 
 
-export const fetchSeries = () => {
+export const fetchSeries = (page = 1) => {
     return dispatch => {
             dispatch(apiStart());
- 
+ console.log(page);
             Promise.all([
-                request(getPopularSeriesUrl()),
-                request(getTopRatedSeriesUrl()),
-                request(getOnTheAirSeriesUrl()),
+                request(getPopularSeriesUrl(page)),
+                request(getTopRatedSeriesUrl(page)),
+                request(getOnTheAirSeriesUrl(page)),
 
             ]).then((series) => {
-
                 (series).forEach(function(serieList){
                     (serieList.results).forEach(function(serie){
                         Promise.all([
