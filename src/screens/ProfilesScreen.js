@@ -101,19 +101,16 @@ const ProfilesScreen = (props)=> {
 	useEffect( () => {
 		dbservice.initBase();
 
-		if(!props.movies.popular){
 			console.log("fecthing films");
 
 			// add if no internet --> add error message --> set firstCo --> false
 			props.getFilms(1);
-		}
-
-		if(!props.series.popular){
+			
 			console.log("fecthing series");
 
 			// add if no internet --> add error message --> set firstCo --> false
 			props.getSeries(1);
-		}
+		
 
 		//add if internet or not first connection
 		dbservice.requestProfiles(setProfiles);
