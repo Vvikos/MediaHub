@@ -93,6 +93,13 @@ export const apiFetchedFavoritesInit = () => {
     }
 }
 
+export const apiSetLastUserName = (userName) => {
+    return {
+        type: actionTypes.API_SET_LAST_USER_NAME, 
+        userName: userName
+    }
+}
+
 
 export const apiAddMovieFavorite = (movie) => {
     return {
@@ -163,7 +170,7 @@ export const fetchFilms = (page = 1) => {
 export const fetchSeries = (page = 1) => {
     return dispatch => {
             dispatch(apiStart());
- console.log(page);
+            console.log(page);
             Promise.all([
                 request(getPopularSeriesUrl(page)),
                 request(getTopRatedSeriesUrl(page)),
@@ -257,6 +264,13 @@ export const fetchFavorites = (favorites) => {
      }
 }
 
+export const setLastUserName = (userName) => {
+    return dispatch => {
+        dispatch(apiStart());
+        dispatch(apiSetLastUserName(userName));
+        dispatch(apiSuccess());
+    }
+}
 
 export const initFavorite = () => {
     return dispatch => {

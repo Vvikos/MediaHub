@@ -3,13 +3,13 @@ import { StyleSheet, Text, View, Image, Button, TextInput, FlatList } from "reac
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { CommonActions } from '@react-navigation/native';
-import {backgroundColor, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
+import {backgroundColor, inactiveTintColor, backgroundColorDarker, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
 import * as dbservice from '../db/db';
 import {connect} from 'react-redux';
 import Loading from '../components/Loading';
 import Header from '../components/Header';
 import * as actions from '../store/actions';
-
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
 	profileCard: {
@@ -97,24 +97,39 @@ const ProfilesScreen = (props)=> {
     const [addScreen, setAddScreen] = useState(false);
 	const [profile, setProfile] = useState([]);
 	const [firstCo, setFirstCo] = useState(false);
+	const [connection, setConnection] = useState(null);
+
+	NetInfo.fetch().then(state => {
+		setConnection(state);
+	});
 	
 	useEffect( () => {
-		dbservice.initBase();
-
-			console.log("fecthing films");
-
-			// add if no internet --> add error message --> set firstCo --> false
-			props.getFilms(1);
-			
-			console.log("fecthing series");
-
-			// add if no internet --> add error message --> set firstCo --> false
-			props.getSeries(1);
+		if(connection){
+			dbservice.initBase();
 		
+			if(!props.series.popular){
+				if(connection.isInternetReachable){
+					setFirstCo(false);
+					props.getFilms(1);
+				} else {
+					setFirstCo(true);
+				}
+			}
 
-		//add if internet or not first connection
-		dbservice.requestProfiles(setProfiles);
-	}, []);
+			if(!props.series.popular){
+				if(connection.isInternetReachable){
+					setFirstCo(false);
+					props.getSeries(1);
+				} else {
+					setFirstCo(true);
+				}
+			}
+
+			if(connection.isInternetReachable || !firstCo){
+				dbservice.requestProfiles(setProfiles);
+			}
+		}
+	}, [connection]);
 
 	useEffect( () => {
 		setLoading(false);
@@ -127,6 +142,12 @@ const ProfilesScreen = (props)=> {
         }
 	}, [addScreen]);
 
+	const tryConnect = () => {
+		NetInfo.fetch().then(state => {
+			setConnection(state);
+		});
+	}
+
     const activateAddScreen = () => {
         setAddScreen(true);
     }
@@ -135,10 +156,12 @@ const ProfilesScreen = (props)=> {
         setAddScreen(false);
     }
 
-	const getFavorites = (favoris) => {
-		//TODO : only if not last user 
-		props.initFavorites();
-		props.fetchFavorites(favoris);
+	const getFavorites = (name, favoris) => {
+		if(name != props.lastUserName){
+			props.initFavorites();
+			props.fetchFavorites(favoris);
+			props.setLastUserName(name);
+		}
 	}
 
 	const onClickProfile = (name) => {
@@ -146,7 +169,7 @@ const ProfilesScreen = (props)=> {
 		dbservice.selectProfile(name);
 
 		// reset navigation stac
-		dbservice.requestFavoriForCurrentProfile((favoris) => getFavorites(favoris));		
+		dbservice.requestFavoriForCurrentProfile((favoris) => getFavorites(name, favoris));		
 		
 		navigation.navigate('App');
 	}
@@ -164,6 +187,20 @@ const ProfilesScreen = (props)=> {
   return (
 	<>
 		<Header />
+		{firstCo ? 
+				<View style={{ marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center', textAlign: "center" }}>
+					<Text style={{marginLeft: 40, marginRight: 40, color:"#ffffff"}}>{connection ? connection.isInternetReachable ? "" : "Merci de vous connecter au moins une fois avec de la connexion à MediaHub. ": null}</Text>
+				 	
+					<TouchableOpacity style={{marginTop: 40}} activeOpacity={0.5} onPress={() => tryConnect()}>
+						<Ionicons 
+							name="refresh" 
+							size={24} color={activeTintColor} 
+							containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
+							style={{backgroundColor: backgroundColorDarker, padding: 6, borderRadius: 2, borderColor: activeTintColor, borderWidth: 0.5, margin: 1}} 
+						/>
+					</TouchableOpacity>
+				 </View>
+		:
 		<View style={{ flexDirection: 'row', marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 			{loading ?
 				<Loading />
@@ -174,6 +211,7 @@ const ProfilesScreen = (props)=> {
                     generateProfiles()
             }
 		</View>
+		}
 	</>
   );
 }
@@ -183,7 +221,8 @@ const mapStateToProps = (state) => {
     return {
 		movies: state.api.movies,
 		series: state.api.series,
-		favorites: state.api.favorites
+		favorites: state.api.favorites,
+		lastUserName: state.api.lastUserName,
     }
   }
   
@@ -191,6 +230,7 @@ const mapStateToProps = (state) => {
   //TODO: ajouter get favorites ()
   const mapDispatchToProps = (dispatch) => {
     return {
+		setLastUserName: (userName) => dispatch(actions.setLastUserName(userName)),
 		getFilms: (page) => dispatch(actions.fetchFilms(page)),
 		getSeries: (page) => dispatch(actions.fetchSeries(page)),
 		initFavorites: () => dispatch(actions.initFavorite()),

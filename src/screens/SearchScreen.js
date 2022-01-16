@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import * as actions from '../store/actions';
 import Loading from '../components/Loading';
 import * as dbservice from '../db/db';
+import NetInfo from "@react-native-community/netinfo";
 
 const Search = (props)=> {
 	const { navigation } = props;
@@ -18,6 +19,11 @@ const Search = (props)=> {
 	const [searchValue, setSearchValue] = useState("");
 	const [data, setData] = useState([]);
 	const [favoris, setFavoris] = useState([]);
+	const [connection, setConnection] = useState(null);
+
+	NetInfo.fetch().then(state => {
+		setConnection(state);
+	});
 
 	useEffect(() => {
 		const requestFavoris = navigation.addListener('focus', refreshFavoris);
@@ -45,10 +51,16 @@ const Search = (props)=> {
 
 	useEffect(() => {
 		if(searchValue!=''){
-			requestFindMulti(1, searchValue, (data) => {
-				setData(data[0].results);
-				setLoading(false);
+			NetInfo.fetch().then(state => {
+				setConnection(state);
 			});
+			
+			if(connection.isInternetReachable){
+				requestFindMulti(1, searchValue, (data) => {
+					setData(data[0].results);
+					setLoading(false);
+				});
+			}
 		}
 	}, [searchValue]);
 
@@ -155,27 +167,33 @@ return (
 			autoCorrect={false}
 		/>
 		{ 
-			!loading ?
-				data.length > 0 ? 
-				<FlatList
-					style={{ backgroundColor: backgroundColor, border: 'none', maxHeight: '90%'}}
-					data={data}
-					renderItem={renderItem}
-					keyExtractor={(item) => item.id}
-				/>
-				: 
-				<View style={{ backgroundColor: backgroundColor, alignItems: "center", marginTop: 30 }}>
-					<Ionicons name="search-outline" size={50} color={activeTintColor} />
-					<Text style={{ color: activeTintColor, fontSize: 30 }}>Aucun résultat trouvé</Text>
-				</View>
-		
-			: 
-				searchValue=='' ?
-				<Ionicons name="search-outline" size={50} color={activeTintColor} />
-				:
-				<Loading />
+			connection ? 
+				connection.isInternetReachable ?
+					!loading ?
+						data.length > 0 ? 
+						<FlatList
+							style={{ backgroundColor: backgroundColor, border: 'none', maxHeight: '90%'}}
+							data={data}
+							renderItem={renderItem}
+							keyExtractor={(item) => item.id}
+						/>
+						: 
+						<View style={{ backgroundColor: backgroundColor, alignItems: "center", marginTop: 30 }}>
+							<Ionicons name="search-outline" size={50} color={activeTintColor} />
+							<Text style={{ color: activeTintColor, fontSize: 30 }}>Aucun résultat trouvé</Text>
+						</View>
+				
+					: 
+						searchValue=='' ?
+						<Ionicons name="search-outline" size={50} color={activeTintColor} />
+						:
+						<Loading />
 
-			}
+				:
+					<Text style={{color:"#ffffff"}}>Cette fonctionnalité n'est pas disponible hors connexion.</Text>
+			:
+				null
+		}
   </View>
 );
 };

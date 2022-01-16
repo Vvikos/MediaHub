@@ -9,16 +9,28 @@ import MediaList from "../components/MediaList";
 import * as dbservice from '../db/db';
 import { RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 
 const Movies = (props)=> {
 	const { navigation, route } = props;
 	const [favoris, setFavoris] = useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
+	const [connection, setConnection] = useState(null);
+
+	NetInfo.fetch().then(state => {
+		setConnection(state);
+	});
 
 	const onRefresh = React.useCallback(() => {
-	  setRefreshing(true);
-	  Promise.resolve(props.getFilms(1)).then(() => setRefreshing(false));
-	}, []);
+		NetInfo.fetch().then(state => {
+			setConnection(state);
+		});
+		
+		if(connection.isInternetReachable){
+			setRefreshing(true);
+			Promise.resolve(props.getFilms(1)).then(() => setRefreshing(false));
+		}
+	}, [connection]);
 
 
 	useEffect(() => {

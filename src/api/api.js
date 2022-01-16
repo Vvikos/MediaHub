@@ -66,27 +66,29 @@ export const requestFindMulti = (page, query, callback) => {
     request(getFindMultiUrl(page, query)),
   ])
     .then((values) => {
-      (values[0].results).forEach(function(media){
-        if(media.media_type == "movie"){
-          requestMovieDetailScreen(media.id, (data) => {
-            media.details = data[0];
-          });
-        } else {
-          requestSerieDetailScreen(media.id, (data) => {
-            media.details = data[0];
+      if(values){
+        (values[0].results).forEach(function(media){
+          if(media.media_type == "movie"){
+            requestMovieDetailScreen(media.id, (data) => {
+              media.details = data[0];
+            });
+          } else {
+            requestSerieDetailScreen(media.id, (data) => {
+              media.details = data[0];
 
-            if(media.details["seasons"]){
-              if(media.details["seasons"].length > 0){
-                (media.details["seasons"]).forEach(function(season, index){
-                    requestSerieSeasonDetailScreen(media.id, index+1, (season_detail) => {
-                      media.details["seasons"][index].details = season_detail[0];
+              if(media.details["seasons"]){
+                if(media.details["seasons"].length > 0){
+                  (media.details["seasons"]).forEach(function(season, index){
+                      requestSerieSeasonDetailScreen(media.id, index+1, (season_detail) => {
+                        media.details["seasons"][index].details = season_detail[0];
+                    });
                   });
-                });
-              }
-           }   
-          });
-        }
-      });
+                }
+            }   
+            });
+          }
+        });
+      }
       callback(values);
     })
     .catch((error) => console.log(error));

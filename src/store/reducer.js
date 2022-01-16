@@ -22,6 +22,7 @@ export const initialState = {
         movies: [],
         series: [] 
     }, 
+    lastUserName: null
 }
 
 // ########################################################
@@ -77,6 +78,14 @@ const apiFetchSerieDetailsSuccessReducer = (state, action) => {
     return updateObject(state, {
         error: null,
         loading: false,
+    });
+}
+
+const apiSetLastUserNameReducer = (state, action) => {
+    return updateObject(state, {
+        error: null,
+        loading: false,
+        lastUserName: action.userName
     });
 }
 
@@ -208,6 +217,7 @@ const Reducer = (state=initialState, action) => {
         case actionTypes.API_ADD_SERIE_FAVORITE: return apiAddSerieFavoriteReducer(state, action);
         case actionTypes.API_DELETE_MOVIE_FAVORITE: return apiDeleteMovieFavoriteReducer(state, action);
         case actionTypes.API_DELETE_SERIE_FAVORITE: return apiDeleteSerieFavoriteReducer(state, action);
+        case actionTypes.API_SET_LAST_USER_NAME: return apiSetLastUserNameReducer(state, action);
         default:
             return state;
     }

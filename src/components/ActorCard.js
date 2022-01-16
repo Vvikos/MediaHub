@@ -7,6 +7,7 @@ import { requestPeopleDetailScreen } from "../api/api";
 import { Linking } from "react-native";
 import { activeTintColor, backgroundColor, backgroundColorDarker } from "../helpers/colors";
 import { ScrollView } from "react-native-gesture-handler";
+import NetInfo from "@react-native-community/netinfo";
 
 const styles = StyleSheet.create({
 	immBackground: {
@@ -67,17 +68,30 @@ const ActorCard = (props) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [peopleDetail, setPeopleDetail] = useState([]);
   const [loading, setLoading] = useState(false);
+	const [connection, setConnection] = useState(null);
 
+	NetInfo.fetch().then(state => {
+		setConnection(state);
+	});
+	
   useEffect( () => {
 	}, []);
 
   const toggleModal = () => {
     setLoading(true);
     if(!isModalVisible){
-      requestPeopleDetailScreen(props.actor.id, (data) => {
-        setPeopleDetail(data[0]);
-        setLoading(false);
+      NetInfo.fetch().then(state => {
+        setConnection(state);
       });
+      
+      if(connection){
+        if(connection.isInternetReachable){
+          requestPeopleDetailScreen(props.actor.id, (data) => {
+            setPeopleDetail(data[0]);
+            setLoading(false);
+          });
+        }
+      }
     }
     setModalVisible(!isModalVisible);
 

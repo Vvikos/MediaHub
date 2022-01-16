@@ -11,6 +11,7 @@ import { ScrollView } from "react-native";
 import {connect} from 'react-redux';
 import { RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 
 function ProfileScreen(props) {
 	const { navigation, test } = props;
@@ -18,15 +19,26 @@ function ProfileScreen(props) {
 	const [favMoviesExpanded, setFavMoviesExpanded] = useState(true);
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
 	const [favoris, setFavoris] =  useState(null);
+	const [connection, setConnection] = useState(null);
+
+	NetInfo.fetch().then(state => {
+		setConnection(state);
+	});
+	
 
 	const reloadFavorites = () => {
 	  dbservice.requestFavoriForCurrentProfile((favoris) => getFavorites(favoris));
 	}
 
 	const getFavorites = (favoris) => {
-		//TODO : only if connected internet!
-		props.initFavorite();
-		props.getFavorites(favoris);
+		NetInfo.fetch().then(state => {
+			setConnection(state);
+		});
+		
+		if(connection.isInternetReachable){
+			props.initFavorite();
+			props.getFavorites(favoris);
+		}
 	}
 
 
@@ -59,7 +71,7 @@ function ProfileScreen(props) {
 		<View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
 			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-			<TouchableOpacity activeOpacity={0.5} onPress={() => reloadFavorites()}>
+				<TouchableOpacity activeOpacity={0.5} onPress={() => reloadFavorites()}>
 					<Ionicons 
 						name="refresh" 
 						size={24} color={activeTintColor} 
@@ -119,6 +131,11 @@ function ProfileScreen(props) {
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucun film favori sauvegardé.</ListItem.Subtitle>
 					</ListItem.Content>
 				</ListItem>
+			: connection ? 
+				!connection.isInternetReachable ? 
+					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+				:
+					null
 			: null 
 			}
 			</ListItem.Accordion>
@@ -158,6 +175,11 @@ function ProfileScreen(props) {
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucune série favori sauvegardé.</ListItem.Subtitle>
 					</ListItem.Content>
 				</ListItem>
+			: connection ? 
+				!connection.isInternetReachable ? 
+					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+				:
+					null
 			: null 
 			}
 			</ListItem.Accordion>
