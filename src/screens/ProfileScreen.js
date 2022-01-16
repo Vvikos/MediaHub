@@ -18,12 +18,17 @@ function ProfileScreen(props) {
 	const [favMoviesExpanded, setFavMoviesExpanded] = useState(true);
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
 	const [favoris, setFavoris] =  useState(null);
-	const [refreshing, setRefreshing] = React.useState(false);
 
-	const onRefresh = React.useCallback(() => {
-	  setRefreshing(true);
-	  //Promise.resolve(dbservice.requestFavoriForCurrentProfile((favoris) => props.getFavorites(favoris).then(() => setRefreshing(false))));
-	}, []);
+	const reloadFavorites = () => {
+	  dbservice.requestFavoriForCurrentProfile((favoris) => getFavorites(favoris));
+	}
+
+	const getFavorites = (favoris) => {
+		//TODO : only if connected internet!
+		props.initFavorite();
+		props.getFavorites(favoris);
+	}
+
 
 	useEffect( () => {
 		dbservice.requestProfile(setProfile);
@@ -50,18 +55,18 @@ function ProfileScreen(props) {
 	}
 
   return (
-	<SafeAreaView style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
-		<ScrollView
-			refreshControl={
-				<RefreshControl
-				refreshing={refreshing}
-				onRefresh={onRefresh}
-				/>
-			}
-		>
+	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
 		<View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
 			<Text style={styles.text} >{"Hi, "+profile}</Text>
 			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+			<TouchableOpacity activeOpacity={0.5} onPress={() => reloadFavorites()}>
+					<Ionicons 
+						name="refresh" 
+						size={24} color={activeTintColor} 
+						containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
+						style={{backgroundColor: backgroundColorDarker, padding: 6, borderRadius: 2, borderColor: activeTintColor, borderWidth: 0.5, margin: 1}} 
+					/>
+				</TouchableOpacity>
 				<TouchableOpacity activeOpacity={0.5} onPress={() => changeProfiles()}>
 					<Ionicons 
 						name="people-outline" 
@@ -80,6 +85,7 @@ function ProfileScreen(props) {
 				</TouchableOpacity>
 			</View>
 		</View>
+
 		<View style={{ width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}	>
 			<Text style={styles.headerTitle} >Favoris</Text>
 			<ListItem.Accordion
@@ -156,8 +162,7 @@ function ProfileScreen(props) {
 			}
 			</ListItem.Accordion>
 		</View>
-		</ScrollView>
-	 </SafeAreaView>
+	 </View>
   );
 }
 
