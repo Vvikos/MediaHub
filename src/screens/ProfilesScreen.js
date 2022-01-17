@@ -126,7 +126,7 @@ const ProfilesScreen = (props)=> {
 			}
 
 			if(connection.isInternetReachable || !firstCo){
-				dbservice.requestProfiles(setProfiles);
+				refreshProfiles();
 			}
 		}
 	}, [connection]);
@@ -135,6 +135,14 @@ const ProfilesScreen = (props)=> {
 		setLoading(false);
 		setAddScreen(profiles.length==0);
 	}, [profiles]);
+
+	useEffect(() => {
+		navigation.addListener('focus', refreshProfiles);
+	}, []);
+	
+	const refreshProfiles = () => {
+		dbservice.requestProfiles(setProfiles);
+	}
 
     useEffect( () => {
         if(!addScreen){
