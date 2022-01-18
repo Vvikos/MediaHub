@@ -129,35 +129,105 @@ export const apiDeleteSerieFavorite = (id) => {
     }
 }
 
+export const apiAddDetailsSerie = (detailsSerie, serieId) => {
+    return {
+        type: actionTypes.API_ADD_DETAILS_SERIE, 
+        detailsSerie: detailsSerie,
+        serieId: serieId
+    }
+}
 
+export const apiAddDetailsMovie = (detailsMovie, movieId) => {
+    return {
+        type: actionTypes.API_ADD_DETAILS_MOVIE, 
+        detailsMovie: detailsMovie,
+        movieId: movieId
+    }
+}
+
+export const apiInitDetailsMovie = () => {
+    return {
+        type: actionTypes.API_INIT_DETAILS_MOVIE, 
+    }
+}
+
+export const apiInitDetailsSerie = () => {
+    return {
+        type: actionTypes.API_INIT_DETAILS_SERIE, 
+    }
+}
+
+export const apiInitCounter = () => {
+    return {
+        type: actionTypes.API_INIT_COUNTER, 
+    }
+}
+
+
+export const fetchMovieDetails = (dispatch, movieId) => {
+        Promise.all([
+            request(getMovieDetailUrl(movieId)),
+        ]).then((details) =>{
+            dispatch(apiAddDetailsMovie(details[0], movieId));
+            dispatch(apiFetchFilmDetailsSuccess());
+
+        })
+        .catch(() => {
+            dispatch(apiFail);
+        });
+}
+
+export const initCounter = () => {
+    return dispatch => {
+        dispatch(apiInitCounter());
+    }
+}
+
+export const fetchSerieDetails = (dispatch, serieId) => {
+    Promise.all([
+        request(getSerieDetailUrl(serieId)),
+    ])
+        .then((details) =>{
+            dispatch(apiFetchSerieDetailsSuccess());
+            
+            if(details[0].seasons.length > 0){
+                (details[0].seasons).forEach(function(season, index){
+                    Promise.all([
+                        request(getSerieSeasonDetailUrl(serieId, index+1)),
+                    ]). 
+                    then((season_detail) => {
+                        details[0].seasons[index].details = season_detail[0];
+                    });
+                });
+            }
+
+
+            dispatch(apiAddDetailsSerie(details[0], serieId));
+
+    
+        }).catch(() => {
+            dispatch(apiFail());
+        });
+}
 
 export const fetchFilms = (page = 1) => {
     return dispatch => {
             dispatch(apiStart());
-            console.log(page);
             Promise.all([
                 request(getPopularMoviesUrl(page)),
                 request(getTopRatedMoviesUrl(page)),
                 request(getMustWatchMoviesUrl(page)),
-                request(getUpcomingMoviesUrl(page)),
 
             ]).then((movies) => {
                 (movies).forEach(function(movieList){
+                    //movies hinzufÜgen
                     (movieList.results).forEach(function(movie){
-                        Promise.all([
-                            request(getMovieDetailUrl(movie.id)),
-                        ])
-                            .then((details) =>{
-                                movie.details = details[0];
-                                dispatch(apiFetchFilmDetailsSuccess());
-                            })
-                            .catch(() => {
-                                dispatch(apiFail);
-                            });
+                        fetchMovieDetails(dispatch, movie.id);
                     });
                 });
 
-                dispatch(apiFetchedFilms(movies))
+                dispatch(apiFetchedFilms(movies));
+
                 dispatch(apiSuccess());
 
             }).catch(() => {
@@ -170,45 +240,20 @@ export const fetchFilms = (page = 1) => {
 export const fetchSeries = (page = 1) => {
     return dispatch => {
             dispatch(apiStart());
-            console.log(page);
             Promise.all([
                 request(getPopularSeriesUrl(page)),
                 request(getTopRatedSeriesUrl(page)),
-                request(getOnTheAirSeriesUrl(page)),
 
             ]).then((series) => {
                 (series).forEach(function(serieList){
                     (serieList.results).forEach(function(serie){
-                        Promise.all([
-                            request(getSerieDetailUrl(serie.id)),
-                        ])
-                            .then((details) =>{
-                                serie.details = details[0];
-                                dispatch(apiFetchSerieDetailsSuccess());
-
-                                if(serie.details.seasons.length > 0){
-                                    (serie.details.seasons).forEach(function(season, index){
-                                        Promise.all([
-                                            request(getSerieSeasonDetailUrl(serie.id, index+1)),
-                                        ]). 
-                                        then((season_detail) => {
-                                            serie.details.seasons[index].details = season_detail[0];
-                                        })
-                                        .catch(() => {
-                                            dispatch(apiFail());
-                                        });
-                                    });
-                                }
-                        
-                            }).catch(() => {
-                                dispatch(apiFail());
-                            });
+                        fetchSerieDetails(dispatch, serie.id);
                     });
                 });
 
-                dispatch(apiFetchedSeries(series))
-                dispatch(apiSuccess());
+                dispatch(apiFetchedSeries(series));
 
+                dispatch(apiSuccess());
             }).catch(() => {
                 dispatch(apiFail());
             });
@@ -271,6 +316,24 @@ export const setLastUserName = (userName) => {
         dispatch(apiSuccess());
     }
 }
+
+export const initDetailsMovie = () => {
+    return dispatch => {
+        dispatch(apiStart());
+        dispatch(apiInitDetailsMovie());
+        dispatch(apiSuccess());
+    }
+}
+
+export const initDetailsSeries = () => {
+    return dispatch => {
+        dispatch(apiStart());
+        dispatch(apiInitDetailsSerie());
+        dispatch(apiSuccess());
+    }
+}
+
+
 
 export const initFavorite = () => {
     return dispatch => {

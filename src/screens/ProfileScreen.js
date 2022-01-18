@@ -125,12 +125,17 @@ function ProfileScreen(props) {
 						</ListItem>
 						)
 				})
-			: 
+			: connection ? 
+				!connection.isInternetReachable ? 
+					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+				:
 				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucun film favori sauvegardé.</ListItem.Subtitle>
 					</ListItem.Content>
 				</ListItem>
+			: null 
+				
 			: connection ? 
 				!connection.isInternetReachable ? 
 					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
@@ -169,12 +174,17 @@ function ProfileScreen(props) {
 						</ListItem>
 						)
 				})
-			: 
+			: connection ? 
+				!connection.isInternetReachable ? 
+					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+				:
 				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
-						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucune série favori sauvegardé.</ListItem.Subtitle>
+						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucune serie favorie sauvegardé.</ListItem.Subtitle>
 					</ListItem.Content>
 				</ListItem>
+			: null 
+				
 			: connection ? 
 				!connection.isInternetReachable ? 
 					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>

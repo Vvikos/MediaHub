@@ -66,10 +66,12 @@ const MovieScreen = (props)=> {
         <ImageBackground 
           imageStyle={{width: '100%', height: '100%', opacity: 0.2}} 
           style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} 
+          loadingIndicatorSource={require('../assets/movie_avatar.png')}
+          defaultImage={require('../assets/movie_avatar.png')}
           source={movieDetail.backdrop_path ? { uri: urlBackgroundImage+movieDetail.backdrop_path } : require('../assets/movie_avatar.png')}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
-            <Image style={{height: '100%', width: '100%', borderRadius: 1}} source={movieDetail.backdrop_path ? { uri: urlPosterImage+movieDetail.poster_path } : require('../assets/movie_avatar.png')} />
+            <Image style={{height: '100%', width: '100%', borderRadius: 1}} loadingIndicatorSource={require('../assets/movie_avatar.png')} defaultImage={require('../assets/movie_avatar.png')} source={movieDetail.backdrop_path ? { uri: urlPosterImage+movieDetail.poster_path } : require('../assets/movie_avatar.png')} />
           </View>
           <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '55%' }}>
             <Text style={styles.movieTitle}>{movieDetail.title}</Text>

@@ -7,6 +7,7 @@ import {backgroundColor, inactiveTintColor, backgroundColorDarker, activeTintCol
 import * as dbservice from '../db/db';
 import {connect} from 'react-redux';
 import Loading from '../components/Loading';
+import LoadingCounter from '../components/LoadingCounter';
 import Header from '../components/Header';
 import * as actions from '../store/actions';
 import NetInfo from "@react-native-community/netinfo";
@@ -98,38 +99,30 @@ const ProfilesScreen = (props)=> {
 	const [profile, setProfile] = useState([]);
 	const [firstCo, setFirstCo] = useState(false);
 	const [connection, setConnection] = useState(null);
+	const [loadingMedia, setLoadingMedia] = useState(true);
+	const [loadingMediaDiv, setLoadingMediaDiv] = useState(false);
 
 	NetInfo.fetch().then(state => {
 		setConnection(state);
 	});
-	
-	useEffect( () => {
-		if(connection){
-			dbservice.initBase();
-		
-			if(!props.series.popular){
-				if(connection.isInternetReachable){
-					setFirstCo(false);
-					props.getFilms(1);
-				} else {
-					setFirstCo(true);
-				}
-			}
+ 	
+	const tryConnect = () => {
+		NetInfo.fetch().then(state => {
+			setConnection(state);
+		});
+	}
 
-			if(!props.series.popular){
-				if(connection.isInternetReachable){
-					setFirstCo(false);
-					props.getSeries(1);
-				} else {
-					setFirstCo(true);
-				}
-			}
+	useEffect(() => {
+		if(setLoadingMediaDiv){
+			if(props.counter == 99){
+				setLoadingMediaDiv(false);
+				props.initCounter();
 
-			if(connection.isInternetReachable || !firstCo){
-				dbservice.requestProfiles(setProfiles);
+				navigation.navigate('App');
+
 			}
-		}
-	}, [connection]);
+		} 
+	}), [props.counter];
 
 	useEffect( () => {
 		setLoading(false);
@@ -142,11 +135,7 @@ const ProfilesScreen = (props)=> {
         }
 	}, [addScreen]);
 
-	const tryConnect = () => {
-		NetInfo.fetch().then(state => {
-			setConnection(state);
-		});
-	}
+
 
     const activateAddScreen = () => {
         setAddScreen(true);
@@ -166,12 +155,29 @@ const ProfilesScreen = (props)=> {
 
 	const onClickProfile = (name) => {
 		// select profile in bdd
+		dbservice.initBase();
 		dbservice.selectProfile(name);
 
 		// reset navigation stac
 		dbservice.requestFavoriForCurrentProfile((favoris) => getFavorites(name, favoris));		
 		
-		navigation.navigate('App');
+
+
+		if(props.series.popular != null && props.detailsSeries != null && props.movies.popular != null && props.detailsMovies != null){
+			navigation.navigate('App');
+		}
+
+
+
+		if(props.series.popular == null || props.detailsSeries == null){
+			setLoadingMediaDiv(true);
+			props.getSeries(1);
+		} 
+
+		if(props.movies.popular == null || props.detailsMovies == null){
+			setLoadingMediaDiv(true);
+			props.getFilms(1);
+		} 
 	}
 
 	const generateProfiles = () => {
@@ -187,30 +193,36 @@ const ProfilesScreen = (props)=> {
   return (
 	<>
 		<Header />
-		{firstCo ? 
-				<View style={{ marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center', textAlign: "center" }}>
-					<Text style={{marginLeft: 40, marginRight: 40, color:"#ffffff"}}>{connection ? connection.isInternetReachable ? "" : "Merci de vous connecter au moins une fois avec de la connexion à MediaHub. ": null}</Text>
-				 	
-					<TouchableOpacity style={{marginTop: 40}} activeOpacity={0.5} onPress={() => tryConnect()}>
-						<Ionicons 
-							name="refresh" 
-							size={24} color={activeTintColor} 
-							containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
-							style={{backgroundColor: backgroundColorDarker, padding: 6, borderRadius: 2, borderColor: activeTintColor, borderWidth: 0.5, margin: 1}} 
-						/>
-					</TouchableOpacity>
-				 </View>
-		:
-		<View style={{ flexDirection: 'row', marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-			{loading ?
-				<Loading />
+		{
+			loadingMediaDiv ?
+			
+			<LoadingCounter counter={props.counter} />
+		
 			:
-                addScreen ?
-                    <AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} />
-                :
-                    generateProfiles()
-            }
-		</View>
+			firstCo ? 
+					<View style={{ marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center', textAlign: "center" }}>
+						<Text style={{marginLeft: 40, marginRight: 40, color:"#ffffff"}}>{connection ? connection.isInternetReachable ? "" : "Merci de vous connecter au moins une fois avec de la connexion à MediaHub. ": null}</Text>
+						
+						<TouchableOpacity style={{marginTop: 40}} activeOpacity={0.5} onPress={() => tryConnect()}>
+							<Ionicons 
+								name="refresh" 
+								size={24} color={activeTintColor} 
+								containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
+								style={{backgroundColor: backgroundColorDarker, padding: 6, borderRadius: 2, borderColor: activeTintColor, borderWidth: 0.5, margin: 1}} 
+							/>
+						</TouchableOpacity>
+					</View>
+			:
+			<View style={{ flexDirection: 'row', marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+				{loading ?
+					<Loading />
+				:
+					addScreen ?
+						<AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} />
+					:
+						generateProfiles()
+				}
+			</View>
 		}
 	</>
   );
@@ -219,10 +231,13 @@ const ProfilesScreen = (props)=> {
 //This means that one or more of the redux states in the store are available as props
 const mapStateToProps = (state) => {
     return {
-		movies: state.api.movies,
-		series: state.api.series,
+		movies: state.media.movies,
+		series: state.media.series,
 		favorites: state.api.favorites,
 		lastUserName: state.api.lastUserName,
+		detailsMovies: state.details.detailsMovies,
+		detailsSeries: state.details.detailsSeries,
+		counter: state.details.counter
     }
   }
   
@@ -234,7 +249,9 @@ const mapStateToProps = (state) => {
 		getFilms: (page) => dispatch(actions.fetchFilms(page)),
 		getSeries: (page) => dispatch(actions.fetchSeries(page)),
 		initFavorites: () => dispatch(actions.initFavorite()),
-		fetchFavorites: (favorites) => dispatch(actions.fetchFavorites(favorites))
+		fetchFavorites: (favorites) => dispatch(actions.fetchFavorites(favorites)),
+		initDetailsSeries: () => dispatch(actions.initDetailsSeries()),
+		initCounter: () => dispatch(actions.initCounter())
     }
   }
 

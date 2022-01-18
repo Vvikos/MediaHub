@@ -28,6 +28,7 @@ const Movies = (props)=> {
 		
 		if(connection.isInternetReachable){
 			setRefreshing(true);
+			props.initDetailsMovie();
 			Promise.resolve(props.getFilms(1)).then(() => setRefreshing(false));
 		}
 	}, [connection]);
@@ -73,14 +74,18 @@ const Movies = (props)=> {
 //This means that one or more of the redux states in the store are available as props
 const mapStateToProps = (state) => {
     return {
-		movies: state.api.movies
+		movies: state.media.movies,
+		series: state.media.series,
+		detailsMovies: state.details.detailsMovies,
+		detailsSeries: state.details.detailsSeries
     }
   }
   
   //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
   const mapDispatchToProps = (dispatch) => {
     return {
-		getFilms: (page) => dispatch(actions.fetchFilms(page))
+		getFilms: (page) => dispatch(actions.fetchFilms(page)),
+		initDetailsMovie: () => dispatch(actions.initDetailsMovie()),
     }
   }
 

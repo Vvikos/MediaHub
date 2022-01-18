@@ -119,7 +119,7 @@ const ActorCard = (props) => {
     <>
         <TouchableOpacity activeOpacity={0.5} onPress={toggleModal}>
           <View style={styles.view}> 
-            <Image style={styles.immBackground} source={props.actor.profile_path ? { uri: urlPosterImage+props.actor.profile_path } : require('../assets/actor_avatar.jpg')}/>
+            <Image style={styles.immBackground} loadingIndicatorSource={require('../assets/actor_avatar.jpg')} defaultImage={require('../assets/actor_avatar.jpg')} source={props.actor.profile_path ? { uri: urlPosterImage+props.actor.profile_path } : require('../assets/actor_avatar.jpg')}/>
             <Text style={styles.text}>{props.actor.name}</Text>
           </View>
         </TouchableOpacity>
@@ -133,10 +133,10 @@ const ActorCard = (props) => {
           <View style={{padding: 3, flexDirection: 'column', justifyContent: 'flex-start', height: '100%', width: '100%'}}>
             <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: 20, marginTop: 20}}>
               <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 10, marginRight: 8}}>
-                <Image style={styles.modalBackgroundImg} source={props.actor.profile_path ? { uri: urlPosterImage+props.actor.profile_path } : require('../assets/actor_avatar.jpg')}/>
+                <Image style={styles.modalBackgroundImg} loadingIndicatorSource={require('../assets/actor_avatar.jpg')} defaultImage={require('../assets/actor_avatar.jpg')}  source={props.actor.profile_path ? { uri: urlPosterImage+props.actor.profile_path } : require('../assets/actor_avatar.jpg')}/>
               </View>
               <View style={{borderLeftColor: activeTintColor, borderLeftWidth: 0.2, height: '95%', marginLeft: 4, paddingLeft: 4}}>
-                <Text style={styles.name}>{peopleDetail.name}</Text>
+                <Text style={styles.name}>{props.actor.name}</Text>
                 { peopleDetail.birthday ?
                   <Text style={styles.birthday}>{convertDate(peopleDetail.birthday)}
                   

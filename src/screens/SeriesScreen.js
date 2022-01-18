@@ -28,6 +28,7 @@ const Series = (props)=> {
 		
 		if(connection.isInternetReachable){
 			setRefreshing(true);
+			props.initDetailsSerie();
 			Promise.resolve(props.getSeries(1)).then(() => setRefreshing(false));
 		}
 	}, [connection]);
@@ -73,14 +74,16 @@ return (
 //This means that one or more of the redux states in the store are available as props
 const mapStateToProps = (state) => {
     return {
-		series: state.api.series
+		series: state.media.series
     }
   }
   
   //This means that one or more of the redux actions in the form of dispatch(action) combinations are available as props
   const mapDispatchToProps = (dispatch) => {
     return {
-		getSeries: (page) => dispatch(actions.fetchSeries(page))
+		getSeries: (page) => dispatch(actions.fetchSeries(page)),
+		initDetailsSerie: () => dispatch(actions.initDetailsSeries()),
+
     }
   }
 

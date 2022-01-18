@@ -64,11 +64,12 @@ const SerieScreen = (props)=> {
             <ImageBackground 
               imageStyle={{width: '100%', height: '100%', opacity: 0.2}} 
               style={{flexDirection:'row', alignItems: 'center', justifyContent:'center', height: '40%', width: '100%', paddingTop: 10}} 
-              source={serieDetail.backdrop_path ? { uri: urlBackgroundImage+serieDetail.backdrop_path } : require('../assets/movie_avatar.png')}
+              loadingIndicatorSource={require('../assets/movie_avatar.png')} source={serieDetail.backdrop_path ? { uri: urlBackgroundImage+serieDetail.backdrop_path } : require('../assets/movie_avatar.png')}
             >
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100%', margin: 3, width: '40%' }}>
                 <Image
                   style={{height: '100%', width: '100%', borderRadius: 1}} 
+                  loadingIndicatorSource={require('../assets/movie_avatar.png')}
                   source={serieDetail.poster_path ? { uri: urlPosterImage+serieDetail.poster_path } : require('../assets/movie_avatar.png')}
                 />
               </View>
