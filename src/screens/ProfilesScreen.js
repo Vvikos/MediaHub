@@ -119,15 +119,23 @@ const ProfilesScreen = (props)=> {
 				props.initCounter();
 
 				navigation.navigate('App');
-
 			}
 		} 
 	}), [props.counter];
+
 
 	useEffect( () => {
 		setLoading(false);
 		setAddScreen(profiles.length==0);
 	}, [profiles]);
+
+	useEffect(() => {
+		navigation.addListener('focus', refreshProfiles);
+	}, []);
+	
+	const refreshProfiles = () => {
+		dbservice.requestProfiles(setProfiles);
+	}
 
     useEffect( () => {
         if(!addScreen){
