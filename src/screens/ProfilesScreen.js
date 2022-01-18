@@ -114,7 +114,7 @@ const ProfilesScreen = (props)=> {
 
 	useEffect(() => {
 		if(setLoadingMediaDiv){
-			if(props.counter == 99){
+			if(props.counter >= 99){
 				setLoadingMediaDiv(false);
 				props.initCounter();
 
