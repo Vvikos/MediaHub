@@ -109,6 +109,10 @@ const ProfilesScreen = (props)=> {
 	const tryConnect = () => {
 		NetInfo.fetch().then(state => {
 			setConnection(state);
+
+			if(state.isInternetReachable){
+				setFirstCo(false);
+			}
 		});
 	}
 
@@ -181,17 +185,31 @@ const ProfilesScreen = (props)=> {
 			navigation.navigate('App');
 		}
 
-		//if all null and no internet --> setFirstCo -> true() 
 
-		if(props.series.popular == null || props.detailsSeries == null){
-			setLoadingMediaDiv(true);
-			props.getSeries(1);
-		} 
+		NetInfo.fetch().then(state => {
+			setConnection(state);
 
-		if(props.movies.popular == null || props.detailsMovies == null){
-			setLoadingMediaDiv(true);
-			props.getFilms(1);
-		} 
+			const offline = !(state.isConnected && state.isInternetReachable)
+
+			if(offline && props.series.popular == null && props.detailsSeries == null && props.movies.popular == null && props.detailsMovies == null){
+				setFirstCo(true);
+			}
+
+			alert(JSON.stringify(props.series.popular));
+			alert(JSON.stringify(props.detailsSeries));
+			alert(JSON.stringify(props.movies.popular));
+			alert(JSON.stringify(props.detailsMovies));
+			
+			if(!offline && props.series.popular == null || props.detailsSeries == null){
+				setLoadingMediaDiv(true);
+				props.getSeries(1);
+			} 
+
+			if(!offline && state.isConnected && props.movies.popular == null || props.detailsMovies == null){
+				setLoadingMediaDiv(true);
+				props.getFilms(1);
+			} 			
+		});
 	}
 
 	const generateProfiles = () => {
@@ -210,7 +228,7 @@ const ProfilesScreen = (props)=> {
 		{
 			loadingMediaDiv ?
 			
-			<LoadingCounter counter={props.counter} />
+				<LoadingCounter counter={props.counter} />
 		
 			:
 				firstCo ? 
