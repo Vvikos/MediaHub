@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
 });
 
 const MediaCard = (props) => {
+
 	const onClickStar = () => {
         if ((props.media.title) ? props.detailsMovies[props.media.id] : props.detailsSeries[props.media.id]) {   
             if(!props.favori){
@@ -38,7 +39,7 @@ const MediaCard = (props) => {
 	return (
 		<View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
 			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate(props.type, { media: props.media.title ? props.detailsMovies[props.media.id] : props.detailsSeries[props.media.id], media_name: props.media.title ? props.media.title : props.media.name})}>
-				<Image style={styles.imBackground} loadingIndicatorSource={require('../assets/movie_avatar.png')} defaultImage={require('../assets/movie_avatar.png')} source={props.media.poster_path ? { uri: urlPosterImage+props.media.poster_path } : require('../assets/movie_avatar.png')}/>
+				<Image style={styles.imBackground}  defaultImage={require('../assets/movie_avatar.png')} source={props.media.poster_path ? { uri: urlPosterImage+props.media.poster_path } : require('../assets/movie_avatar.png')}/>
 			</TouchableOpacity>
 			<TouchableOpacity activeOpacity={0.5} onPress={onClickStar}>
 				<Ionicons name={props.favori ? "star" : "star-outline"} size={32} color={activeTintColor} />			

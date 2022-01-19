@@ -109,12 +109,12 @@ const ProfilesScreen = (props)=> {
 	const tryConnect = () => {
 		NetInfo.fetch().then(state => {
 			setConnection(state);
+
+			if(state.isInternetReachable){
+				setFirstCo(false);
+			}
 		});
 	}
-
-	useEffect(() => {
-		dbservice.initBase();
-	}, []);
 
 	useEffect(() => {
 		if(setLoadingMediaDiv){
@@ -129,8 +129,6 @@ const ProfilesScreen = (props)=> {
 
 
 	useEffect( () => {
-		dbservice.initBase();
-
 		setLoading(false);
 		setAddScreen(profiles.length==0);
 	}, [profiles]);
@@ -144,8 +142,6 @@ const ProfilesScreen = (props)=> {
 	}
 
     useEffect( () => {
-		dbservice.initBase();
-
         if(!addScreen){
             dbservice.requestProfiles(setProfiles);
         }
@@ -181,17 +177,27 @@ const ProfilesScreen = (props)=> {
 			navigation.navigate('App');
 		}
 
-		//if all null and no internet --> setFirstCo -> true() 
 
-		if(props.series.popular == null || props.detailsSeries == null){
-			setLoadingMediaDiv(true);
-			props.getSeries(1);
-		} 
+		NetInfo.fetch().then(state => {
+			setConnection(state);
 
-		if(props.movies.popular == null || props.detailsMovies == null){
-			setLoadingMediaDiv(true);
-			props.getFilms(1);
-		} 
+			const offline = !(state.isConnected && state.isInternetReachable)
+
+			if(offline && props.series.popular == null && props.detailsSeries == null && props.movies.popular == null && props.detailsMovies == null){
+				setLoadingMediaDiv(false);
+				setFirstCo(true);
+			} else {
+				if(!offline && props.series.popular == null || props.detailsSeries == null){
+					setLoadingMediaDiv(true);
+					props.getSeries(1);
+				} 
+
+				if(!offline && state.isConnected && props.movies.popular == null || props.detailsMovies == null){
+					setLoadingMediaDiv(true);
+					props.getFilms(1);
+				} 
+			}			
+		});
 	}
 
 	const generateProfiles = () => {
@@ -210,7 +216,7 @@ const ProfilesScreen = (props)=> {
 		{
 			loadingMediaDiv ?
 			
-			<LoadingCounter counter={props.counter} />
+				<LoadingCounter counter={props.counter} />
 		
 			:
 				firstCo ? 

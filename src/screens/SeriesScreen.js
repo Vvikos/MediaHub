@@ -27,14 +27,13 @@ const Series = (props)=> {
 		NetInfo.fetch().then(state => {
 			setConnection(state);
 		});
-		
-		if(connection.isInternetReachable){
-			setRefreshing(true);
-			props.initDetailsSerie();
-			Promise.resolve(props.getSeries(1)).then(() => setRefreshing(false));
-		}
-	}, [connection]);
 
+		if(connection.isConnected && connection.isInternetReachable){
+			setRefreshing(true);
+			setRefreshing(false);
+		}
+
+	}, [connection]);
 
 	useEffect(() => {
 		navigation.addListener('focus', refreshFavoris);
@@ -77,7 +76,8 @@ return (
 //This means that one or more of the redux states in the store are available as props
 const mapStateToProps = (state) => {
     return {
-		series: state.media.series
+		series: state.media.series,
+		counter: state.details.counter
     }
   }
   
@@ -86,7 +86,7 @@ const mapStateToProps = (state) => {
     return {
 		getSeries: (page) => dispatch(actions.fetchSeries(page)),
 		initDetailsSerie: () => dispatch(actions.initDetailsSeries()),
-
+		initCounter: () => dispatch(actions.initCounter()),
     }
   }
 
