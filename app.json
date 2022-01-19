@@ -3,8 +3,9 @@
     "name": "MediaHub",
     "slug": "MediaHub",
     "version": "1.0.0",
+    "description": "Trouvez les derniers films/series à voir et trouvez avec MediHub les films/series que vous cherchez.",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/mh_icon.png",
     "splash": {
       "image": "./src/assets/mh_logo_tb.png",
       "resizeMode": "contain",
