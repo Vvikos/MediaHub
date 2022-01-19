@@ -47,8 +47,7 @@ function AddProfile({ navigation, onInsert, onCancel, disableCancel }) {
 	const [value, setValue] = useState('');
 
 	const onAddProfile = () => {
-		dbservice.addProfile(value);
-        onInsert();
+		dbservice.addProfile(value, onInsert);
 	};
 
   return (
@@ -79,7 +78,7 @@ function AddProfileCard({ navigation, onAddProfile, disabled }) {
 	);
 }
 
-function ProfileCard({ name, img, navigation, onClickProfile }) {
+function ProfileCard({ name, navigation, onClickProfile }) {
 	return (
 		<TouchableOpacity activeOpacity={0.5} onPress={onClickProfile} >    
 			<Image
@@ -96,10 +95,8 @@ const ProfilesScreen = (props)=> {
 	const [loading, setLoading] = useState(true);
 	const [profiles, setProfiles] = useState([]);
     const [addScreen, setAddScreen] = useState(false);
-	const [profile, setProfile] = useState([]);
 	const [firstCo, setFirstCo] = useState(false);
 	const [connection, setConnection] = useState(null);
-	const [loadingMedia, setLoadingMedia] = useState(true);
 	const [loadingMediaDiv, setLoadingMediaDiv] = useState(false);
 
 	NetInfo.fetch().then(state => {
@@ -117,11 +114,8 @@ const ProfilesScreen = (props)=> {
 	}
 
 	useEffect(() => {
-		if(setLoadingMediaDiv){
+		if(loadingMediaDiv){
 			if(props.counter >= 99){
-				setLoadingMediaDiv(false);
-				props.initCounter();
-
 				navigation.navigate('App');
 			}
 		} 
@@ -134,7 +128,7 @@ const ProfilesScreen = (props)=> {
 	}, [profiles]);
 
 	useEffect(() => {
-		navigation.addListener('focus', refreshProfiles);
+		navigation.addListener('focus', () => { refreshProfiles(); setLoadingMediaDiv(false); props.initCounter(); });
 	}, [navigation]);
 	
 	const refreshProfiles = () => {
@@ -143,11 +137,9 @@ const ProfilesScreen = (props)=> {
 
     useEffect( () => {
         if(!addScreen){
-            dbservice.requestProfiles(setProfiles);
+            refreshProfiles();
         }
 	}, [addScreen]);
-
-
 
     const activateAddScreen = () => {
         setAddScreen(true);
