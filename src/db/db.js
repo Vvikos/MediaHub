@@ -40,6 +40,7 @@ export const initBase = () => {
 };
 
 export const requestProfiles = (callback) => {
+    initBase();
     db.transaction(tx => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT * FROM profiles LIMIT 3', null, // passing sql query and parameters:null
@@ -61,6 +62,7 @@ export const requestProfiles = (callback) => {
 };
 
 export const requestProfile = (callback) => {
+    initBase();
     db.transaction(tx => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT name FROM profiles WHERE selected =1', null, // passing sql query and parameters:null
@@ -77,6 +79,7 @@ export const requestProfile = (callback) => {
 };
 
 export const selectProfile = (name) => {
+    initBase();
     db.transaction(tx => {
         tx.executeSql('SELECT name FROM profiles', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
@@ -113,6 +116,7 @@ export const selectProfile = (name) => {
 };
 
 export const addProfile = (name) => {
+    initBase();
     db.transaction(tx => {
         tx.executeSql(
             "INSERT OR IGNORE INTO profiles (name) VALUES(?)",  
@@ -126,7 +130,7 @@ export const addProfile = (name) => {
 };
 
 export const removeCurrentProfile = () => {
-
+    initBase();
     db.transaction(tx => {
         tx.executeSql('DELETE FROM favoris WHERE id_profile==(SELECT id FROM profiles WHERE selected=1)', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
@@ -145,6 +149,7 @@ export const removeCurrentProfile = () => {
 };
 
 export const requestFavoriForCurrentProfile = (callback) => {
+    initBase();
     db.transaction(tx => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT id_media, media_type FROM favoris WHERE id_profile=(SELECT id FROM profiles WHERE selected=1)', null, // passing sql query and parameters:null
@@ -157,6 +162,7 @@ export const requestFavoriForCurrentProfile = (callback) => {
 };
 
 export const removeFavoriForCurrentProfile = (id_media, media_type) => {
+    initBase();
     db.transaction(tx => {
         tx.executeSql(
             "DELETE FROM favoris WHERE id_profile=(SELECT id FROM profiles WHERE selected=1) AND id_media=? AND media_type=?",  
@@ -171,6 +177,7 @@ export const removeFavoriForCurrentProfile = (id_media, media_type) => {
 
 
 export const addFavoriForCurrentProfile = (id_media, media_type) => {
+    initBase();
     db.transaction(tx => {
         tx.executeSql(
             "INSERT OR REPLACE INTO favoris (id_profile, id_media, media_type) VALUES((SELECT id FROM profiles WHERE selected=1), ?, ?)",  

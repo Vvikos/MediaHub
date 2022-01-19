@@ -117,10 +117,6 @@ const ProfilesScreen = (props)=> {
 	}
 
 	useEffect(() => {
-		dbservice.initBase();
-	}, []);
-
-	useEffect(() => {
 		if(setLoadingMediaDiv){
 			if(props.counter >= 99){
 				setLoadingMediaDiv(false);
@@ -133,8 +129,6 @@ const ProfilesScreen = (props)=> {
 
 
 	useEffect( () => {
-		dbservice.initBase();
-
 		setLoading(false);
 		setAddScreen(profiles.length==0);
 	}, [profiles]);
@@ -148,8 +142,6 @@ const ProfilesScreen = (props)=> {
 	}
 
     useEffect( () => {
-		dbservice.initBase();
-
         if(!addScreen){
             dbservice.requestProfiles(setProfiles);
         }

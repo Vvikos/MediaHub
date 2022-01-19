@@ -31,29 +31,27 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       margin: 2,
-      maxHeight: '55%',
+      height: 'auto',
+      minHeight: '30%',
+      maxHeight: '70%',
       top: '20%'
     },
     name: {
-      fontSize: 18,
+      fontSize: 22,
       fontWeight: "bold",
-      color: "#ffffff",
-      marginBottom: 5
+      color: "#ffffff"
     },
     biography: {
       fontSize: 11,
       color: "#ffffff",
-      marginBottom: 10,
       textAlign: 'justify'
     },
     website: {
-      marginBottom: 10,
-      fontSize: 11,
+      fontSize: 13,
       color: "#3366bb",
     },
     birthday: {
-      marginBottom: 10,
-      fontSize: 11,
+      fontSize: 13,
       color: "#ffffff",
       fontStyle: 'italic'
     },
@@ -130,12 +128,10 @@ const ActorCard = (props) => {
           isVisible={isModalVisible}
           style={styles.modalView}
         >
-          <View style={{padding: 3, flexDirection: 'column', justifyContent: 'flex-start', height: '100%', width: '100%'}}>
-            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: 20, marginTop: 20}}>
+          <View style={{padding: 3, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', height: '100%', width: '100%'}}>
+            <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'}}>
               <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 10, marginRight: 8}}>
                 <Image style={styles.modalBackgroundImg} loadingIndicatorSource={require('../assets/actor_avatar.jpg')} defaultImage={require('../assets/actor_avatar.jpg')}  source={props.actor.profile_path ? { uri: urlPosterImage+props.actor.profile_path } : require('../assets/actor_avatar.jpg')}/>
-              </View>
-              <View style={{borderLeftColor: activeTintColor, borderLeftWidth: 0.2, height: '95%', marginLeft: 4, paddingLeft: 4}}>
                 <Text style={styles.name}>{props.actor.name}</Text>
                 { peopleDetail.birthday ?
                   <Text style={styles.birthday}>{convertDate(peopleDetail.birthday)}
@@ -152,11 +148,10 @@ const ActorCard = (props) => {
                 : null }
               </View>
             </View>
-              { peopleDetail.biography ?
-                <View style={{maxHeight: '40%', marginBottom: 10}}><ScrollView><Text style={styles.biography}>{peopleDetail.biography}</Text></ScrollView></View>
-              : null }
-                        
-              <Button title="FERMER" color={activeTintColor} onPress={toggleModal} />
+            { peopleDetail.biography ?
+              <View style={{maxHeight: '45%', borderLeftWidth: 1, borderLeftColor: activeTintColor, paddingLeft: 5}}><ScrollView><Text style={styles.biography}>{peopleDetail.biography}</Text></ScrollView></View>
+            : null }
+            <Button title="FERMER" color={activeTintColor} onPress={toggleModal} />        
           </View>
         </Modal>
       </>
