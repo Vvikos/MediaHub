@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
     },
 	imgLoading: {
+		marginTop: -400,
 		height: 200,
 		width: 200
 	}
@@ -18,8 +19,8 @@ const styles = StyleSheet.create({
 const LoadingCounter = (props) => {
 	return (
         <View style={styles.containerLoading}>
-			<Text style={{color:"#ffffff"}}>{props.counter > 0 ? ((props.counter))+"%" : "0%" }</Text>
 		    <Image style={styles.imgLoading} source={require('../assets/loading.gif')} />
+			<Text style={{color:"#ffffff"}}>{props.counter > 0 ? ((props.counter))+"%" : "0%" }</Text>
         </View>
 	);
 };
