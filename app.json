@@ -7,7 +7,7 @@
     "orientation": "portrait",
     "icon": "./src/assets/mh_icon.png",
     "splash": {
-      "image": "./src/assets/mh_logo_tb.png",
+      "image": "./src/assets/mh_logo_bg_g.png",
       "resizeMode": "contain",
       "backgroundColor": "#303030"
     },
