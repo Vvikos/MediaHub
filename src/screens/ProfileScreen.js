@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import { StyleSheet, View, Button } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import { CommonActions } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { Text, ListItem, Switch } from 'react-native-elements';
 import {backgroundColor, inactiveTintColor, activeTintColor, alternativeTintColor, backgroundColorDarker} from "../helpers/colors";
 import * as dbservice from '../db/db';
@@ -20,6 +20,7 @@ function ProfileScreen(props) {
 	const [favSeriesExpanded, setFavSeriesExpanded] = useState(true);
 	const [favoris, setFavoris] =  useState(null);
 	const [connection, setConnection] = useState(null);
+	const isFocused = useIsFocused();
 
 	NetInfo.fetch().then(state => {
 		setConnection(state);
@@ -33,19 +34,25 @@ function ProfileScreen(props) {
 	const getFavorites = (favoris) => {
 		NetInfo.fetch().then(state => {
 			setConnection(state);
+
+			if(state.isInternetReachable){
+				props.initFavorite();
+				props.getFavorites(favoris);
+			}
 		});
-		
-		if(connection.isInternetReachable){
-			props.initFavorite();
-			props.getFavorites(favoris);
-		}
 	}
 
 
 	useEffect( () => {
-		dbservice.requestProfile(setProfile);
-		dbservice.requestFavoriForCurrentProfile(setFavoris);
-	}, []);
+		if(isFocused){
+			NetInfo.fetch().then(state => {
+				setConnection(state);
+			});
+
+			dbservice.requestProfile(setProfile);
+			dbservice.requestFavoriForCurrentProfile(setFavoris);
+		}
+	}, [isFocused]);
 
 	useEffect(() => {
 		const requestFavoris = navigation.addListener('focus', refreshFavoris);
@@ -127,7 +134,11 @@ function ProfileScreen(props) {
 				})
 			: connection ? 
 				!connection.isInternetReachable ? 
-					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+					<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+						<ListItem.Content style={{color: activeTintColor}}>
+							<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
+						</ListItem.Content>
+					</ListItem>
 				:
 				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
@@ -138,7 +149,11 @@ function ProfileScreen(props) {
 				
 			: connection ? 
 				!connection.isInternetReachable ? 
-					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+					<ListItem.Content style={{color: activeTintColor}}>
+						<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
+					</ListItem.Content>
+				</ListItem>
 				:
 					null
 			: null 
@@ -176,7 +191,11 @@ function ProfileScreen(props) {
 				})
 			: connection ? 
 				!connection.isInternetReachable ? 
-					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+					<ListItem.Content style={{color: activeTintColor}}>
+						<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
+					</ListItem.Content>
+				</ListItem>
 				:
 				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
@@ -187,7 +206,11 @@ function ProfileScreen(props) {
 				
 			: connection ? 
 				!connection.isInternetReachable ? 
-					<Text>Récuperation pas possible, merci de vous connecter à l'internet.</Text>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+					<ListItem.Content style={{color: activeTintColor}}>
+						<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
+					</ListItem.Content>
+				</ListItem>
 				:
 					null
 			: null 

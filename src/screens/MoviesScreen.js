@@ -10,12 +10,14 @@ import * as dbservice from '../db/db';
 import { RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
+import { useIsFocused } from "@react-navigation/native";
 
 const Movies = (props)=> {
 	const { navigation, route } = props;
 	const [favoris, setFavoris] = useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [connection, setConnection] = useState(null);
+	const isFocused = useIsFocused();
 
 	NetInfo.fetch().then(state => {
 		setConnection(state);
@@ -24,27 +26,33 @@ const Movies = (props)=> {
 	const onRefresh = React.useCallback(() => {
 		NetInfo.fetch().then(state => {
 			setConnection(state);
-		});
 		
-		if(connection.isInternetReachable){
-			setRefreshing(true);
-			props.initDetailsMovie();
-			Promise.resolve(props.getFilms(1)).then(() => setRefreshing(false));
-		}
-	}, [connection]);
+			if(state.isInternetReachable){
+				setRefreshing(true);
+				props.initDetailsMovie();
 
+				//add counter to set refreshing
+				Promise.resolve(props.getFilms(1)).then(() => setRefreshing(false));
+			}
+		});
+
+	}, []);
 
 	useEffect(() => {
 		navigation.addListener('focus', refreshFavoris);
-	  }, []);
+	  }, [navigation]);
+
+
+	useEffect(() => {
+		if(isFocused){
+			refreshFavoris();
+		}
+	  }, [isFocused]);
 	
 	const refreshFavoris = () => {
 		dbservice.requestFavoriForCurrentProfile(setFavoris);
 	}
 	
-	useEffect( () => {
-		refreshFavoris();
-	}, []);
 		
 	return (
 		<SafeAreaView style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>

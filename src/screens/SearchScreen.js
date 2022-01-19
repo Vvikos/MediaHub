@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { StyleSheet, Text, View, Image, FlatList, useIsFocused } from "react-native";
+import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { requestFindMulti, requestMovieDetailScreen, requestSerieDetailScreen } from "../api/api";
@@ -12,6 +12,7 @@ import * as actions from '../store/actions';
 import Loading from '../components/Loading';
 import * as dbservice from '../db/db';
 import NetInfo from "@react-native-community/netinfo";
+import { useIsFocused } from "@react-navigation/native";
 
 const Search = (props)=> {
 	const { navigation } = props;
@@ -20,14 +21,14 @@ const Search = (props)=> {
 	const [data, setData] = useState([]);
 	const [favoris, setFavoris] = useState([]);
 	const [connection, setConnection] = useState(null);
+	const isFocused = useIsFocused();
 
 	NetInfo.fetch().then(state => {
 		setConnection(state);
 	});
 
 	useEffect(() => {
-		const requestFavoris = navigation.addListener('focus', refreshFavoris);
-		return requestFavoris;
+		navigation.addListener('focus', refreshFavoris);
 	  }, [navigation]);
 
 	const searchFunction = (text) => {
@@ -42,8 +43,10 @@ const Search = (props)=> {
 	}
 
 	useEffect(() => {
-		refreshFavoris();
-	}, []);
+		if(isFocused){
+			refreshFavoris();
+		}
+	}, [isFocused]);
 
 	useEffect(() => {
 		refreshFavoris();
@@ -152,7 +155,7 @@ const Search = (props)=> {
 	);
 };
 
-	const renderItem = ({ item }) => <Item item={item} id={item.id} default_favori={favoris.some(e => e.id_media === item.id)} onFavoriChange={refreshFavoris} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
+	const renderItem = ({ item }) => <Item item={item} id={item.id} default_favori={favoris.some(e => e.id_media === item.id)}  onFavoriChange={refreshFavoris} title={item.title} poster_path={item.poster_path} vote_average={item.vote_average} name={item.name} vote_count={item.vote_count} first_air_date={item.first_air_date} />;
 
 return (
 	<View style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>

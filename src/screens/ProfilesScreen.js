@@ -113,6 +113,10 @@ const ProfilesScreen = (props)=> {
 	}
 
 	useEffect(() => {
+		dbservice.initBase();
+	}, []);
+
+	useEffect(() => {
 		if(setLoadingMediaDiv){
 			if(props.counter >= 99){
 				setLoadingMediaDiv(false);
@@ -125,19 +129,23 @@ const ProfilesScreen = (props)=> {
 
 
 	useEffect( () => {
+		dbservice.initBase();
+
 		setLoading(false);
 		setAddScreen(profiles.length==0);
 	}, [profiles]);
 
 	useEffect(() => {
 		navigation.addListener('focus', refreshProfiles);
-	}, []);
+	}, [navigation]);
 	
 	const refreshProfiles = () => {
 		dbservice.requestProfiles(setProfiles);
 	}
 
     useEffect( () => {
+		dbservice.initBase();
+
         if(!addScreen){
             dbservice.requestProfiles(setProfiles);
         }
@@ -162,20 +170,18 @@ const ProfilesScreen = (props)=> {
 	}
 
 	const onClickProfile = (name) => {
-		// select profile in bdd
-		dbservice.initBase();
+		// select profile in bdd		
 		dbservice.selectProfile(name);
 
 		// reset navigation stac
 		dbservice.requestFavoriForCurrentProfile((favoris) => getFavorites(name, favoris));		
 		
 
-
 		if(props.series.popular != null && props.detailsSeries != null && props.movies.popular != null && props.detailsMovies != null){
 			navigation.navigate('App');
 		}
 
-
+		//if all null and no internet --> setFirstCo -> true() 
 
 		if(props.series.popular == null || props.detailsSeries == null){
 			setLoadingMediaDiv(true);
@@ -207,30 +213,30 @@ const ProfilesScreen = (props)=> {
 			<LoadingCounter counter={props.counter} />
 		
 			:
-			firstCo ? 
-					<View style={{ marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center', textAlign: "center" }}>
-						<Text style={{marginLeft: 40, marginRight: 40, color:"#ffffff"}}>{connection ? connection.isInternetReachable ? "" : "Merci de vous connecter au moins une fois avec de la connexion à MediaHub. ": null}</Text>
-						
-						<TouchableOpacity style={{marginTop: 40}} activeOpacity={0.5} onPress={() => tryConnect()}>
-							<Ionicons 
-								name="refresh" 
-								size={24} color={activeTintColor} 
-								containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
-								style={{backgroundColor: backgroundColorDarker, padding: 6, borderRadius: 2, borderColor: activeTintColor, borderWidth: 0.5, margin: 1}} 
-							/>
-						</TouchableOpacity>
-					</View>
-			:
-			<View style={{ flexDirection: 'row', marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				{loading ?
-					<Loading />
+				firstCo ? 
+						<View style={{ marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center', textAlign: "center" }}>
+							<Text style={{marginLeft: 40, marginRight: 40, color:"#ffffff"}}>{connection ? connection.isInternetReachable ? "" : "Merci de vous connecter au moins une fois avec de la connexion à MediaHub. ": null}</Text>
+							
+							<TouchableOpacity style={{marginTop: 40}} activeOpacity={0.5} onPress={() => tryConnect()}>
+								<Ionicons 
+									name="refresh" 
+									size={24} color={activeTintColor} 
+									containerStyle={{flexDirection: 'column', justifyContent: 'center', alignItems:'center'}} 
+									style={{backgroundColor: backgroundColorDarker, padding: 6, borderRadius: 2, borderColor: activeTintColor, borderWidth: 0.5, margin: 1}} 
+								/>
+							</TouchableOpacity>
+						</View>
 				:
-					addScreen ?
-						<AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} />
+				<View style={{ flexDirection: 'row', marginTop: -120, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+					{loading ?
+						<Loading />
 					:
-						generateProfiles()
-				}
-			</View>
+						addScreen ?
+							<AddProfile onInsert={desactivateAddScreen} onCancel={desactivateAddScreen} disableCancel={profiles.length==0} />
+						:
+							generateProfiles()
+					}
+				</View>
 		}
 	</>
   );

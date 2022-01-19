@@ -10,12 +10,14 @@ import * as dbservice from '../db/db';
 import { RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
+import { useIsFocused } from "@react-navigation/native";
 
 const Series = (props)=> {
 	const { navigation } = props;
 	const [favoris, setFavoris] = useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [connection, setConnection] = useState(null);
+	const isFocused = useIsFocused();
 
 	NetInfo.fetch().then(state => {
 		setConnection(state);
@@ -35,8 +37,7 @@ const Series = (props)=> {
 
 
 	useEffect(() => {
-		const requestFavoris = navigation.addListener('focus', refreshFavoris);
-		return requestFavoris;
+		navigation.addListener('focus', refreshFavoris);
 	  }, [navigation]);
 	
 	const refreshFavoris = () => {
@@ -44,8 +45,10 @@ const Series = (props)=> {
 	}
 
 	useEffect( () => {
-		refreshFavoris();
-	}, []);
+		if(isFocused){
+			refreshFavoris();
+		}
+	}, [isFocused]);
 
 return (
 	<SafeAreaView style={{ borderTopWidth: 1, borderTopColor: activeTintColor, backgroundColor: backgroundColor, flexDirection: 'column', justifyContent: 'flex-start', alignItems: "center", marginTop: 25}}>
