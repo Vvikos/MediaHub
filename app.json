@@ -5,9 +5,9 @@
     "version": "1.0.0",
     "description": "Trouvez les derniers films/series à voir et trouvez avec MediHub les films/series que vous cherchez.",
     "orientation": "portrait",
-    "icon": "./src/assets/mh_icon.png",
+    "icon": "./src/assets/mh_logo_bg_g.png",
     "splash": {
-      "image": "./src/assets/mh_logo_bg_g.png",
+      "image": "./src/assets/mh_logo_tb.png",
       "resizeMode": "contain",
       "backgroundColor": "#303030"
     },
