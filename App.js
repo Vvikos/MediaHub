@@ -1,109 +1,64 @@
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { createAppContainer } from "react-navigation";
-import { createBottomTabNavigator } from "react-navigation-tabs";
-
-import MoviesScreen from "./src/screens/MoviesScreen";
-import SeriesScreen from "./src/screens/SeriesScreen";
-import SearchScreen from "./src/screens/SearchScreen";
-import ProfileScreen from "./src/screens/ProfileScreen";
-
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import apiReducer from './src/store/reducer';
+import mediaReducer from './src/store/reducerMedia';
+import detailsReducer from './src/store/reducerDetails';
 import {backgroundColor, activeTintColor, activeTintColorFocsued} from "./src/helpers/colors";
-import { Header } from "react-native-elements/dist/header/Header";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import ProfileNavigator from "./src/navigation/ProfileNavigator";
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const TabsBarConfig = {
-	activeTintColor: activeTintColor,
-	style: {
-        backgroundColor: backgroundColor,
-		borderTopColor: activeTintColor, borderTopWidth: 2,
-      }
-  };
+const reducer = combineReducers({api: apiReducer, details: detailsReducer, media: mediaReducer}); // Using Combine Reducers here although only one reducer is present.
+// Official explaination here: https://react-redux.js.org/using-react-redux/connect-mapstate#mapstatetoprops-will-not-run-if-the-store-state-is-the-same
+const composeEnhanced = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose // The first one is to make the chrome dev extension work
 
-const TabNavigator = createBottomTabNavigator({
-Movies: {
-	screen: MoviesScreen,
-	navigationOptions: {
-	tabBarLabel: "Movies",
-	tabBarOptions: TabsBarConfig,
-	tabBarIcon: (tabInfo) => {
-		return (
-		<Ionicons
-			name="film-outline"
-			size={32}
-			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
-		/>
-		);
-	},
-	},
-},
-Series: {
-	screen: SeriesScreen,
-	navigationOptions: {
-	tabBarLabel: "Series",
-	tabBarOptions: TabsBarConfig,
-	tabBarIcon: (tabInfo) => {
-		return (
-		<Ionicons
-			name="tv-outline"
-			size={32}
-			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
-		/>
-		);
-	},
-	},
-},
-Search: {
-	screen: SearchScreen,
-	navigationOptions: {
-	tabBarLabel: "Search",
-	tabBarOptions: TabsBarConfig,
-	tabBarIcon: (tabInfo) => {
-		return (
-		<Ionicons
-			name="search-outline"
-			size={32}
-			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
-		/>
-		);
-	},
-	},
-},
-Profile: {
-	screen: ProfileScreen,
-	navigationOptions: {
-	tabBarLabel: "Profile",
-	tabBarOptions: TabsBarConfig,
-	tabBarIcon: (tabInfo) => {
-		return (
-		<Ionicons
-			name="person-outline"
-			size={32}
-			color={tabInfo.focused ? activeTintColor : activeTintColorFocsued}
-		/>
-		);
-	},
-	},
-},
-});
+const persistConfig = {
+	key: "root",
+	storage: AsyncStorage,
+};
 
-const Navigator = createAppContainer(TabNavigator);
+const persistConfig2 = {
+	key: "details",
+	storage: AsyncStorage,
+};
+
+
+const persistConfig3 = {
+	key: "media",
+	storage: AsyncStorage,
+};
+
+const rootReducer = combineReducers({
+	api: persistReducer(persistConfig, apiReducer),
+	details: persistReducer(persistConfig2, detailsReducer),
+	media: persistReducer(persistConfig3, mediaReducer)
+  });
+  
+const store = createStore(
+	rootReducer, 
+	composeEnhanced(
+		applyMiddleware(thunk)
+  	)
+);
+
+const persistor = persistStore(store);
+
+
+const navTheme = DefaultTheme;
+navTheme.colors.background = backgroundColor;
 
 export default function App() {
-return (
-	<SafeAreaProvider>
-		<Header
-			statusBarProps={{ barStyle: 'dark-content' }}
-			containerStyle={{
-				backgroundColor: backgroundColor,
-				borderBottomColor: activeTintColor
-			}}
-			centerComponent={{ text: "MEDIA HUB", style: { color: '#fff', fontSize: 30 } }}	
-		/>
-		<Navigator>
-			<MoviesScreen/>
-		</Navigator>
-	</SafeAreaProvider>
-
-);
+	return (
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
+				<NavigationContainer theme={navTheme}>
+					<ProfileNavigator />
+				</NavigationContainer>
+			</PersistGate>
+		</Provider>
+	);
 }
