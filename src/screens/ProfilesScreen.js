@@ -184,23 +184,19 @@ const ProfilesScreen = (props)=> {
 			const offline = !(state.isConnected && state.isInternetReachable)
 
 			if(offline && props.series.popular == null && props.detailsSeries == null && props.movies.popular == null && props.detailsMovies == null){
+				setLoadingMediaDiv(false);
 				setFirstCo(true);
-			}
+			} else {
+				if(!offline && props.series.popular == null || props.detailsSeries == null){
+					setLoadingMediaDiv(true);
+					props.getSeries(1);
+				} 
 
-			alert(JSON.stringify(props.series.popular));
-			alert(JSON.stringify(props.detailsSeries));
-			alert(JSON.stringify(props.movies.popular));
-			alert(JSON.stringify(props.detailsMovies));
-			
-			if(!offline && props.series.popular == null || props.detailsSeries == null){
-				setLoadingMediaDiv(true);
-				props.getSeries(1);
-			} 
-
-			if(!offline && state.isConnected && props.movies.popular == null || props.detailsMovies == null){
-				setLoadingMediaDiv(true);
-				props.getFilms(1);
-			} 			
+				if(!offline && state.isConnected && props.movies.popular == null || props.detailsMovies == null){
+					setLoadingMediaDiv(true);
+					props.getFilms(1);
+				} 
+			}			
 		});
 	}
 
