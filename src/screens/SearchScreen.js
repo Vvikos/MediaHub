@@ -188,12 +188,15 @@ return (
 				
 					: 
 						searchValue=='' ?
-						<Ionicons name="search-outline" size={50} color={activeTintColor} />
-						:
-						<Loading />
+							<Ionicons style={{ marginTop: 5 }} name="search-outline" size={50} color={activeTintColor} />
+							
+							:
+							<Loading />
 
 				:
-					<Text style={{color:"#ffffff"}}>Cette fonctionnalité n'est pas disponible hors connexion.</Text>
+					<View style={{ backgroundColor: backgroundColor, alignItems: "center", marginTop: 30 }}>
+						<Text style={{color:"#ffffff",  fontSize: 15, marginLeft: 10, marginRight: 10}}>Cette fonctionnalité n'est pas disponible hors connexion.</Text>
+					</View>
 			:
 				null
 		}

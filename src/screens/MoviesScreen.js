@@ -26,17 +26,15 @@ const Movies = (props)=> {
 	const onRefresh = React.useCallback(() => {
 		NetInfo.fetch().then(state => {
 			setConnection(state);
-		
-			if(state.isInternetReachable){
-				setRefreshing(true);
-				props.initDetailsMovie();
-
-				//add counter to set refreshing
-				Promise.resolve(props.getFilms(1)).then(() => setRefreshing(false));
-			}
 		});
 
-	}, []);
+		if(connection.isConnected && connection.isInternetReachable){
+			setRefreshing(true);
+			setRefreshing(false);
+		}
+
+	}, [connection]);
+
 
 	useEffect(() => {
 		navigation.addListener('focus', refreshFavoris);
@@ -85,7 +83,8 @@ const mapStateToProps = (state) => {
 		movies: state.media.movies,
 		series: state.media.series,
 		detailsMovies: state.details.detailsMovies,
-		detailsSeries: state.details.detailsSeries
+		detailsSeries: state.details.detailsSeries,
+		counter: state.details.counter
     }
   }
   
@@ -94,6 +93,7 @@ const mapStateToProps = (state) => {
     return {
 		getFilms: (page) => dispatch(actions.fetchFilms(page)),
 		initDetailsMovie: () => dispatch(actions.initDetailsMovie()),
+		initCounter: () => dispatch(actions.initCounter()),
     }
   }
 
