@@ -116,14 +116,14 @@ function ProfileScreen(props) {
 			onPress={() => {
 				setFavMoviesExpanded(!favMoviesExpanded);
 			}}
-			>
+			><View style={{height: '80%'}}><ScrollView>
 			{ props.favorites ?
 				props.favorites.movies.length > 0 ?
 					Object.entries(props.favorites.movies).map(([index, movie]) => {
 						return (
 						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
 							<ListItem.Content style={{color: activeTintColor}}>
-								<ListItem.Title style={{color: activeTintColor}}>{movie.title }</ListItem.Title>
+								<ListItem.Title style={{color: activeTintColor}}>{movie.title}</ListItem.Title>
 							</ListItem.Content>
 							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { media: movie, media_name: movie.title })}>		
 								<ListItem.Chevron />
@@ -157,7 +157,7 @@ function ProfileScreen(props) {
 					null
 			: null 
 			}
-			</ListItem.Accordion>
+			</ScrollView></View></ListItem.Accordion>
 
 			<ListItem.Accordion
 			content={
@@ -173,7 +173,7 @@ function ProfileScreen(props) {
 			onPress={() => {
 				setFavSeriesExpanded(!favSeriesExpanded);
 			}}
-			>
+			><View style={{height: '75%'}}><ScrollView>
 			{ props.favorites ?
 				props.favorites.series.length > 0 ?
 					Object.entries(props.favorites.series).map(([index, serie]) => {
@@ -214,7 +214,7 @@ function ProfileScreen(props) {
 					null
 			: null 
 			}
-			</ListItem.Accordion>
+			</ScrollView></View></ListItem.Accordion>
 		</View>
 	 </View>
   );
@@ -226,11 +226,12 @@ const styles = StyleSheet.create({
 		width: 75
 	},
 	headerTitle: {
-		fontSize: 18, 
+		fontSize: 24, 
 		color: "#ffffff", 
 		textAlign: 'left', 
 		fontWeight: 'bold',
-		marginLeft: 10
+		marginLeft: 10,
+		marginBottom: 3
 	},
     profileCardBig: {
 		height: 175,

@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
     },
 	imgLoading: {
-		height: 250,
-		width: 250
+		height: 50,
+		width: 50
 	}
 });
 
