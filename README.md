@@ -28,7 +28,7 @@ Développée en tant que projet universitaire (Programmation Mobile 2021-2022), 
 <img src="src/assets/screenshot/screen7.jpg" width="200" />
 <img src="src/assets/screenshot/screen8.png" width="188" />
 
-## Fonctionnalitésm
+## Fonctionnalités
 
 - Recherche de films et d'émissions de télévision
 - Découvrir la télévision et les films
