@@ -8,6 +8,10 @@
   <img src="https://img.shields.io/badge/expo-43.0.2-critical.svg" />
 </p>
 
+## Equipe projet
+
+**Baptiste CERDAN - Janos FALKE - Victor VOGT**
+
 ## Vue d'ensemble
 
 Application mobile pour les films et les émissions de télévision. Disponible pour iOS et Android.
@@ -22,8 +26,9 @@ Développée en tant que projet universitaire (Programmation Mobile 2021-2022), 
 <img src="src/assets/screenshot/screen5.jpg" width="200" />
 <img src="src/assets/screenshot/screen6.jpg" width="200" />
 <img src="src/assets/screenshot/screen7.jpg" width="200" />
+<img src="src/assets/screenshot/screen8.png" width="188" />
 
-## Fonctionnalités
+## Fonctionnalitésm
 
 - Recherche de films et d'émissions de télévision
 - Découvrir la télévision et les films
@@ -31,6 +36,8 @@ Développée en tant que projet universitaire (Programmation Mobile 2021-2022), 
 - Fournir des informations sur les épisodes de chaque saison
 - Création de comptes
 - Gestion de vos films et séries préférés
+- Redux offline
+- Bases de données en SQLite
 - Et bien plus encore
 
 ## Installation
