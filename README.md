@@ -17,6 +17,7 @@
 Application mobile pour les films et les émissions de télévision. Disponible pour iOS et Android.
 Développée en tant que projet universitaire (Programmation Mobile 2021-2022), créée à l'aide de [React Native](https://reactnative.dev/), [Expo](https://expo.dev/) et de l'API [TMDb](https://www.themoviedb.org/).
 
+
 ## Captures d'écran
 
 <img src="src/assets/screenshot/screen1.jpg" width="200" />
@@ -39,6 +40,11 @@ Développée en tant que projet universitaire (Programmation Mobile 2021-2022), 
 - Redux offline
 - Bases de données en SQLite
 - Et bien plus encore
+
+## Lancement via Expo.dev
+
+Vous pouvez egalement lancer l'application si vous avec sur votre portable Expo.
+Il suffit de se scanner via l'application Expo : [https://expo.dev/@jfalke/MediaHub](https://expo.dev/@jfalke/MediaHub).
 
 ## Installation
 
