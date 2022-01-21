@@ -45,18 +45,8 @@ export const requestProfiles = (callback) => {
         // sending 4 arguments in executeSql
         tx.executeSql('SELECT * FROM profiles LIMIT 3', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
-            (txObj, { rows: { _array } }) => 
-            { 
-                if(_array.length > 0){
-                    // alert(JSON.stringify(_array));
-                    // alert(_array.length);
-                    // alert(JSON.stringify((_array.map(field => field.name))));
-                    callback(_array.map(field => field.name)),
-                
-                    // failure callback which sends two things Transaction object and Error
-                    (txObj, error) => console.log('SQLite SELECT Error ', error)    
-                }
-            }
+            (txObj, { rows: { _array } }) => callback(_array.map(field => field.name)),
+            (txObj, error) => console.log('SQLite SELECT Error ', error)
            ) // end executeSQL
     }); // end transaction
 };
@@ -65,7 +55,7 @@ export const requestProfile = (callback) => {
     initBase();
     db.transaction(tx => {
         // sending 4 arguments in executeSql
-        tx.executeSql('SELECT name FROM profiles WHERE selected =1', null, // passing sql query and parameters:null
+        tx.executeSql('SELECT name FROM profiles WHERE selected = 1', null, // passing sql query and parameters:null
             // success callback which sends two things Transaction object and ResultSet Object
             (txObj, { rows: { _array } }) => {
                 // alert( _array ?  _array[0].name : "NaN", _array);
@@ -115,7 +105,7 @@ export const selectProfile = (name) => {
     });
 };
 
-export const addProfile = (name) => {
+export const addProfile = (name, successCallback) => {
     initBase();
     db.transaction(tx => {
         tx.executeSql(
@@ -126,10 +116,13 @@ export const addProfile = (name) => {
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite INSERT Error ', error)
         )
-    });
+    },
+    null,
+    successCallback
+    );
 };
 
-export const removeCurrentProfile = () => {
+export const removeCurrentProfile = (successCallback) => {
     initBase();
     db.transaction(tx => {
         tx.executeSql('DELETE FROM favoris WHERE id_profile==(SELECT id FROM profiles WHERE selected=1)', null, // passing sql query and parameters:null
@@ -145,7 +138,10 @@ export const removeCurrentProfile = () => {
             // failure callback which sends two things Transaction object and Error
             (txObj, error) => console.log('SQLite DELETE Error ', error)
             ) // end executeSQL
-    }); // end transaction
+    },
+    null,
+    successCallback
+    ); // end transaction
 };
 
 export const requestFavoriForCurrentProfile = (callback) => {

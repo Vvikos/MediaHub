@@ -1,17 +1,13 @@
-import React, { useState, useEffect} from "react";
-import { Text, View, Image, StyleSheet, FlatList } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { Text, View, FlatList } from "react-native";
 import { activeTintColor, backgroundColorDarker } from "../helpers/colors";
-import { urlPosterImage } from "../helpers/url";
-import * as dbservice from '../db/db';
 import types from "../helpers/types";
 import MediaCard from "./MediaCard";
 
 const MediaRow = (props) => {
 	return (
-		<View style={{backgroundColor: backgroundColorDarker, marginTop: 30, paddingLeft: 2, paddingRight: 2 }}>
-			<Text style={{marginLeft: 15, marginBottom: 25, marginTop: 5, fontSize: 25, fontStyle:'italic', color: "#ffffff"}}>{props.title}</Text>
+		<View style={{ backgroundColor: backgroundColorDarker, marginTop: 20, paddingLeft: 2, paddingRight: 2, paddingBottom: 10 }}>
+			<Text style={{marginLeft: 15, marginBottom: 10, marginTop: 15, fontSize: 27, color: "#ffffff"}}>{props.title}</Text>
 			<FlatList
 				keyExtractor={(item) => item.id.toString()}
 				keyboardShouldPersistTaps={"handled"}

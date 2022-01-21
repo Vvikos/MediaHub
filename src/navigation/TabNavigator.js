@@ -1,9 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { View } from "react-native";
 import { MoviesStackNavigator, SeriesStackNavigator, SearchStackNavigator, ProfileStackNavigator } from "./StackNavigator";
-import {backgroundColor, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
+import {backgroundColor, backgroundColorDarker, inactiveTintColor, activeTintColor, activeTintColorFocsued} from "../helpers/colors";
 
 const Tab = createBottomTabNavigator();
 
@@ -12,10 +11,10 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
         screenOptions={{
             headerShown: false,
-            tabBarActiveTintColor: "#ff9e00",
-            tabBarInactiveTintColor: "#ffffff",
-            tabBarActiveBackgroundColor: "#303030",
-            tabBarInactiveBackgroundColor: "#303030",
+            tabBarActiveTintColor: activeTintColor,
+            tabBarInactiveTintColor: inactiveTintColor,
+            tabBarActiveBackgroundColor: backgroundColor,
+            tabBarInactiveBackgroundColor: backgroundColor,
             tabBarStyle: [
             {
                 borderTopWidth: 2,

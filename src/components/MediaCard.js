@@ -45,7 +45,7 @@ const MediaCard = (props) => {
 				<Ionicons name={props.favori ? "star" : "star-outline"} size={32} color={activeTintColor} />			
 			</TouchableOpacity>
 			<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate(props.type, { media: props.media.title ? props.detailsMovies[props.media.id] : props.detailsSeries[props.media.id], media_name: props.media.title ? props.media.title : props.media.name})}>			
-				<Text style={{ textAlign: 'center', color: "#ffffff", fontSize: 18, width: 170, marginTop: 5, fontWeight: 'bold'}}>{props.media.title ? props.media.title : props.media.name}</Text>
+				<Text style={{ textAlign: 'center', color: "#ffffff", fontSize: 18, width: 170, marginTop: 5, fontWeight: 'bold'}}>{(props.media.title ? props.media.title : props.media.name).slice(0, 30)+((props.media.title ? props.media.title : props.media.name).length>30 ? '...' : '')}</Text>
 			</TouchableOpacity>
 		</View>
 	)
