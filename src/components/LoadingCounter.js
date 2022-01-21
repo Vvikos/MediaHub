@@ -11,8 +11,9 @@ const styles = StyleSheet.create({
     },
 	imgLoading: {
 		marginTop: -400,
-		height: 100,
-		width: 100
+		height: 60,
+		width: 60,
+		marginBottom: 5
 	}
 });
 

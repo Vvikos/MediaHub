@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from '@react-navigation/native';
 import { Text, ListItem, Switch } from 'react-native-elements';
-import {backgroundColor, inactiveTintColor, activeTintColor, alternativeTintColor, backgroundColorDarker} from "../helpers/colors";
+import {backgroundColor, inactiveTintColor, activeTintColor, alternativeTintColor, backgroundColorDarker, backgroundColorLighter} from "../helpers/colors";
 import * as dbservice from '../db/db';
 import * as actions from '../store/actions';
 import { ScrollView } from "react-native";
@@ -104,11 +104,14 @@ function ProfileScreen(props) {
 			</View>
 		</View>
 
-		<View style={{ width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}	>
+		<View style={{ height: "100%", width: '98%', marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start'}}	>
 			<Text style={styles.headerTitle} >Favoris</Text>
 			<ListItem.Accordion
 			content={
 				<Ionicons name="film-outline" size={32} color={activeTintColor} />
+			}
+			expandIcon={
+				<Ionicons name="film-outline" size={16} color={activeTintColor} />
 			}
 			containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}
 			isExpanded={favMoviesExpanded}
@@ -116,30 +119,31 @@ function ProfileScreen(props) {
 			onPress={() => {
 				setFavMoviesExpanded(!favMoviesExpanded);
 			}}
-			><View style={{height: '80%'}}><ScrollView>
+			><View style={{maxHeight: 165, marginBottom: 20}}><ScrollView>
 			{ props.favorites ?
 				props.favorites.movies.length > 0 ?
 					Object.entries(props.favorites.movies).map(([index, movie]) => {
 						return (
-						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
-							<ListItem.Content style={{color: activeTintColor}}>
-								<ListItem.Title style={{color: activeTintColor}}>{movie.title}</ListItem.Title>
-							</ListItem.Content>
-							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { media: movie, media_name: movie.title })}>		
+						<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Movie", { media: movie, media_name: movie.title })}>		
+							<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
+								<ListItem.Content style={{color: activeTintColor}}>
+									<ListItem.Title style={{color: activeTintColor}}>{movie.title}</ListItem.Title>
+								</ListItem.Content>
 								<ListItem.Chevron />
-							</TouchableOpacity>
-						</ListItem>
+							</ListItem>
+						</TouchableOpacity>
+
 						)
 				})
 			: connection ? 
 				!connection.isInternetReachable ? 
-					<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+					<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
 						<ListItem.Content style={{color: activeTintColor}}>
 							<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
 						</ListItem.Content>
 					</ListItem>
 				:
-				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucun film favori sauvegardé.</ListItem.Subtitle>
 					</ListItem.Content>
@@ -148,7 +152,7 @@ function ProfileScreen(props) {
 				
 			: connection ? 
 				!connection.isInternetReachable ? 
-				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
 					</ListItem.Content>
@@ -173,30 +177,30 @@ function ProfileScreen(props) {
 			onPress={() => {
 				setFavSeriesExpanded(!favSeriesExpanded);
 			}}
-			><View style={{height: '75%'}}><ScrollView>
+			><View style={{maxHeight: 165}}><ScrollView>
 			{ props.favorites ?
 				props.favorites.series.length > 0 ?
 					Object.entries(props.favorites.series).map(([index, serie]) => {
 						return (
-						<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
-							<ListItem.Content style={{color: activeTintColor}}>
-								<ListItem.Title style={{color: activeTintColor}}>{serie.name }</ListItem.Title>
-							</ListItem.Content>
-							<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Serie", { media: serie, media_name: serie.name})}>		
+						<TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate("Serie", { media: serie, media_name: serie.name})}>		
+							<ListItem key={index} bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
+								<ListItem.Content style={{color: activeTintColor}}>
+									<ListItem.Title style={{color: activeTintColor}}>{serie.name }</ListItem.Title>
+								</ListItem.Content>
 								<ListItem.Chevron />
-							</TouchableOpacity>
-						</ListItem>
+							</ListItem>
+						</TouchableOpacity>
 						)
 				})
 			: connection ? 
 				!connection.isInternetReachable ? 
-				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
 					</ListItem.Content>
 				</ListItem>
 				:
-				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Aucune serie favorie sauvegardé.</ListItem.Subtitle>
 					</ListItem.Content>
@@ -205,7 +209,7 @@ function ProfileScreen(props) {
 				
 			: connection ? 
 				!connection.isInternetReachable ? 
-				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorDarker, borderBottomColor: '#000000'}}>
+				<ListItem bottomDivider containerStyle={{backgroundColor:backgroundColorLighter, borderBottomColor: '#000000'}}>
 					<ListItem.Content style={{color: activeTintColor}}>
 						<ListItem.Subtitle style={{color: alternativeTintColor }}>Récuperation pas possible, merci de vous connecter à l'internet.</ListItem.Subtitle>
 					</ListItem.Content>
