@@ -15,7 +15,7 @@
 ## General
 
 Mobile application for movies and shows. (available on iOS and Android)
-Made with [React Native](https://reactnative.dev/), [Expo](https://expo.dev/) et de l'API [TMDb](https://www.themoviedb.org/).
+Made with [React Native](https://reactnative.dev/), [Expo](https://expo.dev/) and the public API [TMDb](https://www.themoviedb.org/).
 
 
 ## Screenshots
