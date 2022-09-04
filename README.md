@@ -8,17 +8,17 @@
   <img src="https://img.shields.io/badge/expo-43.0.2-critical.svg" />
 </p>
 
-## Equipe projet
+## Contributors
 
 **Baptiste CERDAN - Janos FALKE - Victor VOGT**
 
-## Vue d'ensemble
+## General
 
-Application mobile pour les films et les émissions de télévision. Disponible pour iOS et Android.
-Développée en tant que projet universitaire (Programmation Mobile 2021-2022), créée à l'aide de [React Native](https://reactnative.dev/), [Expo](https://expo.dev/) et de l'API [TMDb](https://www.themoviedb.org/).
+Mobile application for movies and shows. (available on iOS and Android)
+Made with [React Native](https://reactnative.dev/), [Expo](https://expo.dev/) et de l'API [TMDb](https://www.themoviedb.org/).
 
 
-## Captures d'écran
+## Screenshots
 
 <img src="src/assets/screenshot/screen1.jpg" width="200" />
 <img src="src/assets/screenshot/screen2.jpg" width="200" />
@@ -29,41 +29,37 @@ Développée en tant que projet universitaire (Programmation Mobile 2021-2022), 
 <img src="src/assets/screenshot/screen7.jpg" width="200" />
 <img src="src/assets/screenshot/screen8.png" width="188" />
 
-## Fonctionnalités
+## Features
 
-- Recherche de films et d'émissions de télévision
-- Découvrir la télévision et les films
-- Voir les images liées au film
-- Fournir des informations sur les épisodes de chaque saison
-- Création de comptes
-- Gestion de vos films et séries préférés
+- Shows and movies details search
+- Profile management
+- Favorites movies and shows
 - Redux offline
-- Bases de données en SQLite
-- Et bien plus encore
+- SQLite database
 
-## Lancement via Expo.dev
+## Launch with Expo.dev
 
-Vous pouvez egalement lancer l'application si vous avec sur votre portable Expo.
-Il suffit de se scanner via l'application Expo : [https://expo.dev/@jfalke/MediaHub](https://expo.dev/@jfalke/MediaHub).
+You can launch via Expo installed on your mobile.
+Just scan the following flashcode within your Expo application : [https://expo.dev/@jfalke/MediaHub](https://expo.dev/@jfalke/MediaHub).
 
 ## Installation
 
-Assurez-vous que vous avez configuré l'environnement natif de react [ici](https://reactnative.dev/docs/environment-setup).
+Make sure you configured the React Native environment [ici](https://reactnative.dev/docs/environment-setup).
 
-Clonez ce projet
+Clone the project
 
 ```sh
 $ git clone https://git.unistra.fr/v.vogt/pm-media-hub
 $ cd pm-media-hub
 ```
 
-Installez les dépendances
+Install dependancies
 
 ```sh
 $ npm install
 ```
 
-Exécutez sur android et ios
+Launch on iOS/Android
 
 ```sh
 $ npm start
